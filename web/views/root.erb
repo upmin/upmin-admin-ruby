@@ -1,0 +1,13 @@
+<h3>Available Models</h3>
+<h4>
+  <%= request.path_info.gsub(/^\//,'') %>
+  <%= request.path_info %>
+</h4>
+
+<ul>
+  <% @models.each do |model| %>
+    <li>
+      <a href="<%= "#{root_path}/#{model}" %>"><%= model.to_s %></a>
+    </li>
+  <% end %>
+</ul>

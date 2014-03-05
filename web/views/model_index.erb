@@ -1,0 +1,25 @@
+<h3><%= @model.to_s %></h3>
+
+<table>
+  <thead>
+    <th>
+      View
+    </th>
+    <% @node.attributes.each do |attribute| %>
+      <th><%= attribute.capitalize %></th>
+    <% end %>
+  </thead>
+
+  <% @instances.each do |instance| %>
+    <tr>
+      <td>
+        <a href="<%= "#{root_path}/#{@model}/#{instance.id}" %>"/>View</a>
+      </td>
+      <% @node.attributes.each do |attribute| %>
+        <td>
+          <%= instance.send(attribute) %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
