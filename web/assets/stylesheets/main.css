@@ -28,6 +28,11 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
+ol.breadcrumb {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
 .main {
   margin-left: 190px;
   margin-right: 0;

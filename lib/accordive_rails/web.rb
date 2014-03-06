@@ -37,8 +37,12 @@ module AccordiveRails
     # End of Paths
 
     # Helpers
+    def plural_model(model)
+      return ActiveModel::Naming.plural(model).humanize
+    end
+
     def navbar_models
-      return @plural_models ||= graph.models.map{ |m| [ActiveModel::Naming.plural(m).humanize, m] }
+      return @plural_models ||= graph.models.map{ |m| [plural_model(m), m] }
     end
     # End of Helpers
 
@@ -58,7 +62,9 @@ module AccordiveRails
     end
 
     get "/admin/:model/:id" do
-      @instance = graph.node(params[:model]).model.find(params[:id])
+      @node = graph.node(params[:model])
+      @model = @node.model
+      @instance = @model.find(params[:id])
       erb :instance
     end
 
