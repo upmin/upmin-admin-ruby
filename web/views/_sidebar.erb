@@ -1,0 +1,7 @@
+<ul class="nav nav-list">
+  <% navbar_models.each do |name, model| %>
+    <li>
+      <a href="<%= model_path(model) %>"><%= name %></a>
+    </li>
+  <% end %>
+</ul>

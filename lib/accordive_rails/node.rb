@@ -22,8 +22,7 @@ module AccordiveRails
     def build_associations
       ret = {}
       reflections.each do |reflection|
-        ret[eval(reflection.class_name)] = Association.new(reflection)
-        ret[reflection.class_name] = ret[eval(reflection.class_name)]
+        ret[reflection.class_name] = Association.new(reflection)
         if reflection.macro == :belongs_to
           attributes.delete(reflection.foreign_key.to_sym)
         end

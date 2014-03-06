@@ -1,0 +1,9 @@
+<h1>Available Models</h1>
+
+<ul>
+  <% @models.each do |model| %>
+    <li>
+      <a href="<%= model_path(model) %>"><%= model.to_s %></a>
+    </li>
+  <% end %>
+</ul>

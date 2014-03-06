@@ -1,0 +1,37 @@
+body {
+  margin-top: 60px;
+}
+
+.flash {
+  width: 100%;
+}
+
+.flash .alert {
+  border-radius: 0px;
+}
+
+.flash .alert.alert-dismissable .close {
+  text-decoration: none;
+  top: -5px;
+}
+
+.sidebar {
+  width: 190px;
+  float: left;
+  position: relative;
+  border: 1px solid #ccc;
+  border-width: 0 1px 0 0;
+  background-color: #f2f2f2;
+}
+
+.sidebar li:last-child {
+  border-bottom: 1px solid #ccc;
+}
+
+.main {
+  margin-left: 190px;
+  margin-right: 0;
+  margin-top: 0;
+  min-height: 100%;
+  padding: 0;
+}

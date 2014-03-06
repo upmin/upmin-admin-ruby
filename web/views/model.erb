@@ -9,14 +9,14 @@
       <th><%= attribute.capitalize %></th>
     <% end %>
     <% @node.associations.each do |assoc_model, association| %>
-      <th><%= association.method.capitalize %></th>
+      <th><%= association.method.to_s.humanize %></th>
     <% end %>
   </thead>
 
   <% @instances.each do |instance| %>
     <tr>
       <td>
-        <a href="<%= admin_path(@model, instance.id) %>"/>View</a>
+        <a href="<%= instance_path(@model, instance.id) %>"/>View</a>
       </td>
       <% @node.attributes.each do |attribute| %>
         <td>
@@ -25,9 +25,8 @@
       <% end %>
       <% @node.associations.each do |assoc_model, association| %>
         <td>
-          <%= association %>
           <a href="<%= association_path(@model, instance.id, assoc_model) %>">
-          View <%= association.method.to_s.humanize %>
+            View
           </a>
         </td>
       <% end %>

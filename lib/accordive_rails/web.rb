@@ -4,54 +4,62 @@ require 'sinatra/base'
 module AccordiveRails
   class Web < Sinatra::Base
 
-    def root_path
-      path = request.path
-      return path.slice(0, path.length - request.path_info.length)
-    end
-
     set :web_dir, File.expand_path(File.dirname(__FILE__) + "/../../web")
     set :public_folder, Proc.new { "#{web_dir}/assets" }
     set :views, Proc.new { "#{web_dir}/views" }
     set :locales, ["#{web_dir}/locales"]
 
     def graph
-      @graph ||= AccordiveRails::Graph.new
+      return @graph ||= AccordiveRails::Graph.new
     end
 
-    def admin_path(model = nil, id = nil)
+    # Paths
+    def root_path
+      path = request.path
+      return path.slice(0, path.length - request.path_info.length)
+    end
+
+    def admin_path
       path = root_path + "/admin"
-      if model
-        if id
-          return path + "/#{model}/#{id}"
-        else
-          return path + "/#{model}"
-        end
-      else
-        return path
-      end
+    end
+
+    def model_path(model)
+      return admin_path + "/#{model}"
+    end
+
+    def instance_path(model, id)
+      return model_path(model) + "/#{id}"
     end
 
     def association_path(model, id, association)
-      path = root_path + "/admin/#{model}/#{id}/#{association}"
-      return path
+      return instance_path(model, id) + "/#{association}"
     end
+    # End of Paths
 
+    # Helpers
+    def navbar_models
+      return @plural_models ||= graph.models.map{ |m| [ActiveModel::Naming.plural(m).humanize, m] }
+    end
+    # End of Helpers
+
+
+    # Routes
     get "/admin" do
       @models = graph.models
-      erb :root
+      erb :admin
     end
 
     get "/admin/:model" do
-      page = [params[:page].to_i - 1, 0].max
+      @page = [params[:page].to_i - 1, 0].max
       @node = graph.node(params[:model])
       @model = @node.model
-      @instances = @node.paginate(page)
-      erb :model_index
+      @instances = @node.paginate(@page)
+      erb :model
     end
 
     get "/admin/:model/:id" do
       @instance = graph.node(params[:model]).model.find(params[:id])
-      erb :model_show
+      erb :instance
     end
 
     get "/admin/:model/:id/:association" do
@@ -65,20 +73,16 @@ module AccordiveRails
         @node = graph.node(@model)
 
         if association.collection?
-          erb :model_association_collection
+          erb :model
         else
           @instance = @instances
-          erb :model_association_singular
+          erb :instance
         end
       else
         raise "Invalid association."
       end
     end
-
-    # get "/users" do
-    #   @users = graph.user.model.all.limit(25)
-    #   erb :users
-    # end
+    # End of Routes
 
   end
 end
