@@ -6,7 +6,7 @@ module AccordiveRails
     attr_accessor :instance
 
     def initialize(node, query)
-      raise "Invalid query" unless query.class == Hash
+      raise "Invalid query" unless query.is_a?(Hash)
 
       self.node = node
       self.query = query

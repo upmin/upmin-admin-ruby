@@ -9,7 +9,7 @@
       <th><%= attribute.capitalize %></th>
     <% end %>
     <% @node.associations.each do |assoc_model, association| %>
-      <th><%= association.method.to_s.humanize %></th>
+      <th><%= association.method.capitalize %></th>
     <% end %>
   </thead>
 

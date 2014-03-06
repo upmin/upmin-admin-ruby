@@ -5,10 +5,6 @@ module AccordiveRails
   class Web < Sinatra::Base
 
     def root_path
-      puts "fullpath = #{request.fullpath}"
-      puts "path = #{request.path}"
-      puts "path_info = #{request.path_info}"
-      puts "query_string = #{request.query_string}"
       path = request.path
       return path.slice(0, path.length - request.path_info.length)
     end
@@ -22,22 +18,61 @@ module AccordiveRails
       @graph ||= AccordiveRails::Graph.new
     end
 
-    get "/" do
-      @models = graph.nodes.map { |model, node| model }
+    def admin_path(model = nil, id = nil)
+      path = root_path + "/admin"
+      if model
+        if id
+          return path + "/#{model}/#{id}"
+        else
+          return path + "/#{model}"
+        end
+      else
+        return path
+      end
+    end
+
+    def association_path(model, id, association)
+      path = root_path + "/admin/#{model}/#{id}/#{association}"
+      return path
+    end
+
+    get "/admin" do
+      @models = graph.models
       erb :root
     end
 
-    get "/:model" do
+    get "/admin/:model" do
       page = [params[:page].to_i - 1, 0].max
       @node = graph.node(params[:model])
       @model = @node.model
-      @instances = @model.order("id").limit(25).offset(page * 25)
+      @instances = @node.paginate(page)
       erb :model_index
     end
 
-    get "/:model/:id" do
-      @instance = graph.node(params[:model]).model.find(params[:id].to_i)
+    get "/admin/:model/:id" do
+      @instance = graph.node(params[:model]).model.find(params[:id])
       erb :model_show
+    end
+
+    get "/admin/:model/:id/:association" do
+      @parent_node = graph.node(params[:model])
+      @parent_model = @parent_node.model
+      @parent_instance = @parent_model.find(params[:id])
+      if association = @parent_node.associations[params[:association]]
+        # TOOD(jon): Add pagination here
+        @instances = @parent_instance.send(association.method)
+        @model = association.model
+        @node = graph.node(@model)
+
+        if association.collection?
+          erb :model_association_collection
+        else
+          @instance = @instances
+          erb :model_association_singular
+        end
+      else
+        raise "Invalid association."
+      end
     end
 
     # get "/users" do

@@ -7,7 +7,7 @@
 <ul>
   <% @models.each do |model| %>
     <li>
-      <a href="<%= "#{root_path}/#{model}" %>"><%= model.to_s %></a>
+      <a href="<%= admin_path(model) %>"><%= model.to_s %></a>
     </li>
   <% end %>
 </ul>
