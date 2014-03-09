@@ -32,7 +32,15 @@ module AccordiveRails
     end
 
     def association_path(model, id, association)
-      return instance_path(model, id) + "/#{association}"
+      return instance_path(model, id) + "/association/#{association}"
+    end
+
+    def action_path(model, id, action)
+      return instance_path(model, id) + "/actions/#{action}"
+    end
+
+    def perform_action_path(model, id, action)
+      action_path(model, id, action) + "/perform"
     end
     # End of Paths
 
@@ -65,10 +73,11 @@ module AccordiveRails
       @node = graph.node(params[:model])
       @model = @node.model
       @instance = @model.find(params[:id])
+      @actions = @node.actions
       erb :instance
     end
 
-    get "/admin/:model/:id/:association" do
+    get "/admin/:model/:id/association/:association" do
       @parent_node = graph.node(params[:model])
       @parent_model = @parent_node.model
       @parent_instance = @parent_model.find(params[:id])
@@ -87,6 +96,25 @@ module AccordiveRails
       else
         raise "Invalid association."
       end
+    end
+
+    get "/admin/:model/:id/actions/:action" do
+      @node = graph.node(params[:model])
+      @model = @node.model
+      @instance = @model.find(params[:id])
+      @actions = @node.actions
+      @action = @actions.select{ |a| a.method_name == params[:action] }.first
+      erb :action
+    end
+
+    get "/admin/:model/:id/actions/:action/perform" do
+      @node = graph.node(params[:model])
+      @model = @node.model
+      @instance = @node.instance(id: params[:id])
+      @actions = @node.actions
+      @action = @actions.select{ |a| a.method_name == params[:action].to_sym }.first
+      @result = @instance.perform(@action, params[:args])
+      erb :action_perform
     end
     # End of Routes
 

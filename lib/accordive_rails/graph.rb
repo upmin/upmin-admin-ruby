@@ -35,7 +35,7 @@ module AccordiveRails
       return @models unless @models.nil?
 
       ::Rails.application.eager_load!
-      @models = ActiveRecord::Base.descendants.select do |m|
+      @models = ::ActiveRecord::Base.descendants.select do |m|
         m.to_s != "ActiveRecord::SchemaMigration"
       end
 

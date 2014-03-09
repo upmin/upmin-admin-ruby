@@ -2,3 +2,14 @@ TODO(jon)
 
 
 <%= @instance.to_json %>
+
+<h4>Actions</h4>
+<ul>
+  <% @actions.each do |action| %>
+    <li>
+      <a href="<%= perform_action_path(@model, @instance.id, action.method_name) %>">
+      <%= action.humanized %>
+      </a>
+    </li>
+  <% end %>
+</ul>

@@ -2,6 +2,15 @@ body {
   margin-top: 60px;
 }
 
+th,
+td {
+  padding: 5px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
 .flash {
   width: 100%;
 }

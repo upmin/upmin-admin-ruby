@@ -2,9 +2,11 @@ require "accordive_rails/engine"
 require "accordive_rails/graph"
 require "accordive_rails/node"
 require "accordive_rails/association"
+require "accordive_rails/action"
 require "accordive_rails/singleton"
 require "accordive_rails/web"
-require 'accordive_rails/railtie'
+require "accordive_rails/active_record"
+require "accordive_rails/railtie"
 
 # Dir[File.dirname(__FILE__) + "/accordive_rails/*"].each {|file| require file }
 

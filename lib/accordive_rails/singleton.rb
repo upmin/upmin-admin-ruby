@@ -13,5 +13,21 @@ module AccordiveRails
       self.instance = node.model.where(query).first
     end
 
+    def id
+      return instance.id
+    end
+
+    def actions
+      return node.actions
+    end
+
+    def perform(action, *args)
+      if args.any?
+        return instance.send(action.method_name, *args)
+      else
+        return instance.send(action.method_name)
+      end
+    end
+
   end
 end
