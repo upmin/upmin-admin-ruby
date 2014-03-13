@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib,web}/**/*", "Rakefile", "README.rdoc"]
 
-  s.add_development_dependency 'sinatra'
-  # s.add_dependency "rails", "~> 4.0.3"
+  s.add_dependency 'sinatra'
+  s.add_dependency 'jbuilder'
+  s.add_dependency 'tilt-jbuilder'
 end
