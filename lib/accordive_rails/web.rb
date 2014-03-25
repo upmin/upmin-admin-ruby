@@ -153,7 +153,7 @@ module AccordiveRails
 
     # TODO(jon): Make this a post instead of get
     # TODO(jon): Make this support action args
-    get "/api/perform" do
+    get "/api/method/perform" do
       klass = class_param!
       id = id_param!
       @method = method_param!
@@ -171,6 +171,20 @@ module AccordiveRails
         method: @method,
         arguments: @arguments.as_json,
         result: @result
+      }.to_json
+    end
+
+    get "/api/method/arguments" do
+      klass = class_param!
+      @method = method_param!
+
+      model = Model.for(klass)
+      @arguments = model.method_arguments(@method)
+
+      content_type(:json)
+      return {
+        method: @method,
+        arguments: @arguments
       }.to_json
     end
 

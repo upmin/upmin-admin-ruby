@@ -27,6 +27,17 @@ module AccordiveRails
       end
     end
 
+    def method_arguments(method)
+      params = rails_model.instance_method(method).parameters
+
+      args = {}
+      params.each do |kind, arg_name|
+        args[arg_name] = kind
+      end
+
+      return args
+    end
+
     def attribute_type(attribute)
       if rails_model.columns_hash[attribute.to_s]
         return rails_model.columns_hash[attribute.to_s].type
