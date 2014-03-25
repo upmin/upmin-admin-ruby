@@ -39,6 +39,36 @@ module AccordiveRails
       end
     end
 
+    def perform(support_method, *args, &block)
+      if support_method?(support_method)
+        return rails_instance.send(support_method, *args, &block)
+      else
+        raise "Invalid support method: #{support_method}"
+      end
+    end
+
+    def reload
+      rails_instance.reload
+    end
+
+    def format_arguments(support_method, raw_arguments)
+      if support_method?(support_method)
+        params = rails_instance.method(support_method).parameters
+
+        params.select! do |kind, arg_name|
+          if raw_arguments.has_key?(arg_name.to_s)
+            true
+          else
+            raise "Missing argument: #{arg_name}" if kind == :req
+          end
+        end
+
+        formatted_arguments = params.map do |kind, arg_name|
+          raw_arguments[arg_name.to_s]
+        end
+      end
+    end
+
     def rails_class
       rails_instance.class
     end

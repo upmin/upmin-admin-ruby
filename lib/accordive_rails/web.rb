@@ -91,6 +91,39 @@ module AccordiveRails
         raise "Missing parameter: query"
       end
     end
+
+    def method_param!
+      if params[:method]
+        return params[:method].to_sym
+      else
+        raise "Missing parameter: method"
+      end
+    end
+
+    def class_param!
+      if params[:class]
+        return params[:class].to_sym
+      else
+        raise "Missing parameter: class"
+      end
+    end
+
+    def id_param!
+      if params[:id]
+        return params[:id]
+      else
+        raise "Missing parameter: id"
+      end
+    end
+
+    def arguments_params
+      if params[:arguments]
+        return params[:arguments]
+      else
+        return {}
+      end
+    end
+
     # End of Helpers
 
 
@@ -106,7 +139,7 @@ module AccordiveRails
     # a. Search <All Models> using <All Attributes> for [Search Query]
     # b. Search <Users> using <email> for [Search Query]
     #
-    # TODO(jon): This may need pagination in the future, which could be annoying but its possible.
+    # TODO(jon): This may need pagination in the future, which could be annoying but it's possible.
     get "/api/search" do
       models = models_param
       attributes = attributes_param(models)
@@ -116,6 +149,29 @@ module AccordiveRails
 
       content_type(:json)
       return @instances.to_json
+    end
+
+    # TODO(jon): Make this a post instead of get
+    # TODO(jon): Make this support action args
+    get "/api/perform" do
+      klass = class_param!
+      id = id_param!
+      @method = method_param!
+      raw_arguments = arguments_params
+
+      model = Model.for(klass)
+      @instance = model.find(id)
+      @arguments = @instance.format_arguments(@method, raw_arguments)
+      @result = @instance.perform(@method, *@arguments)
+      @instance.reload
+
+      content_type(:json)
+      return {
+        instance: @instance.as_json,
+        method: @method,
+        arguments: @arguments.as_json,
+        result: @result
+      }.to_json
     end
 
     # get "/admin" do

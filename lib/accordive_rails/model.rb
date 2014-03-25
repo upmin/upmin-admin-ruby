@@ -20,6 +20,8 @@ module AccordiveRails
 
       if @query_methods.include?(m.to_sym)
         return rails_model.send(m, *args, &block)
+      elsif m.to_sym == :find
+        return rails_model.send(m, *args, &block).accordify
       else
         super
       end
