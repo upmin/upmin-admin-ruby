@@ -7,12 +7,8 @@ module AccordiveRails
       ret = Set.new
 
       models.each do |model|
-        attributes.each do |attribute|
-          if model.support_attributes.include?(attribute)
-            if [:string, :integer].include?(model.attribute_type(attribute))
-              ret += model.where(attribute => query).accordify
-            end
-          end
+        model.search_with.each do |search_method|
+          ret += model.send(search_method, query)
         end
       end
 

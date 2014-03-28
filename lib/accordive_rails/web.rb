@@ -152,53 +152,17 @@ module AccordiveRails
       return @instances.to_json
     end
 
-    ## POST Version for shitty Zendesk
-    post "/api/zendesk/search" do
-      models = models_param
-      attributes = attributes_param(models)
-      query = query_param!
-
-      @instances = SearchEngine.search(models, attributes, query)
-
-       # Custom Zendesk work
-      as_json = zendesk_flatten(@instances.as_json)
-      as_json = zendesk_array(as_json)
-
-      content_type(:json)
-      return as_json.to_json
-    end
-
-    def zendesk_flatten(as_json)
-      # user.associations = [api_key, plane]
-      ret = []
-      as_json.each do |json|
-        associations = json.delete(:associations)
-        ret << json
-        associations.each do |key, nested_json|
-          zendesk_flatten(nested_json).each { |i| ret << i }
-        end
-      end
-      return ret
-    end
-
-    def zendesk_array(as_json)
-      ret = []
-      as_json.each do |json|
-        ret << {
-          object: json[:object],
-          actions: json[:actions],
-          data: json.select{|k,v| k != :object && k != :actions}.map{|k, v| [k, v]}
-        }
-      end
-      return ret
-    end
-
     # TODO(jon): Make this a post instead of get
     # TODO(jon): Make this support action args
-    get "/api/methods/perform" do
+    post "/api/methods/perform" do
       klass = class_param!
       id = id_param!
       @method = method_param!
+      puts "inspecting"
+      puts arguments_params.inspect
+      puts "done inspecting"
+      puts params.inspect
+      puts "oh man"
       raw_arguments = arguments_params
 
       model = Model.for(klass)
@@ -226,6 +190,7 @@ module AccordiveRails
       content_type(:json)
       return {
         method: @method,
+        class: klass.to_s,
         arguments: @arguments
       }.to_json
     end

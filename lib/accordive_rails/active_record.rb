@@ -82,5 +82,15 @@ module AccordiveRails::ActiveRecord
     end
     alias :support_association :support_associations
 
+    def search_with(*meths)
+      meths = meths.map { |m| m.to_sym }
+      @support_search_methods ||= []
+
+      meths.each do |meth|
+        @support_search_methods << meth unless @support_search_methods.include?(meth)
+      end
+
+      return @support_search_methods
+    end
   end
 end

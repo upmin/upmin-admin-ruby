@@ -20,11 +20,18 @@ module AccordiveRails
 
       if @query_methods.include?(m.to_sym)
         return rails_model.send(m, *args, &block)
+      elsif search_with.include?(m)
+        ret = rails_model.send(m, *args, &block)
+        return ret.map{|i| i.accordify}
       elsif m.to_sym == :find
         return rails_model.send(m, *args, &block).accordify
       else
         super
       end
+    end
+
+    def new_instance(*args)
+      return rails_model.send(:new, *args)
     end
 
     def method_arguments(method)
@@ -44,6 +51,14 @@ module AccordiveRails
       else
         return nil
       end
+    end
+
+    def search_with
+      return rails_model.search_with
+    end
+
+    def search_with?(method)
+      return search_with.include?(method.to_sym)
     end
 
     def support_attributes
