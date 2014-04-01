@@ -56,14 +56,10 @@ module AccordiveRails
       puts params[:models]
       if params[:models]
         models = params[:models].split(",").map { |m| m.strip }
-        puts models.inspect
         models.each do |model|
-          puts "Model is.."
-          puts Model.for(model)
           ret << Model.for(model) if Model.for(model)
         end
       else
-        puts "Using all"
         ret = Model.all
       end
       return ret.to_a
@@ -101,11 +97,11 @@ module AccordiveRails
       end
     end
 
-    def class_param!
-      if params[:class]
-        return params[:class].to_sym
+    def object_param!
+      if params[:object]
+        return params[:object].to_sym
       else
-        raise "Missing parameter: class"
+        raise "Missing parameter: object"
       end
     end
 
@@ -125,8 +121,8 @@ module AccordiveRails
       end
     end
 
-    # End of Helpers
 
+    # End of Helpers
 
     # Routes
 
@@ -155,20 +151,18 @@ module AccordiveRails
     # TODO(jon): Make this a post instead of get
     # TODO(jon): Make this support action args
     post "/api/methods/perform" do
-      klass = class_param!
+      puts "INSPECTION"
+      puts params.inspect
+      puts "END OF INSPECTION"
+      object = object_param!
       id = id_param!
       @method = method_param!
-      puts "inspecting"
-      puts arguments_params.inspect
-      puts "done inspecting"
-      puts params.inspect
-      puts "oh man"
       raw_arguments = arguments_params
 
-      model = Model.for(klass)
+      model = Model.for(object)
       @instance = model.find(id)
       @arguments = @instance.format_arguments(@method, raw_arguments)
-      @result = @instance.perform(@method, *@arguments)
+      @results = @instance.perform(@method, *@arguments)
       @instance.reload
 
       content_type(:json)
@@ -176,86 +170,24 @@ module AccordiveRails
         instance: @instance.as_json,
         method: @method,
         arguments: @arguments.as_json,
-        result: @result
+        results: @results
       }.to_json
     end
 
     get "/api/methods/arguments" do
-      klass = class_param!
+      object = object_param!
       @method = method_param!
 
-      model = Model.for(klass)
+      model = Model.for(object)
       @arguments = model.method_arguments(@method)
 
       content_type(:json)
       return {
         method: @method,
-        class: klass.to_s,
+        object: object.to_s,
         arguments: @arguments
       }.to_json
     end
-
-    # get "/admin" do
-    #   @models = graph.models
-    #   erb :admin
-    # end
-
-    # get "/admin/:model" do
-    #   @page = [params[:page].to_i - 1, 0].max
-    #   @node = graph.node(params[:model])
-    #   @model = @node.model
-    #   @instances = @node.paginate(@page)
-    #   erb :model
-    # end
-
-    # get "/admin/:model/:id" do
-    #   @node = graph.node(params[:model])
-    #   @model = @node.model
-    #   @instance = @model.find(params[:id])
-    #   @actions = @node.actions
-    #   erb :instance
-    # end
-
-    # get "/admin/:model/:id/association/:association" do
-    #   @parent_node = graph.node(params[:model])
-    #   @parent_model = @parent_node.model
-    #   @parent_instance = @parent_model.find(params[:id])
-    #   if association = @parent_node.associations[params[:association]]
-    #     # TOOD(jon): Add pagination here
-    #     @instances = @parent_instance.send(association.method)
-    #     @model = association.model
-    #     @node = graph.node(@model)
-
-    #     if association.collection?
-    #       erb :model
-    #     else
-    #       @instance = @instances
-    #       erb :instance
-    #     end
-    #   else
-    #     raise "Invalid association."
-    #   end
-    # end
-
-    # get "/admin/:model/:id/actions/:action" do
-    #   @node = graph.node(params[:model])
-    #   @model = @node.model
-    #   @instance = @model.find(params[:id])
-    #   @actions = @node.actions
-    #   @action = @actions.select { |a| a.method_name == params[:action] }.first
-    #   erb :action
-    # end
-
-    # get "/admin/:model/:id/actions/:action/perform" do
-    #   @node = graph.node(params[:model])
-    #   @model = @node.model
-    #   @instance = @node.instance(id: params[:id])
-    #   @actions = @node.actions
-    #   @action = @actions.select { |a| a.method_name == params[:action].to_sym }.first
-    #   @result = @instance.perform(@action, params[:args])
-    #   erb :action_perform
-    # end
-    # End of Routes
 
   end
 end
