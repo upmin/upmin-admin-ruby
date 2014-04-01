@@ -1,4 +1,3 @@
-require "accordive_rails/engine"
 require "accordive_rails/instance"
 require "accordive_rails/model"
 require "accordive_rails/search_engine"
