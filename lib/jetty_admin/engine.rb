@@ -1,7 +1,7 @@
 # require 'haml-rails'
 
-module AccordiveAdmin
+module JettyAdmin
   class Engine < ::Rails::Engine
-    isolate_namespace AccordiveAdmin
+    isolate_namespace JettyAdmin
   end
 end

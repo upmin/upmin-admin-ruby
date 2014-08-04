@@ -1,0 +1,33 @@
+
+.navbar {
+
+  background-color: #2c3e50;
+  height: 60px;
+
+  .navbar-brand {
+    margin-right: 40px;
+    padding-top: 0;
+    color: white;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    &:hover {
+      color: #18bc9c;
+    }
+  }
+
+  .navbar-right {
+    a {
+    }
+
+    a.btn {
+      margin-left: 10px;
+      margin-top: 9px;
+      padding-top: 10px;
+
+      &.btn-primary:hover,
+      &.btn-primary:active {
+      }
+    }
+
+  }
+}

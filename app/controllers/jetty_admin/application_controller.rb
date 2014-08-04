@@ -1,4 +1,4 @@
-module AccordiveAdmin
+module JettyAdmin
   class ApplicationController < ActionController::Base
   end
 end

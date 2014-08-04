@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class AccordiveAdminTest < ActiveSupport::TestCase
+class JettyAdminTest < ActiveSupport::TestCase
   test "truth" do
-    assert_kind_of Module, AccordiveAdmin
+    assert_kind_of Module, JettyAdmin
   end
 end
