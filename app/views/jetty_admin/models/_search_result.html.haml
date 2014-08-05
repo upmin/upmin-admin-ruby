@@ -1,0 +1,23 @@
+- model_name ||= " "
+- model_id ||= ""
+- model_data ||= {}
+- hidden = false unless hidden
+
+.search-result.well{ class: hidden ? "hidden" : "", id: html_id }
+  .icon-outer
+    .icon-upper
+      .icon-letter
+
+        = model_name[0] || ""
+      .icon-name
+        = model_name
+    .icon-lower
+      ID:
+      %span.icon-id
+        = model_id
+  %dl.dl-horizontal{ id: "search-dl-1" }
+    - model_data.each do |k, v|
+      %dt
+        = k
+      %dd
+        = v.html_safe # for ems
