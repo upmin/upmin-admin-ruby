@@ -1,0 +1,53 @@
+%h1
+  Models
+- JettyAdmin::Model.all.each do |model|
+  %p
+    = model.to_s
+
+%style
+
+%input#user-search.typeahead{:placeholder => "Search for users by name, company, ...", :spellcheck => "false", :type => "text"}/
+:javascript
+  $(document).ready(function() {
+    // Replace the following values by your ApplicationID and ApiKey.
+    var algolia = new AlgoliaSearch('DKIKT3BRHR', '042cb73b78c6a18a1ba5120d49a97ba8');
+    // replace YourIndexName by the name of the index you want to query.
+    var index = algolia.initIndex('c1');
+
+    // Mustache templating by Hogan.js (http://mustache.github.io/)
+    var template = Hogan.compile('' +
+      '' +
+        '{{{ _highlightResult.name.value }}} ' +
+        '({{{ _highlightResult.company.value }}})' +
+      '' +
+      '{{#matchingAttributes}}' +
+        '{{ attribute }}: {{{ value }}}' +
+      '{{/matchingAttributes}}' +
+      '');
+
+    // typeahead.js initialization
+    $('#user-search').typeahead(null, {
+      source: index.ttAdapter({ hitsPerPage: 5 }),
+      displayKey: 'email',
+      templates: {
+        suggestion: function(hit) {
+          // select matching attributes only
+          hit.matchingAttributes = [];
+          for (var attribute in hit._highlightResult) {
+            if (attribute === 'name' || attribute == 'company') {
+              // already handled by the template
+              continue;
+            }
+            // all others attributes that are matching should be added in the matchingAttributes array
+            // so we can display them in the dropdown menu. Non-matching attributes are skipped.
+            if (hit._highlightResult[attribute].matchLevel !== 'none') {
+              hit.matchingAttributes.push({ attribute: attribute, value: hit._highlightResult[attribute].value });
+            }
+          }
+
+          // render the hit using Hogan.js
+          return template.render(hit);
+        }
+      }
+    });
+  });
