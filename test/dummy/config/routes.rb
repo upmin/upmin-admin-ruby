@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
 
-  mount JettyAdmin::Engine => "/jetty_admin"
+  mount Upmin::Engine => "/upmin"
 end

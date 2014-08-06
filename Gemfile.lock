@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jetty_admin (0.0.1)
+    upmin (0.0.1)
       rails (~> 4.0.0)
       typhoeus
 
@@ -87,4 +87,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  jetty_admin!
+  upmin!
