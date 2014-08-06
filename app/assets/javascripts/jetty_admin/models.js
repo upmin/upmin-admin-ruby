@@ -85,10 +85,11 @@ var Models = {
           }
         }
 
-        // TODO(jon): Update pagination
         renderPagination(content.page, content.nbPages);
 
         // TODO(jon): Add facet filtering
+
+
       } // end of handleSearchResults();
 
       function findModelColor(model_name) {
@@ -183,8 +184,15 @@ var Models = {
 
       } // end of renderPagination()
 
+
+      function renderFacets() {
+        // TODO(jon): Implement this.
+      } // end of renderFacets()
+
+
+
+
       // Search so we have results with no query.
-      // Using a slight timeout to avoid a weird bug where the page won't let you scroll at first.
       search();
     }, // end of Search.init()
 

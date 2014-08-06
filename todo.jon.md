@@ -1,6 +1,5 @@
 # TODO
 
-1. Mark model as searchable - by default this should be all models & all attributes except timestamps
-X. Ping AC website when online.
-    Just doing this when api_key is set for now - jon
-3. Handle AC website calls for "updated since x"
+handle faceting
+better flow from signup (ping server, get update of all models)
+better folow up flow (store updated last info on server?)
