@@ -2,6 +2,16 @@
 
   &.a-search {
 
+    a.search-result-link {
+      color: #333;
+      text-decoration: none;
+
+      &:hover,
+      &:active {
+        color: #333;
+      }
+    }
+
     .search-container {
       padding-top: 7px;
     }
