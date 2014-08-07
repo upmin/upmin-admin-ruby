@@ -1,1 +1,1 @@
-# Jetty Admin
+# Upmin Admin Gem

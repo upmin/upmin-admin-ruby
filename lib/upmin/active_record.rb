@@ -12,7 +12,7 @@ module Upmin::ActiveRecord
 
   def notify_upmin_of_save
     # if Upmin::Model.search_indexes[self.class.to_s]
-    #   # TODO(jon): Post a message to Jetty with: [class, id]
+    #   # TODO(jon): Post a message to Upmin with: [class, id]
     #   puts "Called notify_upmin_of_save"
     # end
   end

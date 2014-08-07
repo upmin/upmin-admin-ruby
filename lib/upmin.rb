@@ -28,7 +28,7 @@ module Upmin
     if (defined? @@api_key)
       return @@api_key
     else
-      raise "Jetty API key is not set."
+      raise "Upmin API key is not set."
     end
   end
 
