@@ -96,18 +96,22 @@ var Models = {
         return $('.models-data').find('.model.' + model_name).data('color');
       } // end of findModelColor()
 
+      // TODO(jon): Update the jetty_model to upmin_model after testing
       function renderSearchResult(hit, searchResult) {
         var $searchResult = $(searchResult);
+        var $a = $searchResult.parent('a.search-result-link');
+        var rootPath = $('body').data('root-path');
+        $a.attr('href', rootPath + 'models/' + hit.jetty_model + '/' + hit.id);
 
         // Find the icon-outer, remove classes - most notably the color class
         // then add the classes we need back - icon-outer and the new color.
         $searchResult.find('.icon-outer')
           .removeClass()
           .addClass('icon-outer')
-          .addClass(findModelColor(hit.upmin_model));
+          .addClass(findModelColor(hit.jetty_model));
 
-        $searchResult.find('.icon-letter').text(hit.upmin_model[0]);
-        $searchResult.find('.icon-name').text(hit.upmin_model);
+        $searchResult.find('.icon-letter').text(hit.jetty_model[0]);
+        $searchResult.find('.icon-name').text(hit.jetty_model);
         $searchResult.find('.icon-id').text(hit.id);
 
         var dl = $searchResult.find('dl.dl-horizontal');
@@ -115,7 +119,7 @@ var Models = {
 
         $.each(Object.keys(hit), function(index, key) {
           if(key == "_highlightResult" || key == "objectID" ||
-             key == "id" || key == "upmin_model") {
+             key == "id" || key == "jetty_model") {
             return;
           }
 

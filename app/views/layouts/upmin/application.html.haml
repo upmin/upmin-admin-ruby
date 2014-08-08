@@ -1,7 +1,8 @@
 !!!
 %html
   %head
-    %title Upmin
+    %title
+      Upmin Dashboard
     = stylesheet_link_tag    "upmin/application", media: "all"
     = javascript_include_tag "upmin/application"
     = csrf_meta_tags
@@ -19,7 +20,7 @@
     -# %script{src: "//rawgithub.com/algolia/algoliasearch-client-js/master/dist/algoliasearch.min.js"}
     -# %script{src: "//rawgithub.com/algolia/algoliasearch-client-js/master/vendor/typeahead.jquery.js"}
 
-  %body{ class: body_classes, data: body_data }
+  %body{ class: body_classes, data: body_data.merge(root_path: root_path) }
     .page-wrap
       -# = render('layouts/navbar')
       -# = render('layouts/flash')

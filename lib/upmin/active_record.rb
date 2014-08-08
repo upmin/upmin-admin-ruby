@@ -17,7 +17,28 @@ module Upmin::ActiveRecord
     # end
   end
 
+  def upmin_attributes
+    self.class.upmin_attributes
+  end
+
+
   module ClassMethods
+
+    def upmin_attributes(*attributes)
+      if attributes.any?
+        @upmin_attributes = attributes.map{|a| a.to_sym}
+      end
+      @upmin_attributes ||= attribute_names.map{|a| a.to_sym}
+      return @upmin_attributes
+    end
+
+    def upmin_actions(*actions)
+      if actions.any?
+        @upmin_actions = actions.map{|a| a.to_sym}
+      end
+      @upmin_actions ||= []
+      return @upmin_actions
+    end
 
     def ac_updated_after(date, page = 1)
       page = [1, page].max - 1

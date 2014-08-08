@@ -11,6 +11,11 @@ module Upmin
       return rails_model.to_s
     end
 
+    # Wrapper methods that the normal model would have access to
+    def find(id)
+      return rails_model.find(id)
+    end
+
 
     ## Search Methods
 

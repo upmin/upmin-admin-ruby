@@ -1,7 +1,7 @@
 module Upmin
   module ApplicationHelper
     def body_classes
-      controller = "c-#{params[:controller].gsub(/_/, "-").gsub("upmin-admin/", "")}"
+      controller = "c-#{params[:controller].gsub(/_/, "-").gsub("upmin/", "")}"
       action = "a-#{params[:action].gsub(/_/, "-")}"
       return [controller, action]
     end
@@ -12,5 +12,6 @@ module Upmin
       ret[:action] = params[:action].camelize
       return ret
     end
+
   end
 end

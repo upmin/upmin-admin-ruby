@@ -6,7 +6,11 @@ Upmin::Engine.routes.draw do
 
     scope "/:model_name" do
       get "/", as: :upmin_model, controller: :models, action: :show
-      get "/updated_since", as: :upmin_updated_since, controller: :models, action: :updated_since
+      get "/updated_since", as: :upmin_model_updated_since, controller: :models, action: :updated_since
+
+      scope "/:id" do
+        get "/", as: :upmin_instance, controller: :instances, action: :show
+      end
     end
   end
   # resources :models, only: [:show, :index] do

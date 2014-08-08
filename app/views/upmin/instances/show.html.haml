@@ -1,0 +1,35 @@
+.navbar.navbar-static-top
+  .container
+    .navbar-header
+      %a.navbar-brand{href: root_path}
+        = image_tag("upmin/logo_small.png")
+        pmin Dashboard
+    -# .search-container
+    -#   .input-group.input-group-lg.m-t
+    -#     %input#q.form-control.string{autocomplete: "off", autocorrect: "false", name: "q", placeholder: "Search by email, id, or anything else...", spellcheck: "false", type: "text"}
+    -#     %span.input-group-addon
+    -#       %i.glyphicon.glyphicon-search
+
+
+.container
+  .row
+    .col-sm-12
+      %h1
+        Showing:
+
+      %pre
+        = @instance.upmin_attributes
+      %dl.dl-horizontal
+        - @instance.upmin_attributes.each do |attr|
+          %dt
+            = attr.to_s.humanize
+          %dd
+            - data = @instance.send(attr)
+            - if data.is_a?(ActiveRecord::Base)
+              %pre
+                = data.as_json
+            - else
+              = @instance.send(attr)
+
+
+
