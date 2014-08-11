@@ -1,0 +1,74 @@
+- provide(:subtitle, instance.class.upmin_name)
+- nested ||= false
+
+-# TODO(jon): Update this to not be circular
+-# TODO(jon): Update the styling a good bit
+-# TODO(jon): Make attributes editable
+
+Instance!!!
+
+-# - if nested
+-#   - begin
+-#     = render(partial: "upmin/instances/#{data.class.name.underscore}_nested", locals: { instance: instance })
+-#   - rescue ActionView::MissingTemplate
+-#     = render(partial: "upmin/instances/instance_nested", locals: { instance: instance })
+
+-# - else
+
+-#   .well
+-#     %h1
+-#       = instance.class.upmin_name(:singular)
+-#     %form{role: "form"}
+-#       - instance.upmin_attributes.each do |attr|
+-#         .form-group
+-#           %label{for: "#{attr}-input"}
+-#               = attr.to_s.humanize
+
+-#         - data = instance.send(attr)
+-#         - if data.is_a?(ActiveRecord::Base)
+-#           .form-group
+-#             %a{href: instance_path(data)}
+-#               %div{id: "#{attr}-input"}
+-#                 = Upmin.render(data, nested: true)
+-#               -# - begin
+-#               -#   = render(partial: "upmin/instances/#{data.class.name.underscore}_nested", locals: { data.class.name.underscore => data })
+-#               -# - rescue ActionView::MissingTemplate
+-#               -#   = render(partial: "upmin/instances/instance_nested", locals: { instance: data })
+-#         - elsif data.is_a?(Active)
+
+
+-#         - else
+-#           .form-group
+-#             %label{for: "#{attr}-input"}
+-#               = attr.to_s.humanize
+-#             - if instance.respond_to?("#{attr}=")
+-#               %input.form-control{id: "#{attr}-input", value: instance.send(attr), type: "text"}
+-#             - else
+-#               .well{id: "#{attr}-input"}
+-#                 = instance.send(attr)
+
+
+-#       %button.btn.btn-default{type: "submit"} Save
+
+
+
+
+
+
+-# %dl.dl-horizontal.well
+-#   - @instance.upmin_attributes.each do |attr|
+-#     %dt
+-#       = attr.to_s.humanize
+-#     %dd
+-#       - data = @instance.send(attr)
+-#       - if data.is_a?(ActiveRecord::Base) && !nested
+-#         - begin
+-#           = render(partial: "upmin/instances/#{data.class.name.underscore}", locals: { data.class.name.underscore => data, nested: true })
+-#         - rescue ActionView::MissingTemplate
+-#           = render(partial: "upmin/instances/instance", locals: { instance: data, nested: true })
+
+-#       - elsif data.is_a?(ActiveRecord::Base)
+-#         = "#{data.class}##{data.id}"
+-#       - else
+-#         = data
+

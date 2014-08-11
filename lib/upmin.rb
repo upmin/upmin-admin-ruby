@@ -11,6 +11,7 @@ require "upmin/server/model"
 
 require "upmin/active_record"
 # require "upmin/active_record_relation"
+require "upmin/render_helpers"
 require "upmin/railtie"
 
 require "typhoeus"

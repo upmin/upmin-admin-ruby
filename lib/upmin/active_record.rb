@@ -40,6 +40,14 @@ module Upmin::ActiveRecord
       return @upmin_actions
     end
 
+    def upmin_name(type = :plural)
+      names = name.gsub(/([a-z])([A-Z])/, "#{$1} #{$2}").split(" ")
+      if type == :plural
+        names[names.length-1] = names.last.pluralize
+      end
+      return names.join(" ")
+    end
+
     def ac_updated_after(date, page = 1)
       page = [1, page].max - 1
       where("updated_at > ?", date).limit(10).offset(page * 10).order("updated_at ASC")
