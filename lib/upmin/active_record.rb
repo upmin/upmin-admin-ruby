@@ -18,7 +18,29 @@ module Upmin::ActiveRecord
   end
 
   def upmin_attributes
-    self.class.upmin_attributes
+    return self.class.upmin_attributes
+  end
+
+  def upmin_name(type = :plural)
+    return self.class.upmin_name(type)
+  end
+
+  def upmin_color
+    return self.class.upmin_color
+  end
+
+  def upmin_editable?(attr_name)
+    return false if attr_name == :id || attr_name == "id"
+    # TODO(jon): Add a way to lock this later
+    return self.respond_to?("#{attr_name}=")
+  end
+
+  def upmin_get(attr_name)
+    if uc = self.class.columns_hash[attr_name.to_s]
+      return Upmin::Datatypes::Boolean.new(send(attr_name)) if uc.type == :boolean
+    end
+
+    return send(attr_name)
   end
 
 
@@ -46,6 +68,11 @@ module Upmin::ActiveRecord
         names[names.length-1] = names.last.pluralize
       end
       return names.join(" ")
+    end
+
+    def upmin_color
+      return @upmin_color if defined?(@upmin_color)
+      return @upmin_color = Upmin::Server::Model.color_for(self.name)
     end
 
     def ac_updated_after(date, page = 1)

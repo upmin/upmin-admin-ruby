@@ -9,11 +9,16 @@ require "upmin/server/company"
 require "upmin/server/model"
 
 
+# Data types for tricky views
+require "upmin/datatypes/boolean"
+
+# Monkey patch code into rails
 require "upmin/active_record"
 # require "upmin/active_record_relation"
 require "upmin/render_helpers"
 require "upmin/railtie"
 
+# gems and stuff we use
 require "typhoeus"
 require "haml"
 require "sass-rails"

@@ -1,0 +1,71 @@
+@import "colors";
+
+.upmin-model {
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+
+  @each $color in $color_list {
+    $name: nth($color, 1);
+    $hex: nth($color, 2);
+
+    &.#{$name} {
+      border-left-color: $hex;
+      > h3, > h4 {
+        color: $hex;
+        > a {
+          color: $hex;
+        }
+      }
+    }
+  }
+
+  h3 {
+    margin-top: 6px;
+    font-size: 1.3em;
+  }
+  h4 {
+    margin-top: 4px;
+    font-size: 1.1em;
+  }
+  h5 {
+    margin-top: 24px;
+    margin-bottom: 6px;
+  }
+  h6 {
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+
+
+  input {
+    height: 40px;
+    font-size: 1.1em;
+  }
+
+  .well {
+    padding: 9px;
+    margin-bottom: 0;
+    min-height: 40px;
+  }
+
+  a.active-tag-link {
+    text-decoration: none;
+  }
+
+  .label {
+    margin-right: 10px;
+    font-weight: 500;
+
+    @each $color in $color_list {
+      $name: nth($color, 1);
+      $hex: nth($color, 2);
+
+      &.#{$name} {
+        background-color: $hex;
+      }
+    }
+  }
+}

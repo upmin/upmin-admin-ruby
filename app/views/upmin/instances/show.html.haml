@@ -17,22 +17,6 @@
       %h1
         = content_for(:subtitle)
 
-      = @instance.to_s
       = upmin_render(@instance)
-      -# = render(partial: "instance", locals: { instance: @instance })
-      -# %pre
-      -#   = @instance.upmin_attributes
-      -# %dl.dl-horizontal
-      -#   - @instance.upmin_attributes.each do |attr|
-      -#     %dt
-      -#       = attr.to_s.humanize
-      -#     %dd
-      -#       - data = @instance.send(attr)
-      -#       - if data.is_a?(ActiveRecord::Base)
-      -#         %pre
-      -#           = data.as_json
-      -#       - else
-      -#         = @instance.send(attr)
-
 
 

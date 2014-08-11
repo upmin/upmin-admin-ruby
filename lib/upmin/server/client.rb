@@ -7,6 +7,11 @@ module Upmin
       end
 
       def Client.all
+        return @all if defined?(@all)
+        return all_refresh
+      end
+
+      def Client.all_refresh
         resp = Typhoeus.get(
           root_url,
           followlocation: true,
@@ -14,7 +19,7 @@ module Upmin
             api_key: Upmin.api_key
           }
         )
-        return JSON.parse(resp.body).map{ |data| self.new(data) }
+        return @all = JSON.parse(resp.body).map{ |data| self.new(data) }
       end
 
       def Client.find(id)

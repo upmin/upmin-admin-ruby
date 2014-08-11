@@ -1,0 +1,2 @@
+%a.active-tag-link{href: upmin_instance_path(model_name: active_record_tag.class.to_s, id: active_record_tag.id)}
+  = upmin_render("#{active_record_tag.upmin_name(:singular)}##{active_record_tag.id}", as: :tag, classes: [active_record_tag.upmin_color])

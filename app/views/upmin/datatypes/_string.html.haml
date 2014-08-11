@@ -1,0 +1,11 @@
+- editable = options[:editable] == false ? false : true
+
+- if editable
+  -# .input-group
+  %input.form-control{type: :text, value: string}
+    -# %span.input-group-btn
+    -#   %button.btn.btn-default{type: :button}
+    -#     Save
+- else
+  %p.well
+    = string
