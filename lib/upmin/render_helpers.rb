@@ -58,6 +58,11 @@ module Upmin::RenderHelpers
     if object.is_a?(ActiveRecord::AssociationRelation)
       return u_data_partial_path(:association_relation)
     end
+    if object.is_a?(ActiveRecord::Associations::CollectionProxy)
+      return u_data_partial_path(:collection_proxy)
+    end
+
+
 
     # True/False
     if object.is_a?(Upmin::Datatypes::Boolean)
