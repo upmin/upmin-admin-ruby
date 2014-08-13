@@ -11,7 +11,7 @@
           %i.glyphicon.glyphicon-search
 
 .data-container.hidden
-  .algolia-data{ data: { api_key: "a37028a25a7e0352de1493671a4f30bd", index: "c2" } }
+  .algolia-data{ data: Upmin::Server::Company.algolia_creds }
   .models-data
     - Upmin::Server::Model.all.each do |upmin_model|
       .model{data: { color: upmin_model.color }, class: upmin_model.name }

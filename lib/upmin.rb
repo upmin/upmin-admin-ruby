@@ -5,6 +5,7 @@ require "upmin/model"
 # Server Clients
 require "upmin/server"
 require "upmin/server/client"
+require "upmin/server/singleton_client"
 require "upmin/server/company"
 require "upmin/server/model"
 
