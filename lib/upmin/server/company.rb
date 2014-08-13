@@ -1,9 +1,20 @@
 module Upmin
   module Server
-    class Company < Client
+    class Company < SingletonClient
 
       def Company.root_url
-        return "#{Client.root_url}/companies"
+        return "#{SingletonClient.root_url}/company"
+      end
+
+      def Company.algolia_creds
+        retrieve.algolia_creds
+      end
+
+      def algolia_creds
+        return {
+          api_key: self[:algolia_key],
+          index: "c#{self[:id]}"
+        }
       end
 
     end

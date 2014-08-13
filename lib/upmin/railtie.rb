@@ -6,6 +6,14 @@ module Upmin
         ::ActiveRecord::Base.send(:include, Upmin::ActiveRecord)
         # ::ActiveRecord::Relation.send(:include, Upmin::ActiveRecordRelation)
       end
+
+      ActiveSupport.on_load(:action_controller) do
+        ::ActionController::Base.send(:include, Upmin::RenderHelpers)
+      end
+
+      ActiveSupport.on_load(:action_view) do
+        ::ActionView::Base.send(:include, Upmin::RenderHelpers)
+      end
     end
   end
 end

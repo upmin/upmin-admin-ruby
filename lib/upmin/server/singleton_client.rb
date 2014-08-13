@@ -1,17 +1,17 @@
 module Upmin
   module Server
-    class Client
+    class SingletonClient
 
-      def Client.root_url
+      def SingletonClient.root_url
         return "http://localhost:3000/api"
       end
 
-      def Client.all
-        return @all if defined?(@all)
-        return all_refresh
+      def SingletonClient.retrieve
+        return @singleton if defined?(@singleton)
+        return retrieve_refresh
       end
 
-      def Client.all_refresh
+      def SingletonClient.retrieve_refresh
         resp = Typhoeus.get(
           root_url,
           followlocation: true,
@@ -19,15 +19,8 @@ module Upmin
             api_key: Upmin.api_key
           }
         )
-        return @all = JSON.parse(resp.body).map{ |data| self.new(data) }
+        return @singleton = self.new(JSON.parse(resp.body))
       end
-
-      def Client.find(id)
-        # TODO(jon): Implement this.
-        raise NotImplementedError
-      end
-
-
 
       # Basically treat it as a simplified hash with a few methods declared.
       def initialize(values)

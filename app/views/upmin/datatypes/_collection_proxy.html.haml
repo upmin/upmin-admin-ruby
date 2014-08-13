@@ -1,0 +1,2 @@
+- nest_level = options[:nest_level] || 0
+= upmin_render(collection_proxy, options.merge(as: :association_relation, nest_level: nest_level - 1))

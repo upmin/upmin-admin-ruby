@@ -15,21 +15,8 @@
   .row
     .col-sm-12
       %h1
-        Showing:
+        = content_for(:subtitle)
 
-      %pre
-        = @instance.upmin_attributes
-      %dl.dl-horizontal
-        - @instance.upmin_attributes.each do |attr|
-          %dt
-            = attr.to_s.humanize
-          %dd
-            - data = @instance.send(attr)
-            - if data.is_a?(ActiveRecord::Base)
-              %pre
-                = data.as_json
-            - else
-              = @instance.send(attr)
-
+      = upmin_render(@instance)
 
 

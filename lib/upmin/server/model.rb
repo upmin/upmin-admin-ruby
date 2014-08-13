@@ -6,6 +6,11 @@ module Upmin
         return "#{Client.root_url}/models"
       end
 
+      def Model.color_for(model_name)
+        m = all.select{|m| m.name == model_name}.first
+        return m.color
+      end
+
       def name
         return self[:name]
       end
