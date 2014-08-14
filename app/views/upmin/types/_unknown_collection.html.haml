@@ -1,2 +1,6 @@
 - node.nodes.each do |node|
   = upmin_render(node, options)
+
+- if node.nodes.empty?
+  %p.well
+    None
