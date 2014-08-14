@@ -8,6 +8,7 @@ module Upmin::Graph
     def data
       return @data
     end
+    alias_method :object, :data
 
     def options
       return @options
@@ -17,7 +18,7 @@ module Upmin::Graph
       return options[:depth] ||= 0
     end
 
-    def editable
+    def editable?
       return options[:editable] if options[:editable]
       return options[:editable] = true
     end

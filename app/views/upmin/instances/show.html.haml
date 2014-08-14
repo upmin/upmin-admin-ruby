@@ -16,7 +16,7 @@
     .col-sm-12
       %h1
         = content_for(:subtitle)
-
+      -# = render partial: "upmin/types/string", object: "df string", locals: { test_local: "local string" }
       = upmin_render(@instance)
 
 

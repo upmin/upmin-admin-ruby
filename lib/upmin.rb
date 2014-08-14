@@ -18,9 +18,10 @@ require "upmin/graph/data_node"
 require "upmin/graph/model_node"
 
 # Monkey patch code into rails
-require "upmin/active_record"
+require "upmin/railties/active_record"
 # require "upmin/active_record_relation"
-require "upmin/render_helpers"
+require "upmin/railties/render"
+require "upmin/railties/render_helpers"
 require "upmin/railtie"
 
 # gems and stuff we use

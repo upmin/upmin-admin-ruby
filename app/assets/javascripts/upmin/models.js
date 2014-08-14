@@ -1,5 +1,3 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
 var Models = {
   init: function() {
     return console.log("Init Models JS...");

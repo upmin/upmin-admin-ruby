@@ -5,9 +5,10 @@ module Upmin::Graph
       @options = options
     end
 
-    def model
-      return @model
+    def collection
+      return @collection
     end
+    alias_method :object, :collection
 
     def options
       return @options
@@ -17,7 +18,7 @@ module Upmin::Graph
       return options[:depth] ||= 0
     end
 
-    def editable
+    def editable?
       return options[:editable] if options[:editable]
       return options[:editable] = false
     end
@@ -55,7 +56,7 @@ module Upmin::Graph
         nodes = []
         node_options = {
           depth: depth,
-          editable: editable
+          editable: editable?
         }
         collection.each do |collection_item|
           if collection_item.is_a?(ActiveRecord::Base)

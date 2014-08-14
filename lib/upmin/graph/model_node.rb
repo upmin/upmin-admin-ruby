@@ -8,6 +8,7 @@ module Upmin::Graph
     def model
       return @model
     end
+    alias_method :object, :model
 
     def options
       return @options
@@ -17,7 +18,7 @@ module Upmin::Graph
       return options[:depth] ||= 0
     end
 
-    def editable
+    def editable?
       return options[:editable] if options[:editable]
       return options[:editable] = true
     end
@@ -29,6 +30,28 @@ module Upmin::Graph
     def method_name
       return options[:method_name] || nil
     end
+
+    def name
+      return model.upmin_name(:singular)
+    end
+
+    def title
+      # TODO(jon): Add block option for custom defined titles
+      return "#{name} # #{model.id}"
+    end
+
+    def color
+      return model.upmin_color
+    end
+
+    def path_hash
+      return {
+        model_name: model.class.to_s,
+        id: model.id
+      }
+    end
+
+    # TODO(jon): Add the following methods:
 
 
     def attributes
@@ -55,16 +78,20 @@ module Upmin::Graph
       return @collections
     end
 
+    def type_suffix
+      if depth == 0
+        return "_model"
+      elsif depth == 1
+        return "_model_nested"
+      else
+        return "_model_badge"
+      end
+    end
+
     private
       def determine_type
-        name = model.class.to_s.underscore.to_sym
-        if depth == 0
-          return name
-        elsif depth == 1
-          return "#{name}_nested".to_sym
-        else
-          return "#{name}_badge".to_sym
-        end
+        name = model.class.to_s.underscore
+        return "#{name}#{type_suffix}".to_sym
       end
 
       def create_attributes
@@ -84,8 +111,8 @@ module Upmin::Graph
       end
 
       def create_children
-        singletons = []
-        collections = []
+        singletons = {}
+        collections = {}
 
         model.upmin_associations.each do |association|
           puts "Association=#{association}"
@@ -98,17 +125,17 @@ module Upmin::Graph
           }
 
           if v.nil?
-            singletons << DataNode.new(nil, options.merge(type: :unknown))
+            singletons[association] = DataNode.new(nil, options.merge(type: :unknown))
           elsif v.is_a?(ActiveRecord::Base)
-            singletons << ModelNode.new(v, options)
+            singletons[association] = ModelNode.new(v, options)
           else
-            collections << CollectionNode.new(v, options)
+            collections[association] = CollectionNode.new(v, options)
           end
         end
 
         @singletons = singletons
         @collections = collections
-        return @singletons + @collections
+        return @singletons.merge(@collections)
       end
 
   end
