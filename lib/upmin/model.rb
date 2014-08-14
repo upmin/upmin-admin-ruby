@@ -45,6 +45,7 @@ module Upmin
 
     # TODO(jon): Store this in the future so it doesn't have to be looked up every call.
     def Model.all
+      return @models_array if defined?(@models_array)
       models_array = []
 
       rails_models.each do |rails_model|
@@ -52,7 +53,7 @@ module Upmin
         models_array << ac_model
       end
 
-      return models_array
+      return @models_array = models_array
     end
 
     def Model.rails_models

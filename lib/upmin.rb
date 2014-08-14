@@ -9,9 +9,13 @@ require "upmin/server/singleton_client"
 require "upmin/server/company"
 require "upmin/server/model"
 
-
 # Data types for tricky views
-require "upmin/datatypes/boolean"
+# require "upmin/datatypes/boolean"
+
+# For displaying views and finding children
+require "upmin/graph/collection_node"
+require "upmin/graph/data_node"
+require "upmin/graph/model_node"
 
 # Monkey patch code into rails
 require "upmin/active_record"

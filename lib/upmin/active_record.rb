@@ -11,14 +11,19 @@ module Upmin::ActiveRecord
   end
 
   def notify_upmin_of_save
-    # if Upmin::Model.search_indexes[self.class.to_s]
-    #   # TODO(jon): Post a message to Upmin with: [class, id]
-    #   puts "Called notify_upmin_of_save"
-    # end
+    # TODO(jon): Add after_save notifications.
   end
 
   def upmin_attributes
     return self.class.upmin_attributes
+  end
+
+  def upmin_associations
+    return self.class.upmin_associations
+  end
+
+  def upmin_collection_reflections
+    return self.class.upmin_collection_reflections
   end
 
   def upmin_name(type = :plural)
@@ -29,18 +34,31 @@ module Upmin::ActiveRecord
     return self.class.upmin_color
   end
 
-  def upmin_editable?(attr_name)
+  def upmin_attr_editable?(attr_name)
     return false if attr_name == :id || attr_name == "id"
     # TODO(jon): Add a way to lock this later
     return self.respond_to?("#{attr_name}=")
   end
 
-  def upmin_get(attr_name)
+  def upmin_attr_type(attr_name)
     if uc = self.class.columns_hash[attr_name.to_s]
-      return Upmin::Datatypes::Boolean.new(send(attr_name)) if uc.type == :boolean
+      return uc.type
+    else
+      return :unknown
     end
+  end
 
+  def upmin_get_attr(attr_name)
     return send(attr_name)
+  end
+
+  def upmin_get_assoc(assoc_name)
+    assoc_name = assoc_name.to_sym
+    if upmin_collection_reflections.include?(assoc_name)
+      return send(assoc_name).limit(5)
+    else
+      return send(assoc_name)
+    end
   end
 
 
@@ -53,6 +71,52 @@ module Upmin::ActiveRecord
       @upmin_attributes ||= attribute_names.map{|a| a.to_sym}
       return @upmin_attributes
     end
+
+    def upmin_associations(*associations)
+      if associations.any?
+        @upmin_associations = associations.map{|a| a.to_sym}
+      end
+      return @upmin_associations if defined?(@upmin_associations)
+
+      # TODO(jon): Make this handle through relationships and ignore those.
+      upmin_associations = []
+      ignored_associations = []
+      self.reflect_on_all_associations.each do |reflection|
+        upmin_associations << reflection.name.to_sym
+        if reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+          ignored_associations << reflection.options[:through]
+        end
+      end
+      return @upmin_associations = upmin_associations - ignored_associations
+    end
+
+    def upmin_collection_reflections
+      return @upmin_collection_reflections if defined?(@upmin_collection_reflections)
+      collections = self.reflect_on_all_associations.select do |r|
+        r.collection?
+      end.map do |r|
+        r.name
+      end
+      return @upmin_collection_reflections = collections
+    end
+
+    # def upmin_collections(*collections)
+    #   if collections.any?
+    #     @upmin_collections = collections.map{|a| a.to_sym}
+    #   end
+    #   return @upmin_collections if defined?(@upmin_collections)
+
+    #   @upmin_collections = []
+    #   ignored_collections
+    #   self.reflect_on_all_associations.each do |reflection|
+    #     @upmin_collections.name.to_sym << if reflection.collection?
+    #     if reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+    #       # We need to figure out what collection to ignore.
+    #       @upmin_collections.name.to_sym
+    #     end
+    #   end
+    #   return @upmin_collections
+    # end
 
     def upmin_actions(*actions)
       if actions.any?
@@ -73,27 +137,6 @@ module Upmin::ActiveRecord
     def upmin_color
       return @upmin_color if defined?(@upmin_color)
       return @upmin_color = Upmin::Server::Model.color_for(self.name)
-    end
-
-    def ac_updated_after(date, page = 1)
-      page = [1, page].max - 1
-      where("updated_at > ?", date).limit(10).offset(page * 10).order("updated_at ASC")
-    end
-
-
-    # Expects something like:
-    #
-    #   admin_search name: :partial,
-    #                email: :exact,
-    #                external_id: :exact,
-    #                description: :none
-    #
-    def admin_search(*array)
-      @ac_admin_search_index = array
-    end
-
-    def admin_search_index
-      return @ac_admin_search_index || attribute_names
     end
 
   end
