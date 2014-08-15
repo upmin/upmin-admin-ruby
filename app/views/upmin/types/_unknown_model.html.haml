@@ -11,7 +11,7 @@
   -# For each model attribute, render the DataNode
   - node.attributes.each do |key, data_node|
     %h5
-      = key.to_s.humanize
+      = key.to_s.capitalize.gsub("_", " ")
 
     = upmin_render(data_node, options)
 

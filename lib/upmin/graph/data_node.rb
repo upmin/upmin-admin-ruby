@@ -19,8 +19,8 @@ module Upmin::Graph
     end
 
     def editable?
-      return options[:editable] if options[:editable]
-      return options[:editable] = true
+      return options[:editable] unless options[:editable].nil?
+      return options[:editable] = false
     end
 
     def type
