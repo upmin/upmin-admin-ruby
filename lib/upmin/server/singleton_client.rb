@@ -3,7 +3,7 @@ module Upmin
     class SingletonClient
 
       def SingletonClient.root_url
-        return "http://localhost:3000/api"
+        return Client.root_url
       end
 
       def SingletonClient.retrieve

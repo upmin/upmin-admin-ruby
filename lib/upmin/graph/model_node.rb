@@ -78,6 +78,11 @@ module Upmin::Graph
       return @collections
     end
 
+    def type_prefix
+      name = model.class.to_s.underscore
+      return name
+    end
+
     def type_suffix
       if depth == 0
         return "_model"
@@ -90,8 +95,7 @@ module Upmin::Graph
 
     private
       def determine_type
-        name = model.class.to_s.underscore
-        return "#{name}#{type_suffix}".to_sym
+        return "#{type_prefix}#{type_suffix}".to_sym
       end
 
       def create_attributes
@@ -120,9 +124,13 @@ module Upmin::Graph
           puts "Value for assoc is: #{v} #{v.inspect}"
           options = {
             depth: depth + 1,
-            editable: false,
+            editable: (depth == 0),
             method_name: association.to_sym
           }
+          puts options.inspect
+          puts options.inspect
+          puts options.inspect
+          puts options.inspect
 
           if v.nil?
             singletons[association] = DataNode.new(nil, options.merge(type: :unknown))

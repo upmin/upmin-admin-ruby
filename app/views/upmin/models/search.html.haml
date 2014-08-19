@@ -1,14 +1,12 @@
 .navbar.navbar-static-top
-  .container
-    .navbar-header
-      %a.navbar-brand{href: root_path}
-        = image_tag("upmin/logo_small.png")
-        pmin Dashboard
-    .search-container
-      .input-group.input-group-lg.m-t
-        %input#q.form-control.string{autocomplete: "off", autocorrect: "false", name: "q", placeholder: "Search by email, id, or anything else...", spellcheck: "false", type: "text"}
-        %span.input-group-addon
-          %i.glyphicon.glyphicon-search
+  .navbar-header
+    %a.navbar-brand{href: root_path}
+      Upmin Dashboard
+  .search-container
+    .input-group.input-group-lg.m-t
+      %input#q.form-control.string{autocomplete: "off", autocorrect: "false", name: "q", placeholder: "Search by email, id, or anything else...", spellcheck: "false", type: "text"}
+      %span.input-group-addon
+        %i.glyphicon.glyphicon-search
 
 .data-container.hidden
   .algolia-data{ data: Upmin::Server::Company.algolia_creds }

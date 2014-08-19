@@ -15,7 +15,7 @@ var Models = {
 
 
       // Init Algolia
-      var algolia = new AlgoliaSearch('DKIKT3BRHR', algoliaApiKey);
+      var algolia = new AlgoliaSearch('N70PU8PLZR', algoliaApiKey);
       // var index = algolia.initIndex(algoliaIndex);
       var helper = new AlgoliaSearchHelper(algolia, algoliaIndex, {
         // list of conjunctive facets (link to refine)

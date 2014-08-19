@@ -8,6 +8,8 @@ module Upmin
 
       def Company.algolia_creds
         retrieve.algolia_creds
+        puts "Found #{retrieve.algolia_creds}"
+        return retrieve.algolia_creds
       end
 
       def algolia_creds
