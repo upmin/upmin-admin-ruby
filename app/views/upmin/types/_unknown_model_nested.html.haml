@@ -1,19 +1,24 @@
-.upmin-model{class: node.color}
-  -# Display the model title as "Model # ID"
-  %h4
-    %a{href: upmin_instance_path(node.path_hash)}
-      = node.title
+%a.active-tag-link{href: upmin_instance_path(node.path_hash)}
+  %span.label{class: node.color}
+    = node.title
 
-  -# For each model attribute, render the DataNode
-  - node.attributes.each do |key, data_node|
-    %h6
-      = key.to_s.humanize
 
-    = upmin_render(data_node, options)
+-# .upmin-model{class: node.color}
+-#   -# Display the model title as "Model # ID"
+-#   %h4
+-#     %a{href: upmin_instance_path(node.path_hash)}
+-#       = node.title
 
-  -# Render each child node
-  - node.children.each do |key, node|
-    %h5
-      = key.to_s.humanize
-    = upmin_render(node, options)
+-#   -# For each model attribute, render the DataNode
+-#   - node.attributes.each do |key, data_node|
+-#     %h6
+-#       = key.to_s.humanize
+
+-#     = upmin_render(data_node, options)
+
+-#   -# Render each child node
+-#   - node.children.each do |key, node|
+-#     %h5
+-#       = key.to_s.humanize
+-#     = upmin_render(node, options)
 

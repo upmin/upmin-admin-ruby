@@ -1,5 +1,5 @@
 - if node.editable?
-  %input.form-control{type: :text, value: string}
+  %input.form-control{type: :text, value: string, name: node.form_name, id: node.form_id}
 - else
   %p.well
     = string

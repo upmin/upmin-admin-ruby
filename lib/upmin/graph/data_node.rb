@@ -31,6 +31,18 @@ module Upmin::Graph
       return options[:method_name] || nil
     end
 
+    def parent_name
+      return options[:parent_name] || nil
+    end
+
+    def form_name
+      return "#{parent_name}[#{method_name}]"
+    end
+
+    def form_id
+      return "#{parent_name}_#{method_name}"
+    end
+
 
 
     private

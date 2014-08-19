@@ -1,6 +1,29 @@
 
-- node.nodes.each do |c_node|
-  = upmin_render(c_node, options)
+-if node.nodes.any?
+  %p
+    - node.nodes.each do |c_node|
+      = upmin_render(c_node, options)
+
+    -# <div class="btn-group">
+    -#   <button type="button" class="btn btn-default">1</button>
+    -#   <button type="button" class="btn btn-default">2</button>
+
+    -#   <div class="btn-group">
+    -#     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    -#       Dropdown
+    -#       <span class="caret"></span>
+    -#     </button>
+    -#     <ul class="dropdown-menu" role="menu">
+    -#       <li><a href="#">Dropdown link</a></li>
+    -#       <li><a href="#">Dropdown link</a></li>
+    -#     </ul>
+    -#   </div>
+    -# </div>
+    %a.btn.btn-xs.btn-default{class: "btn-#{node.nodes.first.color}", href: '#'}
+      %i.fa.fa-plus{style: "padding-right: 3px;"}
+      = node.type.to_s.gsub(/_collection/, "").humanize
+
+
 
 - if node.nodes.empty?
   %p.well

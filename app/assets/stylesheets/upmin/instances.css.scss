@@ -65,6 +65,9 @@
 
   a.active-tag-link {
     text-decoration: none;
+    .label {
+      padding: 4px 6px 5px 6px;
+    }
   }
 
   .label {

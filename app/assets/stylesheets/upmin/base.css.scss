@@ -1,4 +1,5 @@
 @import "colors";
+@import "button_mixins";
 
 body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -37,3 +38,13 @@ body {
   }
 }
 
+.btn {
+  @each $color in $color_list {
+    $name: nth($color, 1);
+    $hex: nth($color, 2);
+
+    &.btn-#{$name} {
+      @include button-variant(#fff, $hex, $hex);
+    }
+  }
+}

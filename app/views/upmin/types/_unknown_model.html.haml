@@ -19,7 +19,12 @@
   - node.children.each do |key, node|
     %h5
       = key.to_s.humanize
-    = upmin_render(node, options)
+    - if node.is_a?(Upmin::Graph::CollectionNode)
+      = upmin_render(node, options)
+    - else
+      %p
+        = upmin_render(node, options)
+
 
 
   - if node.editable?

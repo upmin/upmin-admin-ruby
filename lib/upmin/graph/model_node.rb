@@ -59,7 +59,7 @@ module Upmin::Graph
     end
 
     def children
-      if depth >= 2
+      if depth >= 1
         return [] # nothing beyond a depth of 2
       else
         return @children ||= create_children
@@ -86,10 +86,10 @@ module Upmin::Graph
     def type_suffix
       if depth == 0
         return "_model"
-      elsif depth == 1
+      elsif depth >= 1
         return "_model_nested"
-      else
-        return "_model_badge"
+      # else
+      #   return "_model_badge"
       end
     end
 
@@ -108,7 +108,8 @@ module Upmin::Graph
             depth: depth + 1,
             editable: editable && model.upmin_attr_editable?(u_attr),
             type: model.upmin_attr_type(u_attr),
-            method_name: u_attr
+            method_name: u_attr,
+            parent_name: model.class.to_s.underscore
           })
         end
         return attributes
