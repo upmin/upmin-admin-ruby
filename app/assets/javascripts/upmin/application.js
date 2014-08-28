@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-clockpicker
+//= require ./jquery-clockpicker
 //= require_tree .
+
+// This needs to be done in case applications have their own version of jquery. Annoying, but whatever.
+window.Upmin.jQuery = window.jQuery;
 
 function runUpmin() {
   var Upmin = window.Upmin;
