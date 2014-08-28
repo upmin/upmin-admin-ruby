@@ -5,21 +5,26 @@
     .col-xs-12.col-md-4
       %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-date"}
     .col-xs-12.col-md-4
-      %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-time"}
-  -# Then the time picker
+      -# %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-time"}\
+      .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
+        %input.form-control{:type => "text", :value => datetime, id: "#{node.form_id}-time"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-time
+
+
 
   - content_for(:javascript) do
     :javascript
       (function() {
-        var picker,
+        var datePicker,
             date = new Date($('##{node.form_id}').val()),
             hiddenInput = $('##{node.form_id}');
 
         console.log("Current date is: " + date.toUTCString());
 
         // Date Specific Code
-        var handleOnSelect = function() {
-          var pickerDate = picker.getDate();
+        var handleDateSelect = function() {
+          var pickerDate = datePicker.getDate();
           console.log("Setting the date from " + date + " to " + pickerDate);
 
           date.setUTCFullYear(pickerDate.getUTCFullYear());
@@ -29,9 +34,18 @@
           hiddenInput.val(date.toUTCString());
         }
 
-        picker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleOnSelect });
+        datePicker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleDateSelect });
 
         // Time Specific Code
+        var handleTimeSelect = function() {
+          console.log("time selected");
+        }
+        $('##{node.form_id}-time').clockpicker({
+          donetext: "Done",
+          twelvehour: true,
+          afterDone: handleTimeSelect
+        });
+
 
       })();
 

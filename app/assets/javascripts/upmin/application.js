@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-clockpicker
 //= require_tree .
 
 function runUpmin() {
