@@ -1,5 +1,41 @@
 - if node.editable?
-  %input.form-control{type: :datetime, value: datetime}
+  -# First the month picker
+  %input.hidden{type: :text, value: datetime, name: node.form_name, id: node.form_id}
+  .row
+    .col-xs-12.col-md-4
+      %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-date"}
+    .col-xs-12.col-md-4
+      %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-time"}
+  -# Then the time picker
+
+  - content_for(:javascript) do
+    :javascript
+      (function() {
+        var picker,
+            date = new Date($('##{node.form_id}').val()),
+            hiddenInput = $('##{node.form_id}');
+
+        console.log("Current date is: " + date.toUTCString());
+
+        // Date Specific Code
+        var handleOnSelect = function() {
+          var pickerDate = picker.getDate();
+          console.log("Setting the date from " + date + " to " + pickerDate);
+
+          date.setUTCFullYear(pickerDate.getUTCFullYear());
+          date.setUTCMonth(pickerDate.getUTCMonth());
+          date.setUTCDate(pickerDate.getUTCDate());
+
+          hiddenInput.val(date.toUTCString());
+        }
+
+        picker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleOnSelect });
+
+        // Time Specific Code
+
+      })();
+
+
 - else
   %p.well
     = datetime

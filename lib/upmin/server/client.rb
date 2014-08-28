@@ -3,7 +3,8 @@ module Upmin
     class Client
 
       def Client.root_url
-        return "https://www.upmin.com/api"
+        return "http://localhost:3000/api"
+        # return "https://www.upmin.com/api"
       end
 
       def Client.all
