@@ -33,7 +33,9 @@ module Upmin::Railties
     end
 
     def upmin_attr_editable?(attr_name)
-      return false if attr_name == :id || attr_name == "id"
+      return false if attr_name.to_sym == :id
+      return false if attr_name.to_sym == :created_at
+      return false if attr_name.to_sym == :updated_at
       # TODO(jon): Add a way to lock this later
       return self.respond_to?("#{attr_name}=")
     end

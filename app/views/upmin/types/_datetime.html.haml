@@ -1,5 +1,106 @@
 - if node.editable?
-  %input.form-control{type: :datetime, value: datetime}
+  -# First the month picker
+  %input.hidden{type: :text, value: datetime, name: node.form_name, id: node.form_id}
+  .row
+    .col-xs-12.col-md-4
+      .input-group.pikadate
+        %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-date"}
+        %span.input-group-addon
+          %span.glyphicon.glyphicon-calendar
+    .col-xs-12.col-md-4
+      -# %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-time"}\
+      .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
+        %input.form-control{:type => "text", :value => datetime, id: "#{node.form_id}-time"}
+        %span.input-group-addon
+          %span.glyphicon.glyphicon-time
+
+
+
+  - content_for(:javascript) do
+    :javascript
+      (function() {
+        var datePicker,
+            date = new Date($('##{node.form_id}').val()),
+            hiddenInput = Upmin.jQuery('##{node.form_id}');
+
+        console.log("Current date is: " + date.toUTCString());
+
+        // Date Specific Code
+        var handleDateSelect = function() {
+          var pickerDate = datePicker.getDate();
+          console.log("Setting the date from " + date + " to " + pickerDate);
+
+          date.setUTCFullYear(pickerDate.getUTCFullYear());
+          date.setUTCMonth(pickerDate.getUTCMonth());
+          date.setUTCDate(pickerDate.getUTCDate());
+
+          hiddenInput.val(date.toUTCString());
+        }
+
+        datePicker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleDateSelect });
+
+        // Time Specific Code
+        var timeInput = Upmin.jQuery('##{node.form_id}-time');
+
+        var parseTime = function(timeString) {
+          var ret = new Date();
+
+          var time = timeString.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
+          if (!time) {
+            return NaN;
+          }
+          var hours = parseInt(time[1], 10);
+          if (hours == 12 && !time[3]) {
+            hours = 0;
+          } else {
+            hours += (hours < 12 && time[3]) ? 12 : 0;
+          }
+
+          ret.setHours(hours);
+          ret.setMinutes(parseInt(time[2], 10) || 0);
+          ret.setSeconds(0, 0);
+          return ret;
+        }
+
+        var handleTimeSelect = function() {
+          console.log("time selected");
+          console.log(parseTime(timeInput.val()));
+          var time = parseTime(timeInput.val());
+
+          date.setUTCHours(time.getUTCHours());
+          date.setUTCMinutes(time.getUTCMinutes());
+
+          hiddenInput.val(date.toUTCString());
+        }
+
+        // This HAS to use the upmin jquery since this is where we add in the clockpicker jquery.
+        timeInput.clockpicker({
+          autoclose: true,
+          donetext: "Done",
+          twelvehour: true,
+          afterDone: handleTimeSelect,
+          default: date.getHours() + ":" + date.getMinutes()
+        });
+
+        timeInput.val(date.getHours() + ":" + date.getMinutes());
+
+
+        // Make sure we set times when the form is input in case the user typed in values.
+        /* TODO(jon): Make this work.
+        timeInput.closest("form").submit(function(event) {
+          event.preventDefault();
+
+          // Add code to handle typed in dates.
+
+          handleTimeSelect();
+          // Test this.
+          $(event.target).submit();
+        });
+        //*/
+
+      })();
+
+
 - else
   %p.well
     = datetime
