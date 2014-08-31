@@ -1,7 +1,8 @@
 - if node.editable? && f = options[:form_builder]
 
-  = f.hidden_field(node.method_name)
-  -# %input.hidden{type: :text, value: datetime, name: node.form_name, id: node.form_id}
+  = f.hidden_field(node.method_name, value: datetime)
+  - # TODO(jon): Figure out a better way to do transforms. This works for now though.
+  = f.hidden_field("transforms[#{node.method_name}]", value: "DateTime#parse")
   .row
     .col-xs-12.col-md-4
       .input-group.pikadate
@@ -9,7 +10,6 @@
         %span.input-group-addon
           %span.glyphicon.glyphicon-calendar
     .col-xs-12.col-md-4
-      -# %input.form-control{type: :text, value: datetime, id: "#{node.form_id}-time"}\
       .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
         %input.form-control{:type => "text", :value => datetime, id: "#{node.form_id}-time"}
         %span.input-group-addon
@@ -91,8 +91,7 @@
         timeInput.closest("form").submit(function(event) {
           event.preventDefault();
 
-          // Add code to handle typed in dates.
-
+          // TODO(jon): Add code to handle typed in dates.
           handleTimeSelect();
           // Test this.
           $(event.target).submit();
