@@ -1,6 +1,7 @@
-- if node.editable?
-  -# First the month picker
-  %input.hidden{type: :text, value: datetime, name: node.form_name, id: node.form_id}
+- if node.editable? && f = options[:form_builder]
+
+  = f.hidden_field(node.method_name)
+  -# %input.hidden{type: :text, value: datetime, name: node.form_name, id: node.form_id}
   .row
     .col-xs-12.col-md-4
       .input-group.pikadate
@@ -103,9 +104,5 @@
 
 - else
   %p.well
+    -# TODO(jon): Make this show an uneditable date and time field.
     = datetime
-
-
-
--# Month: http://www.jqueryrain.com/2014/03/smart-forms-jquery-html5-css3/
--# Time: http://www.jqueryrain.com/2014/04/clockpicker-clock-style-timepicker-bootstrap/

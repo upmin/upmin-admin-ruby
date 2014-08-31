@@ -4,16 +4,17 @@
   -# Display the model title as "Model # ID"
   %h3
     = node.title
-    -# = unknown_model.upmin_name(:singular)
-    -# \#
-    -# = unknown_model.id
 
-  -# For each model attribute, render the DataNode
-  - node.attributes.each do |key, data_node|
-    %h5
-      = key.to_s.capitalize.gsub("_", " ")
+  -# For each model attribute, render the DataNode inside of a form.
+  = form_for(unknown_model, as: node.name.underscore, url: upmin_instance_path(node.path_hash), html: { method: :put }) do |f|
+    - node.attributes.each do |key, data_node|
+      .form-group
+        -# TODO(jon): Make the key already pretty if I can easily.
+        = f.label(key.to_s.capitalize.gsub("_", " "))
+        = upmin_render(data_node, form_builder: f)
+    = f.submit("Save", class: "btn btn-primary")
 
-    = upmin_render(data_node, options)
+
 
   -# Render each child node
   - node.children.each do |key, node|
@@ -27,10 +28,6 @@
 
 
 
-  - if node.editable?
-    %br
-    %button.btn.btn-primary{type: :button}
-      Save
-
+  -# - if node.editable?
 
 

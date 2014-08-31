@@ -10,6 +10,8 @@ Upmin::Engine.routes.draw do
 
       scope "/:id" do
         get "/", as: :upmin_instance, controller: :instances, action: :show
+        put "/", controller: :instances, action: :update
+
         post "/add", as: :upmin_add_nested, controller: :instances, action: :add_nested
       end
     end
