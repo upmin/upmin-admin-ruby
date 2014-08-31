@@ -1,5 +1,7 @@
-- if node.editable?
-  %input.form-control{type: :text, value: string, name: node.form_name, id: node.form_id}
+- if node.editable? && f = options[:form_builder]
+  - f = options[:form_builder]
+  = f.text_field(node.method_name, value: string, class: "form-control")
+
 - else
   %p.well
     = string

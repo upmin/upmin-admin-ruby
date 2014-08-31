@@ -1,5 +1,6 @@
-- if node.editable?
-  %input.form-control{type: :number, value: integer}
+- if node.editable? && f = options[:form_builder]
+  = f.number_field(node.method_name, value: integer, class: "form-control")
+
 - else
   %p.well
     = integer
