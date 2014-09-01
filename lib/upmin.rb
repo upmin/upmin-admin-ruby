@@ -2,16 +2,6 @@ require "upmin/engine"
 
 require "upmin/model"
 
-# Server Clients
-require "upmin/server"
-require "upmin/server/client"
-require "upmin/server/singleton_client"
-require "upmin/server/company"
-require "upmin/server/model"
-
-# Data types for tricky views
-# require "upmin/datatypes/boolean"
-
 # For displaying views and finding children
 require "upmin/graph/collection_node"
 require "upmin/graph/data_node"

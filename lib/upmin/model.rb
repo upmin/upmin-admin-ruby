@@ -2,13 +2,22 @@ module Upmin
   class Model
 
     attr_accessor :rails_model
+    attr_accessor :color
 
-    def initialize(rails_model)
+    def initialize(rails_model, options = {})
       self.rails_model = rails_model
+
+      if options[:color]
+        self.color = options[:color]
+      end
     end
 
     def to_s
       return rails_model.to_s
+    end
+
+    def name
+      return rails_model.name
     end
 
     def form_name
@@ -51,9 +60,20 @@ module Upmin
     def Model.all
       return @models_array if defined?(@models_array)
       models_array = []
+      colors = [
+        :light_blue,
+        :blue_green,
+        :red,
+        :yellow,
+        :orange,
+        :purple,
+        :dark_blue,
+        :dark_red,
+        :green
+      ]
 
-      rails_models.each do |rails_model|
-        ac_model = Model.new(rails_model)
+      rails_models.each_with_index do |i, rails_model|
+        ac_model = Model.new(rails_model, color: colors[i % colors.length])
         models_array << ac_model
       end
 

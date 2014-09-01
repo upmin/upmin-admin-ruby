@@ -135,7 +135,7 @@ module Upmin::Railties
 
       def upmin_color
         return @upmin_color if defined?(@upmin_color)
-        return @upmin_color = Upmin::Server::Model.color_for(self.name)
+        return @upmin_color = Upmin::Model.find(self.name).color
       end
 
     end
