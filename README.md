@@ -81,5 +81,6 @@ And Upmin would generate fully functional forms for you that look (roughly) like
 The goal of Upmin is to make it easier to build admin pages with minimal effort. With that in mind, we are always looking for feedback and suggestions. You can get in touch several ways.
 
 Email - [support@upmin.com](support@upmin.com)
+
 Chat - [http://www.hipchat.com/gvREostp6](http://www.hipchat.com/gvREostp6)
 
