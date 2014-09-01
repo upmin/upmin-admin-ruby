@@ -53,18 +53,19 @@ I often find myself wanting to add pretty basic funcionality to my admin pages, 
 
 For example, if you wanted to add the method `set_box_size` to your `Shipment` model the code would look something like this:
 
+```ruby
+class Shipment < ActiveRecord::Base
+  ...
 
-    class Shipment < ActiveRecord::Base
-      ...
+  upmin_action :set_box_size
 
-      upmin_action :set_box_size
+  def set_box_size(length, width, height)
+    # Do work here
+  end
 
-      def set_box_size(length, width, height)
-        # Do work here
-      end
-
-      ...
-    end
+  ...
+end
+```
 
 And Upmin would generate fully functional forms for you that look (roughly) like this: [https://db.tt/JhzdeS8Z](https://db.tt/JhzdeS8Z)
 
