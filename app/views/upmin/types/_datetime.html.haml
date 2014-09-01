@@ -24,8 +24,6 @@
             date = new Date($('##{node.form_id}').val()),
             hiddenInput = Upmin.jQuery('##{node.form_id}');
 
-        console.log("Current date is: " + date.toUTCString());
-
         // Date Specific Code
         var handleDateSelect = function() {
           var pickerDate = datePicker.getDate();
@@ -41,6 +39,7 @@
         datePicker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleDateSelect });
 
         // Time Specific Code
+        // This HAS to use the upmin jquery, because the parent app likely doesn't have clockpicker, but likely does have jquery.
         var timeInput = Upmin.jQuery('##{node.form_id}-time');
 
         var parseTime = function(timeString) {
@@ -64,8 +63,6 @@
         }
 
         var handleTimeSelect = function() {
-          console.log("time selected");
-          console.log(parseTime(timeInput.val()));
           var time = parseTime(timeInput.val());
 
           date.setUTCHours(time.getUTCHours());
@@ -74,7 +71,6 @@
           hiddenInput.val(date.toUTCString());
         }
 
-        // This HAS to use the upmin jquery since this is where we add in the clockpicker jquery.
         timeInput.clockpicker({
           autoclose: true,
           donetext: "Done",
@@ -87,17 +83,13 @@
 
 
         // Make sure we set times when the form is input in case the user typed in values.
-        /* TODO(jon): Make this work.
         timeInput.closest("form").submit(function(event) {
           event.preventDefault();
 
           // TODO(jon): Add code to handle typed in dates.
           handleTimeSelect();
-          // Test this.
           $(event.target).submit();
         });
-        //*/
-
       })();
 
 
