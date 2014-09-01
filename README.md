@@ -1,4 +1,4 @@
-# Upmin Gem
+# Upmin
 
 Upmin is a framework for creating powerful admin backends with minimal effort.
 
