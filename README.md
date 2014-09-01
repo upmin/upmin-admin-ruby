@@ -14,17 +14,23 @@ You should probably just install Upmin rather than using the demo. It only takes
 
 Installing Upmin is incredibly easy. Simple add the gem to your `Gemfile`:
 
-    gem 'upmin'
+```ruby
+gem 'upmin'
+```
 
 And then mount the engine in your `routes.rb` file:
 
-    mount Upmin::Engine => '/admin'
+```ruby
+mount Upmin::Engine => '/admin'
+```
 
 Authentication is currently supported with an existing Devise install. Simply use something like this:
 
-    authenticate :user, lambda { |u| u.admin? } do
-      mount Upmin::Engine => '/admin'
-    end
+```ruby
+authenticate :user, lambda { |u| u.admin? } do
+  mount Upmin::Engine => '/admin'
+end
+```
 
 
 ## Features
