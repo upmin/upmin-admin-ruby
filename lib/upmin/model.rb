@@ -72,7 +72,7 @@ module Upmin
         :green
       ]
 
-      rails_models.each_with_index do |i, rails_model|
+      rails_models.each_with_index do |rails_model, i|
         ac_model = Model.new(rails_model, color: colors[i % colors.length])
         models_array << ac_model
       end
