@@ -23,37 +23,44 @@ module Upmin
     def form_name
       return rails_model.name.underscore
     end
+    alias_method :partial_name, :form_name
 
     # Wrapper methods that the normal model would have access to
     def find(id)
       return rails_model.find(id)
     end
 
-
-    ## Search Methods
-
-    ### Search indexing methods
-    def admin_search_index
-      return rails_model.admin_search_index
+    def search(*args)
+      return self.rails_model.ransack(*args)
     end
+    alias_method :ransack, :search
 
-    def Model.admin_search_indexes
-      ret = {}
-      Model.all.each do |model|
-        ret[model.to_s] = model.admin_search_index if model.admin_search_index
+
+    # Methods for determinining attributes, and their types.
+    def attributes
+      return @attributes if defined?(@attributes)
+
+      attributes = {}
+      rails_model.upmin_attributes.each do |u_attr|
+        attributes[u_attr] = {}
+        attributes[u_attr][:type] = get_attr_type(u_attr)
       end
-      return ret
+
+      return @attributes = attributes
     end
 
-    def updated_since(date)
-      rails_model.where("updated_at > ?", date)
+    def get_attr_type(attr_name)
+      if uc = rails_model.columns_hash[attr_name.to_s]
+        return uc.type
+      else
+        return :unknown
+      end
     end
 
 
     ## Generic Class Methods
-
     def Model.find(name)
-      return all.select{|a| a.to_s == name}.first
+      return all.select{|a| a.to_s == name.to_s}.first
     end
 
     # TODO(jon): Store this in the future so it doesn't have to be looked up every call.

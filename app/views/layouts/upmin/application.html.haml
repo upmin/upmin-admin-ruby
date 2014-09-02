@@ -3,27 +3,18 @@
   %head
     %title
       Upmin Dashboard
-    = stylesheet_link_tag    "upmin/application", media: "all"
-    = javascript_include_tag "upmin/application"
+    = stylesheet_link_tag("upmin/application", media: "all")
+    = javascript_include_tag("upmin/application")
     = csrf_meta_tags
 
     %link{href: "//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css", rel: "stylesheet", type: "text/css"}
     %link{href: "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet"}
-    -# %link{href: "//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css", type: "text/css"}
-
-    %script{:src => "//cdn.jsdelivr.net/jquery/1.11.1/jquery.min.js"}
     %script{:src => "//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"}
-    %script{:src => "//cdn.jsdelivr.net/algoliasearch/2.5.2/algoliasearch.min.js"}
-    %script{:src => "//cdn.jsdelivr.net/hogan.js/3.0.0/hogan.common.js"}
 
-    -# %script{:src => "js/bootstrap-slider.js"}
-    -# %script{:src => "js/bootstrap-checkbox.js"}
-    -# %script{src: "//rawgithub.com/algolia/algoliasearch-client-js/master/dist/algoliasearch.min.js"}
-    -# %script{src: "//rawgithub.com/algolia/algoliasearch-client-js/master/vendor/typeahead.jquery.js"}
 
   %body{ class: body_classes, data: body_data.merge(root_path: root_path) }
     .page-wrap
-      -# = render('layouts/navbar')
+      = render('layouts/upmin/navbar')
       -# = render('layouts/flash')
       = yield
 

@@ -1,9 +1,11 @@
 # V1 Beta Release
 
-- [ ] Remove external server dependencies
-  - [ ] Add local color selection instead of using server.
-  - [ ] Remove Algolia search code for now
+- [x] Remove external server dependencies
+  - [x] Add local color selection instead of using server.
+  - [x] Remove Algolia search code for now
   - [ ] Add search and basic filters.
 
-- [ ] Make model save/update work again
+- [x] Make model save/update work again
+
+- [ ] Update datetime partial to set AM/PM initially and clean up time.
 

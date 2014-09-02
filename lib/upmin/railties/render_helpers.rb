@@ -27,8 +27,22 @@ module Upmin::Railties
       return partials
     end
 
+    def RenderHelpers.partials_for_search_box(upmin_model, options)
+      partials = []
+      partials << options[:partial] if options[:partial]
+      partials << build_search_box_path(options[:as]) if options[:as]
+      partials << build_search_box_path(upmin_model.partial_name)
+      partials << build_search_box_path(:unknown)
+      return partials
+    end
+
     def RenderHelpers.build_path(partial)
       return "upmin/types/#{partial}"
+    end
+
+
+    def RenderHelpers.build_search_box_path(partial)
+      return "upmin/search_boxes/#{partial}"
     end
 
     def RenderHelpers.object_name(partial)

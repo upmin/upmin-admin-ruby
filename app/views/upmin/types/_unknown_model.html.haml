@@ -6,7 +6,7 @@
     = node.title
 
   -# For each model attribute, render the DataNode inside of a form.
-  = form_for(unknown_model, as: node.name.underscore, url: upmin_instance_path(node.path_hash), html: { method: :put }) do |f|
+  = form_for(unknown_model, as: node.name.underscore, url: upmin_model_path(node.path_hash), html: { method: :put }) do |f|
     - node.attributes.each do |key, data_node|
       .form-group
         -# TODO(jon): Make the key already pretty if I can easily.

@@ -22,7 +22,7 @@
       (function() {
         var datePicker,
             date = new Date($('##{node.form_id}').val()),
-            hiddenInput = Upmin.jQuery('##{node.form_id}');
+            hiddenInput = $('##{node.form_id}');
 
         // Date Specific Code
         var handleDateSelect = function() {
@@ -39,8 +39,7 @@
         datePicker = new Pikaday({ field: $('##{node.form_id}-date')[0], onSelect: handleDateSelect });
 
         // Time Specific Code
-        // This HAS to use the upmin jquery, because the parent app likely doesn't have clockpicker, but likely does have jquery.
-        var timeInput = Upmin.jQuery('##{node.form_id}-time');
+        var timeInput = $('##{node.form_id}-time');
 
         var parseTime = function(timeString) {
           var ret = new Date();

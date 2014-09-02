@@ -10,6 +10,46 @@ module Upmin::Railties
       end
     end
 
+    def upmin_render_search_box(upmin_model, options = {})
+      partials = RenderHelpers.partials_for_search_box(upmin_model, options)
+
+      partials.each do |partial|
+        begin
+          return render(
+            partial: partial,
+            object: upmin_model, # this doesn't work with nil
+            locals: {
+              upmin_model: upmin_model,
+              options: options
+            }
+          )
+        rescue ActionView::MissingTemplate => e
+        end
+      end
+      raise "Failed to find a matching partial, even with fallback :unknown partials"
+    end
+
+    def upmin_render_search(results, options= {})
+      partials = RenderHelpers.partials_for(node, options)
+
+      # TODO(jon): Update this to use something like https://coderwall.com/p/ftbmsa instead of a rescue
+      partials.each do |partial|
+        begin
+          return render(
+            partial: partial,
+            object: node.object, # this doesn't work with nil
+            locals: {
+              node: node,
+              options: options,
+              RenderHelpers.object_name(partial) => node.object
+            }
+          )
+        rescue ActionView::MissingTemplate => e
+        end
+      end
+      raise "Failed to find a matching partial, even with fallback :unknown partials"
+    end
+
     def upmin_render_node(node, options = {})
       partials = RenderHelpers.partials_for(node, options)
 
@@ -27,8 +67,6 @@ module Upmin::Railties
             }
           )
         rescue ActionView::MissingTemplate => e
-          puts e
-          puts e.message
         end
       end
       raise "Failed to find a matching partial, even with fallback :unknown partials"
