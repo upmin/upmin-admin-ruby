@@ -3,7 +3,7 @@
 - [x] Remove external server dependencies
   - [x] Add local color selection instead of using server.
   - [x] Remove Algolia search code for now
-  - [ ] Add search and basic filters.
+  - [x] Add search and basic filters.
 
 - [x] Make model save/update work again
 
@@ -11,7 +11,8 @@
 
 - [ ] Actions, sweet sexy actions. Mmmmm.
   - [ ] Some way for devs to declare actions - prob `upmin_actions` in the model.
-  - [ ]
+  - [ ] Views for actions
+  - [ ] Logs for actions? Maybe V2?
 
 # V2 Beta Release
 
@@ -27,4 +28,11 @@
     - [ ] Search fields need to be more extensible.
     - [ ] Search results need to be more extensible.
 
+  - [ ] Actions results need to be extensible
+    - [ ] make this use partials that can be overridden.
+
+
   - [ ] Needs more :cow: :bell:
+    - [ ] Specifically, we should probably add some generators to copy over partials rather than forcing people to check them out on github. That woudl be sweet.
+
+  - [ ] Authentication aside from user-defined auth on the routes? Eh, maybe. Who knows. Let me know if you need it.

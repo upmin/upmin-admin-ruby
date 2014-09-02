@@ -76,6 +76,10 @@ end
 And Upmin would generate fully functional forms for you that look (roughly) like this: [https://db.tt/JhzdeS8Z](https://db.tt/JhzdeS8Z)
 
 
+## Going Forward
+
+You can see a [list of active todos](todo.md) and let me know what you want to see added in.
+
 ## Support/Feedback
 
 The goal of Upmin is to make it easier to build admin pages with minimal effort. With that in mind, we are always looking for feedback and suggestions. You can get in touch several ways.
