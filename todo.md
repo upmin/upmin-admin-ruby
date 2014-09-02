@@ -1,4 +1,5 @@
 # V1 Beta Release
+Shooting for a launch by Sep 5. Who knows.
 
 - [x] Remove external server dependencies
   - [x] Add local color selection instead of using server.
@@ -7,7 +8,7 @@
 
 - [x] Make model save/update work again
 
-- [ ] Update datetime partial to set AM/PM initially and clean up time.
+- [ ] Update datetime partial to set AM/PM initially and clean up time. Maybe push to v2
 
 - [ ] Actions, sweet sexy actions. Mmmmm.
   - [ ] Some way for devs to declare actions - prob `upmin_actions` in the model.
@@ -36,3 +37,5 @@
     - [ ] Specifically, we should probably add some generators to copy over partials rather than forcing people to check them out on github. That woudl be sweet.
 
   - [ ] Authentication aside from user-defined auth on the routes? Eh, maybe. Who knows. Let me know if you need it.
+
+# V3
