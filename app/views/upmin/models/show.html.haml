@@ -1,14 +1,3 @@
-.navbar.navbar-static-top
-  .navbar-header
-    %a.navbar-brand{href: root_path}
-      Upmin Dashboard
-    -# .search-container
-    -#   .input-group.input-group-lg.m-t
-    -#     %input#q.form-control.string{autocomplete: "off", autocorrect: "false", name: "q", placeholder: "Search by email, id, or anything else...", spellcheck: "false", type: "text"}
-    -#     %span.input-group-addon
-    -#       %i.glyphicon.glyphicon-search
-
-
 .container
   - if notice
     .alert.alert-dismissable.alert-info
@@ -29,7 +18,4 @@
               = error
   .row
     .col-sm-12
-      %h1
-        = content_for(:subtitle)
-      -# = render partial: "upmin/types/string", object: "df string", locals: { test_local: "local string" }
       = upmin_render(@instance)

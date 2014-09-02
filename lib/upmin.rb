@@ -15,6 +15,7 @@ require "upmin/railties/render_helpers"
 require "upmin/railtie"
 
 # gems and stuff we use
+require "ransack"
 require "typhoeus"
 require "haml"
 require "sass-rails"

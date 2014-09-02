@@ -1,23 +1,17 @@
 Upmin::Engine.routes.draw do
-  root to: "models#search"
+  root to: "models#dashboard"
 
   scope :models do
-    get "/", as: :upmin_models, controller: :models, action: :list
+    # TODO(jon): Put dashboards elsewhere prob.. whatever for now.
+    get "/", as: :upmin_dashboard, controller: :models, action: :dashboard
 
     scope "/:model_name" do
-      get "/", as: :upmin_model, controller: :models, action: :show
-      get "/updated_since", as: :upmin_model_updated_since, controller: :models, action: :updated_since
+      match "/", as: :upmin_search, controller: :models, action: :search, via: [:get, :post]
 
       scope "/:id" do
-        get "/", as: :upmin_instance, controller: :instances, action: :show
-        put "/", controller: :instances, action: :update
-
-        post "/add", as: :upmin_add_nested, controller: :instances, action: :add_nested
+        get "/", as: :upmin_model, controller: :models, action: :show
+        put "/", controller: :models, action: :update
       end
     end
   end
-  # resources :models, only: [:show, :index] do
-  #   get :updated_since
-  # end
-
 end

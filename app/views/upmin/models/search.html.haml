@@ -1,46 +1,20 @@
-.navbar.navbar-static-top
-  .navbar-header
-    %a.navbar-brand{href: root_path}
-      Upmin Dashboard
-  .search-container
-    .input-group.input-group-lg.m-t
-      %input#q.form-control.string{autocomplete: "off", autocorrect: "false", name: "q", placeholder: "Search by email, id, or anything else...", spellcheck: "false", type: "text"}
-      %span.input-group-addon
-        %i.glyphicon.glyphicon-search
-
-.data-container.hidden
-  .models-data
-    - Upmin::Model.all.each do |upmin_model|
-      .model{data: { color: upmin_model.color }, class: upmin_model.name }
-
 .container
   .row
-    .col-sm-3#facets
-      -# %h3
-      -#   Models
-      -# %ul.list-unstyled.list-model-facets
-      -#   %li.yellow
-      -#     %a{href: '#'}
-      -#       Users (10456)
-      -#   %li.red
-      -#     %a{href: '#'}
-      -#       Tweets (228845)
-      -#   %li.blue_green
-      -#     %a{href: '#'}
-      -#       Orders (43)
-      -#   %li.light_blue
-      -#     %a{href: '#'}
-      -#       Reviews (111)
-      -#   %li.purple
-      -#     %a{href: '#'}
-      -#       Products (98)
+    .col-md-8
+      - @results.each do |r|
+        %a.search-result-link{href: upmin_model_path(model_name: params[:model_name], id: r.id)}
+          .upmin-model{class: r.upmin_color}
+            %dl.dl-horizontal
+              - r.upmin_attributes.each do |u_attr|
+                %dt
+                  = u_attr.to_s.capitalize.gsub("_", " ")
+                %dd
+                  = r.send(u_attr)
 
-    .col-sm-9
-      .search-results
-        - (0...10).each do |i|
-          = render(partial: "search_result", locals: { hidden: true, html_id: "search-result-#{i}" } )
 
-      .text-center#pagination
-        %ul.pagination
+    .col-md-4
+      .well
+        = upmin_render_search_box(@model, {})
+
 
 

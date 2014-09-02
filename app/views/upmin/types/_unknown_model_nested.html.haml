@@ -1,4 +1,4 @@
-%a.active-tag-link{href: upmin_instance_path(node.path_hash)}
+%a.active-tag-link{href: upmin_model_path(node.path_hash)}
   %span.label{class: node.color}
     = node.title
 
@@ -6,7 +6,7 @@
 -# .upmin-model{class: node.color}
 -#   -# Display the model title as "Model # ID"
 -#   %h4
--#     %a{href: upmin_instance_path(node.path_hash)}
+-#     %a{href: upmin_model_path(node.path_hash)}
 -#       = node.title
 
 -#   -# For each model attribute, render the DataNode
