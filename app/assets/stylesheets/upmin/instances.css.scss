@@ -39,6 +39,10 @@
     margin-bottom: 6px;
   }
 
+  dd {
+    word-wrap: break-word;
+  }
+
 
   .collection-search {
     margin-top: 10px;
@@ -83,4 +87,5 @@
       }
     }
   }
+
 }

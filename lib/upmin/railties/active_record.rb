@@ -126,7 +126,7 @@ module Upmin::Railties
       end
 
       def upmin_name(type = :plural)
-        names = name.gsub(/([a-z])([A-Z])/, "#{$1} #{$2}").split(" ")
+        names = name.split(/(?=[A-Z])/)
         if type == :plural
           names[names.length-1] = names.last.pluralize
         end

@@ -1,16 +1,16 @@
 .container
   .row
     .col-md-8
-
-      %p
-        = @q.class
-      %p
-        = @q
-      %p
-        = @results
       - @results.each do |r|
-        %pre
-          = r.as_json
+        %a.search-result-link{href: upmin_model_path(model_name: params[:model_name], id: r.id)}
+          .upmin-model{class: r.upmin_color}
+            %dl.dl-horizontal
+              - r.upmin_attributes.each do |u_attr|
+                %dt
+                  = u_attr.to_s.capitalize.gsub("_", " ")
+                %dd
+                  = r.send(u_attr)
+
 
     .col-md-4
       .well
