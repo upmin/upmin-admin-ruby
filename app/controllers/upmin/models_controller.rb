@@ -5,6 +5,9 @@ module Upmin
     before_action :set_model, only: [:show, :update, :search]
     before_action :set_instance, only: [:show, :update]
 
+    def dashboard
+    end
+
     # GET /:model_name/:id
     def show
     end

@@ -1,6 +1,6 @@
-%h3
+%h4
   Search
-  = upmin_model.name.pluralize
+  = upmin_model.u_name
 
 = form_tag(upmin_search_path(model_name: params[:model_name]), method: :get) do
   - upmin_model.attributes.each do |u_attr, info|
@@ -27,4 +27,5 @@
         To
         = date_field(:q, "#{u_attr}_lteq", class: "form-control")
 
-  = submit_tag("Search", class: "btn btn-default btn-block")
+  = submit_tag("Search", class: "btn btn-primary btn-block")
+  = link_to("Clear All", upmin_search_path(model_name: params[:model_name]), class: "btn btn-default btn-block")

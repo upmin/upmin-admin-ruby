@@ -20,6 +20,10 @@ module Upmin
       return rails_model.name
     end
 
+    def u_name
+      return rails_model.upmin_name
+    end
+
     def form_name
       return rails_model.name.underscore
     end
