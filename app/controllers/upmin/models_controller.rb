@@ -14,7 +14,7 @@ module Upmin
       form_name = @model.form_name
       updates = params[form_name]
 
-      transforms = updates.delete(:transforms)
+      transforms = updates.delete(:transforms) || {}
       updates.each do |key, value|
         # TODO(jon): Figure out a better way to do transforms.
         #   This could cause issues and is exploitable, but it
