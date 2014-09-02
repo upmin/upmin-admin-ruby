@@ -9,9 +9,8 @@
         %i.glyphicon.glyphicon-search
 
 .data-container.hidden
-  .algolia-data{ data: Upmin::Server::Company.algolia_creds }
   .models-data
-    - Upmin::Server::Model.all.each do |upmin_model|
+    - Upmin::Model.all.each do |upmin_model|
       .model{data: { color: upmin_model.color }, class: upmin_model.name }
 
 .container
