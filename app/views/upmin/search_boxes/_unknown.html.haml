@@ -18,7 +18,8 @@
           = number_field(:q, "#{u_attr}_gteq", class: "form-control")
           .input-group-addon to
           = number_field(:q, "#{u_attr}_lteq", class: "form-control")
-    - if info[:type] == :datetime
+    - if info[:type] == :datetime && Rails.version > "4.0.0"
+      -# TODO(jon): Add date fields for rails 3
       .form-group
         = label(:q, "#{u_attr}_cont", u_attr.to_s.capitalize.gsub("_", " "))
         %br
