@@ -14,7 +14,14 @@
 
 
 
+
   -# Render each child node
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Relationships
+  %hr
+
   - node.children.each do |key, node|
     %h5
       = key.to_s.humanize
@@ -24,6 +31,25 @@
       %p
         = upmin_render(node, options)
 
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Actions
+  %hr
+  - unknown_model.class.upmin_methods.each do |method|
+    %h4{style: "color: #333;"}
+      = method.to_s.capitalize.humanize
+    .well
+      = form_tag(upmin_action_path(model_name: params[:model_name], id: params[:id], method: method)) do
+        - unknown_model.method(method).parameters.each do |a_type, a_name|
+          - next if a_type == :block # Skip blocks
+          .form-group
+            = label(method, a_name, a_name.to_s.capitalize.gsub("_", " "))
+            = text_field(method, a_name, class: "form-control")
+            - if a_type == :opt
+              %small
+                * Optional
+        = submit_tag("Submit \"#{method.to_s.humanize}\"", class: "btn btn-primary")
 
 
   -# - if node.editable?

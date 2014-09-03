@@ -2,8 +2,10 @@ require_dependency "upmin/application_controller"
 
 module Upmin
   class ModelsController < ApplicationController
-    before_action :set_model, only: [:show, :update, :search]
-    before_action :set_instance, only: [:show, :update]
+    before_action :set_model, only: [:show, :update, :search, :action]
+    before_action :set_instance, only: [:show, :update, :action]
+    before_action :set_method, only: [:action]
+    before_action :set_arguments, only: [:action]
 
     def dashboard
     end
@@ -48,7 +50,19 @@ module Upmin
       @results = @q.result(distinct: true)
     end
 
-    private
+    def action
+      # begin
+      puts "arguments is: #{@arguments.inspect}"
+        response = @model.perform_action(@instance, @method, @arguments)
+        flash[:notice] = "Action successfully performed with a response of: #{response}"
+        redirect_to(upmin_model_path(model_name: params[:model_name], id: params[:id]))
+      # rescue Exception => e
+      #   flash.now[:alert] = "Action failed with the error message: #{e.message}"
+      #   render(:show)
+      # end
+    end
+
+  private
 
       def set_model
         @model = Upmin::Model.find(params[:model_name])
@@ -56,6 +70,15 @@ module Upmin
 
       def set_instance
         @instance = @model.find(params[:id])
+      end
+
+      def set_method
+        @method = params[:method].to_sym
+      end
+
+      def set_arguments
+        arguments = params[@method] || {}
+        @arguments = arguments.select{|k, v| !v.empty? } || {}
       end
 
       # TODO(jon): Figure out a better way to do transforms that is easy to extend.
