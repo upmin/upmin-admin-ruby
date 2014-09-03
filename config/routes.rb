@@ -11,6 +11,8 @@ Upmin::Engine.routes.draw do
       scope "/:id" do
         get "/", as: :upmin_model, controller: :models, action: :show
         put "/", controller: :models, action: :update
+
+        post "/:method", as: :upmin_action, controller: :models, action: :action
       end
     end
   end

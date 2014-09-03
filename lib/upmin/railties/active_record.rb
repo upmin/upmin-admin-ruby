@@ -71,6 +71,19 @@ module Upmin::Railties
         return @upmin_attributes
       end
 
+      def upmin_actions(*actions)
+        if actions.any?
+          @upmin_actions = actions.map{|a| a.to_sym}
+        end
+        return @upmin_actions
+      end
+
+      # Alias for upmin_actions
+      def upmin_methods(*methods)
+        return upmin_actions(*methods)
+      end
+
+
       def upmin_associations(*associations)
         if associations.any?
           @upmin_associations = associations.map{|a| a.to_sym}

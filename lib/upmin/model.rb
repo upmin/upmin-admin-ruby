@@ -39,6 +39,33 @@ module Upmin
     end
     alias_method :ransack, :search
 
+    def upmin_methods
+      return self.rails_model.upmin_methods
+    end
+
+
+    # Methods that perform actions on an instance but require some prep and logic ahead of time that shouldn't be injected into the active record.
+    def perform_action(instance, method, arguments)
+      raise "Invalid method: #{method}" unless upmin_methods.include?(method.to_sym)
+
+      params = instance.method(method).parameters
+      args_to_send = []
+      params.each do |type, name|
+        if type == :req
+          raise "Missing argument: #{name}" unless arguments[name]
+          args_to_send << arguments[name]
+          puts "Added: #{arguments[name].inspect}"
+        elsif type == :opt
+          puts arguments.inspect
+          args_to_send << arguments[name] if arguments[name]
+          puts "Added: #{arguments[name].inspect}"
+        else # :block or ??
+          next
+        end
+      end
+      return instance.send(method, *args_to_send)
+    end
+
 
     # Methods for determinining attributes, and their types.
     def attributes
