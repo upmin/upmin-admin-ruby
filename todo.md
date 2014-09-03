@@ -10,7 +10,7 @@ Shooting for a launch by Sep 5. Who knows.
 
 - [ ] Update datetime partial to set AM/PM initially and clean up time. Maybe push to v2
 
-- [ ] Actions, sweet sexy actions. Mmmmm.
+- [x] Actions, sweet sexy actions. Mmmmm.
   - [x] Some way for devs to declare actions - prob `upmin_actions` in the model.
   - [x] Views for actions
   - [x] Handle empty fields - assume no arg for now. Need to add a way to send empty string later.
