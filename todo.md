@@ -24,6 +24,7 @@ Shooting for a launch by Sep 5. Who knows.
   - [ ] Things like `product_id` probably shouldn't be shown on forms when the relation is shown as well.
 
   - [ ] Add a way to update associations with more than just an id. Maybe a modal that you can search for or create a model instance.
+  - [ ] Add a way to add/remove relationships - eg Products may have 3 items adn you might want to add 2 and remove 1.
 
   - [ ] All the search things need to be more extensible.
     - [ ] Search boxes need to be more extensible.
