@@ -39,29 +39,41 @@ One of the sweetest features to add right away are actions, so here is a quick r
 First, you need to declare which methods you want to show up on admin pages as actions. You do this by adding `upmin_actions` to your model file like so:
 
 ```ruby
+class Shipment < ActiveRecord::Base
+  belongs_to :order
 
-class Order < ActiveRecord::Base
-  # ... Other code
+  upmin_actions :update_box
 
-  upmin_actions :refund!, :create_return_label
+  def update_box(length, width, height, weight, perishable = false)
+    # Make sure args are cast correctly
+    length = length.to_i
+    widht = width.to_i
+    height = height.to_i
+    weight = weight.to_f
+    perishable = ["yes", "true"].include?(perishable.downcase)
 
-  def refund!(amount = total_cost)
-    # Do some work...
-    return amount
+    # Fake work ...
+    raise "Invalid weight: #{weight}" if weight <= 0
+    raise "Perishable shipments require a manual order with <xxxxx>" if perishable
+
+    if length > width && length > height
+      return "Larger length!"
+    elsif width > length && width > height
+      return "Larger width!"
+    else
+      return "Larger height!"
+    end
+
   end
-
-  def create_return_label
-    # Do some work...
-
-    # return values will be shown in the admin page, so use something useful to support agents.
-    return "http://assets.geteasypost.com/postage_labels/labels/0jvZJy.png"
-  end
-
 end
-
 
 ```
 
+From here you just need to go to the view for one of these models and you should see the actions. For example, the above code creates the following:
+
+![Update Box Action Screenshot](docs/assets/update_box_action.png)
+
+And that's it. You should have a working action. The only thing to keep in mind is that Upmin does not currently do case conversions for you. That will be coming in a future release.
 
 ## Features
 
