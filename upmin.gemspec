@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", ">= 4.0.0"
+  s.add_dependency "rails"
   s.add_dependency "typhoeus"
   s.add_dependency "haml", [">= 3.0.0"]
   s.add_dependency "jquery-rails"

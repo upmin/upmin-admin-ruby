@@ -1,3 +1,3 @@
 module Upmin
-  VERSION = "0.0.34"
+  VERSION = "0.0.341"
 end
