@@ -2,10 +2,10 @@ require_dependency "upmin/application_controller"
 
 module Upmin
   class ModelsController < ApplicationController
-    before_action :set_model, only: [:show, :update, :search, :action]
-    before_action :set_instance, only: [:show, :update, :action]
-    before_action :set_method, only: [:action]
-    before_action :set_arguments, only: [:action]
+    before_filter :set_model, only: [:show, :update, :search, :action]
+    before_filter :set_instance, only: [:show, :update, :action]
+    before_filter :set_method, only: [:action]
+    before_filter :set_arguments, only: [:action]
 
     def dashboard
     end
