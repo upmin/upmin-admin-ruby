@@ -32,6 +32,36 @@ authenticate :user, lambda { |u| u.admin? } do
 end
 ```
 
+### Adding Actions
+
+One of the sweetest features to add right away are actions, so here is a quick rundown on how to do that.
+
+First, you need to declare which methods you want to show up on admin pages as actions. You do this by adding `upmin_actions` to your model file like so:
+
+```ruby
+
+class Order < ActiveRecord::Base
+  # ... Other code
+
+  upmin_actions :refund!, :create_return_label
+
+  def refund!(amount = total_cost)
+    # Do some work...
+    return amount
+  end
+
+  def create_return_label
+    # Do some work...
+
+    # return values will be shown in the admin page, so use something useful to support agents.
+    return "http://assets.geteasypost.com/postage_labels/labels/0jvZJy.png"
+  end
+
+end
+
+
+```
+
 
 ## Features
 
