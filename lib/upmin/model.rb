@@ -69,9 +69,6 @@ module Upmin
     # Returns the value of the attr_name method
     def attribute(attr_name)
       attr_name = attr_name.to_sym
-      unless klass.attributes.include?(attr_name)
-        raise "Invalid attribute. #{attr_name} not declared in upmin_attributes."
-      end
       return instance.send(attr_name)
     end
 
@@ -104,6 +101,11 @@ module Upmin
       end
       return association
     end
+
+    def action_parameters(action)
+      instance.method(action).parameters
+    end
+
 
   end
 end

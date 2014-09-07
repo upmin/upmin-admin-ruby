@@ -49,21 +49,39 @@ module Upmin::Railties
       return partials
     end
 
+    def RenderHelpers.action_partials(upmin_model, action_name, options)
+      partials = []
+      # <model_name>_<action_name>, eg: order_refund
+      # <action_name>, eg: refund
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+
+      partials << build_action_path("#{model_name}_#{action_name}")
+      partials << build_action_path(action_name)
+      partials << build_action_path(:unknown)
+      return partials
+    end
+
 
     def RenderHelpers.build_model_path(partial_name)
-      return "upmin/types/models/#{partial_name}"
+      return "#{root_path}/models/#{partial_name}"
     end
 
     def RenderHelpers.build_attribute_path(partial_name)
-      return "upmin/types/attributes/#{partial_name}"
+      return "#{root_path}/attributes/#{partial_name}"
     end
 
-    # def RenderHelpers.build_action_path(partial_name)
-    #   return "upmin/types/actions/#{partial_name}"
-    # end
+    def RenderHelpers.build_action_path(partial_name)
+      partial_name = partial_name.to_s.gsub(/[!?]/, "")
+      return "#{root_path}/actions/#{partial_name}"
+    end
 
     def RenderHelpers.build_association_path(partial_name)
-      return "upmin/types/associations/#{partial_name}"
+      return "#{root_path}/associations/#{partial_name}"
+    end
+
+    def RenderHelpers.root_path
+      return "upmin/partials"
     end
 
 

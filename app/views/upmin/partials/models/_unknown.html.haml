@@ -39,40 +39,29 @@
 
 
 
+  - if upmin_model.klass.associations.any?
+    %br
+    %br
+    %br
+    %h3{style: "color: #333;"}
+      Associations
+    %hr
+    - upmin_model.klass.associations.each do |association|
+      %h5
+        = association.to_s.humanize
+      = up_association(upmin_model.instance, association, limit: 5)
 
-  %br
-  %br
-  %br
-  %h3{style: "color: #333;"}
-    Relationships
-  %hr
-  - upmin_model.klass.associations.each do |association|
-    %h5
-      = association.to_s.humanize
-    = up_association(upmin_model.instance, association, limit: 5)
-
-
-  -# %br
-  -# %br
-  -# %br
-  -# %h3{style: "color: #333;"}
-  -#   Actions
-  -# %hr
-  -# - upmin_model.actions.each do |action|
-  -#   %h4{style: "color: #333;"}
-  -#     = action.to_s.capitalize.humanize
-  -#   .well
-  -#     = form_tag(upmin_action_path(model_name: params[:model_name], id: params[:id], up_action: action)) do
-  -#       - unknown_model.method(action).parameters.each do |a_type, a_name|
-  -#         - next if a_type == :block # Skip blocks
-  -#         .form-group
-  -#           = label(action, a_name, a_name.to_s.capitalize.gsub("_", " "))
-  -#           = text_field(action, a_name, class: "form-control")
-  -#           - if a_type == :opt
-  -#             %small
-  -#               * Optional
-  -#       = submit_tag("Submit", class: "btn btn-primary")
-
+  - if upmin_model.klass.actions.any?
+    %br
+    %br
+    %br
+    %h3{style: "color: #333;"}
+      Actions
+    %hr
+    - upmin_model.klass.actions.each do |action|
+      %h4{style: "color: #333;"}
+        = action.to_s.capitalize.humanize
+      = up_action(upmin_model.instance, action)
 
 
 

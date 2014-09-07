@@ -50,10 +50,10 @@ module Upmin::Railties
       # Returns the upmin_actions
       def upmin_actions(*actions)
         if actions.any?
+          # set the actions
           @upmin_actions = actions.map{|a| a.to_sym}
-        else
-          @upmin_actions = []
         end
+        @upmin_actions ||= []
         return @upmin_actions
       end
 

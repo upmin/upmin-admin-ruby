@@ -47,6 +47,21 @@ module Upmin::Railties
       return up_render([data].flatten, partials, options)
     end
 
+    def up_action(model, action_name, options = {})
+      options[:locals] ||= {}
+      options[:locals][:model] ||= model
+      options[:locals][:action_name] = action_name
+
+      upmin_model = Upmin::Model.new(model)
+      options[:locals][:upmin_model] ||= upmin_model
+
+      partials = RenderHelpers.action_partials(upmin_model, action_name, options)
+
+      data = upmin_model.action_parameters(action_name)
+      return up_render(data, partials, options)
+    end
+
+
     def up_render(data, partials, options = {})
       # Use options as the render hash, and set :object as the data being used for rendering.
       options[:object] = data
