@@ -48,10 +48,10 @@ module Upmin
 
     def action
       # begin
-      puts "arguments is: #{@arguments.inspect}"
-        response = @model.perform_action(@instance, @method, @arguments)
-        flash[:notice] = "Action successfully performed with a response of: #{response}"
-        redirect_to(upmin_model_path(model_name: params[:model_name], id: params[:id]))
+      puts "arguments are: #{@arguments.inspect}"
+      response = @model.perform_action(params[:method], @arguments)
+      flash[:notice] = "Action successfully performed with a response of: #{response}"
+        redirect_to(upmin_model_path(@model.path_hash))
       # rescue Exception => e
       #   flash.now[:alert] = "Action failed with the error message: #{e.message}"
       #   render(:show)

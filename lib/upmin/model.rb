@@ -106,6 +106,30 @@ module Upmin
       instance.method(action).parameters
     end
 
+    def perform_action(action, arguments)
+      unless klass.actions.include?(action.to_sym)
+        raise "Invalid action: #{action}"
+      end
+
+      params = action_parameters(action)
+      params_array = []
+      params.each do |param_type, param_name|
+        if param_type == :req
+          raise "Missing argument: #{param_name}" unless arguments[param_name]
+          params_array << arguments[param_name]
+          puts "Added: #{arguments[param_name].inspect}"
+        elsif param_type == :opt
+          puts arguments.inspect
+          params_array << arguments[param_name] if arguments[param_name]
+          puts "Added: #{arguments[param_name].inspect}"
+        else # :block or ??
+          next
+        end
+      end
+      return instance.send(action, *params_array)
+
+    end
+
 
   end
 end
