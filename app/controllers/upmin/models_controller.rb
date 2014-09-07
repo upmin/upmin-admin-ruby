@@ -2,8 +2,9 @@ require_dependency "upmin/application_controller"
 
 module Upmin
   class ModelsController < ApplicationController
-    before_filter :set_model, only: [:show, :update, :search, :action]
-    before_filter :set_instance, only: [:show, :update, :action]
+    before_filter :set_klass, only: [:show, :update, :search, :action]
+    before_filter :set_model, only: [:show, :update, :action]
+
     before_filter :set_method, only: [:action]
     before_filter :set_arguments, only: [:action]
 
@@ -16,10 +17,10 @@ module Upmin
 
     # PUT /:model_name/:id
     def update
-      form_name = @model.form_name
-      updates = params[form_name]
-
+      instance = @model.instance
+      updates = params[@klass.name.underscore]
       transforms = updates.delete(:transforms) || {}
+
       updates.each do |key, value|
         # TODO(jon): Figure out a better way to do transforms.
         #   This could cause issues and is exploitable, but it
@@ -28,25 +29,20 @@ module Upmin
           value = transform(transforms, key, value)
         end
 
-        @instance.send("#{key}=", value)
+        instance.send("#{key}=", value)
       end
 
-      if @instance.save
-        flash[:notice] = "#{params[:model_name]} updated successfully."
-        redirect_to(upmin_model_path(model_name: @model.to_s, id: @instance.id))
+      if instance.save
+        flash[:notice] = "#{@klass.humanized_name(:singular)} updated successfully."
+        redirect_to(upmin_model_path(@model.path_hash))
       else
-        flash.now[:alert] = "#{params[:model_name]} was NOT updated."
+        flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT updated."
         render(:show)
       end
     end
 
     def search
-      # if @model.methods.include?(:ransack)
-      puts params[:q]
-      @q = @model.ransack(params[:q])
-      # else
-      #   @q = @model.search(params[:q])
-      # end
+      @q = @klass.ransack(params[:q])
       @results = @q.result(distinct: true)
     end
 
@@ -64,12 +60,15 @@ module Upmin
 
   private
 
-      def set_model
-        @model = Upmin::Model.find(params[:model_name])
+      def set_klass
+        puts params[:klass]
+        puts Upmin::Klass.all.inspect
+        @klass = Upmin::Klass.find(params[:klass])
+        raise "Invalid klass name" if @klass.nil?
       end
 
-      def set_instance
-        @instance = @model.find(params[:id])
+      def set_model
+        @model = @klass.find(params[:id])
       end
 
       def set_method
@@ -78,7 +77,7 @@ module Upmin
 
       def set_arguments
         arguments = params[@method] || {}
-        @arguments = arguments.select{|k, v| !v.empty? } || {}
+        @arguments = arguments.select{|k, v| !v.empty? }
       end
 
       # TODO(jon): Figure out a better way to do transforms that is easy to extend.

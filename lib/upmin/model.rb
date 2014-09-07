@@ -1,130 +1,82 @@
 module Upmin
   class Model
 
-    attr_accessor :rails_model
-    attr_accessor :color
+    attr_accessor :instance
+    attr_accessor :klass
 
-    def initialize(rails_model, options = {})
-      self.rails_model = rails_model
-
-      if options[:color]
-        self.color = options[:color]
-      end
+    def initialize(instance, options = {})
+      self.instance = instance
+      self.klass = Upmin::Klass.find(instance.class.name)
     end
 
-    def to_s
-      return rails_model.to_s
+    ## Methods for rendering in views
+    def title
+      return "#{klass.humanized_name(:singular)} # #{instance.id}"
     end
 
-    def name
-      return rails_model.name
+    def color
+      return klass.color
     end
 
-    def u_name
-      return rails_model.upmin_name
+    def path_hash
+      return {
+        klass: klass.name,
+        id: instance.id
+      }
     end
 
-    def form_name
-      return rails_model.name.underscore
-    end
-    alias_method :partial_name, :form_name
-
-    # Wrapper methods that the normal model would have access to
-    def find(id)
-      return rails_model.find(id)
-    end
-
-    def search(*args)
-      return self.rails_model.ransack(*args)
-    end
-    alias_method :ransack, :search
-
-    def upmin_methods
-      return self.rails_model.upmin_methods
-    end
+    ## Methods for getting attributes, associations, etc and anything relevant to them.
 
 
-    # Methods that perform actions on an instance but require some prep and logic ahead of time that shouldn't be injected into the active record.
-    def perform_action(instance, method, arguments)
-      raise "Invalid method: #{method}" unless upmin_methods.include?(method.to_sym)
+    # Returns the type of an attribute. If it is nil and we can't
+    # figure it out from the db columns we just fall back to
+    # :unknown
+    def attribute_type(attr_name)
+      type = klass.attribute_type(attr_name)
 
-      params = instance.method(method).parameters
-      args_to_send = []
-      params.each do |type, name|
-        if type == :req
-          raise "Missing argument: #{name}" unless arguments[name]
-          args_to_send << arguments[name]
-          puts "Added: #{arguments[name].inspect}"
-        elsif type == :opt
-          puts arguments.inspect
-          args_to_send << arguments[name] if arguments[name]
-          puts "Added: #{arguments[name].inspect}"
-        else # :block or ??
-          next
+      if type == :unknown
+        # See if we can deduce it by looking at the data
+        class_sym = data.class.to_s.underscore.to_sym
+        if class_sym == :false_class || class_sym == :true_class
+          type = :boolean
+        elsif class_sym == :nil_class
+          type = :unknown
+        elsif class_sym == :fixnum
+          type = :integer
+        elsif class_sym == :big_decimal
+          type = :decimal
+        elsif class_sym == :"active_support/time_with_zone"
+          type = :datetime
+        else
+          # This should prevent any classes from being skipped, but we may not have an exhaustive list yet.
+          type = class_sym
         end
       end
-      return instance.send(method, *args_to_send)
+
+      return type
     end
 
+    # Returns whether or not the attr_name is an attribute that can be edited.
+    def attribute_editable?(attr_name)
+      attr_name = attr_name.to_sym
+      return false if attr_name == :id
+      return false if attr_name == :created_at
+      return false if attr_name == :updated_at
+      # TODO(jon): Add a way to lock this later
+      return instance.respond_to?("#{attr_name}=")
+    end
 
-    # Methods for determinining attributes, and their types.
-    def attributes
-      return @attributes if defined?(@attributes)
-
-      attributes = {}
-      rails_model.upmin_attributes.each do |u_attr|
-        attributes[u_attr] = {}
-        attributes[u_attr][:type] = get_attr_type(u_attr)
+    # Returns the value of the attr_name method
+    def attribute(attr_name)
+      attr_name = attr_name.to_sym
+      unless klass.attributes.include?(attr_name)
+        raise "Invalid attribute. #{attr_name} not declared in upmin_attributes."
       end
-
-      return @attributes = attributes
+      return instance.send(attr_name)
     end
 
-    def get_attr_type(attr_name)
-      if uc = rails_model.columns_hash[attr_name.to_s]
-        return uc.type
-      else
-        return :unknown
-      end
-    end
-
-
-    ## Generic Class Methods
-    def Model.find(name)
-      return all.select{|a| a.to_s == name.to_s}.first
-    end
-
-    # TODO(jon): Store this in the future so it doesn't have to be looked up every call.
-    def Model.all
-      return @models_array if defined?(@models_array)
-      models_array = []
-      colors = [
-        :light_blue,
-        :blue_green,
-        :red,
-        :yellow,
-        :orange,
-        :purple,
-        :dark_blue,
-        :dark_red,
-        :green
-      ]
-
-      rails_models.each_with_index do |rails_model, i|
-        ac_model = Model.new(rails_model, color: colors[i % colors.length])
-        models_array << ac_model
-      end
-
-      return @models_array = models_array
-    end
-
-    def Model.rails_models
-      ::Rails.application.eager_load!
-      rails_models = ::ActiveRecord::Base.descendants.select do |m|
-        m.to_s != "ActiveRecord::SchemaMigration"
-      end
-
-      return rails_models
+    def attribute_form_id(attr_name)
+      return "#{klass.name.underscore}_#{attr_name}"
     end
 
   end

@@ -1,0 +1,7 @@
+- string ||= nil
+- if editable && f = form_builder
+  = f.text_field(attr_name, value: string, class: "form-control")
+
+- else
+  %p.well
+    = string

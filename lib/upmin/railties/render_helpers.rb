@@ -1,6 +1,73 @@
 
 module Upmin::Railties
   module RenderHelpers
+
+    def RenderHelpers.model_partials(upmin_model, options)
+      partials = []
+      partials << build_model_path(upmin_model.klass.name.underscore)
+      partials << build_model_path(:unknown)
+      return partials
+    end
+
+    def RenderHelpers.attribute_partials(upmin_model, attr_name, options)
+      partials = []
+      # <model_name>_<attr_name>
+      # <model_name>_<attr_type>
+      # <attr_type>
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+      attr_type = upmin_model.attribute_type(attr_name)
+
+      partials << build_attribute_path("#{model_name}_#{attr_name}")
+      partials << build_attribute_path("#{model_name}_#{attr_type}")
+      partials << build_attribute_path(attr_type)
+      partials << build_attribute_path(:unknown)
+      return partials
+    end
+
+    # def RenderHelpers.action_partials(upmin_model, action, options)
+    #   partials = []
+    #   partials << build_action_path(:unknown)
+    #   return partials
+    # end
+
+    def RenderHelpers.association_partials(upmin_model, options)
+      partials = []
+      partials << build_association_path(:unknown)
+      return partials
+    end
+
+
+    def RenderHelpers.build_model_path(partial_name)
+      return "upmin/types/models/#{partial_name}"
+    end
+
+    def RenderHelpers.build_attribute_path(partial_name)
+      return "upmin/types/attributes/#{partial_name}"
+    end
+
+    # def RenderHelpers.build_action_path(partial_name)
+    #   return "upmin/types/actions/#{partial_name}"
+    # end
+
+    def RenderHelpers.build_association_path(partial_name)
+      return "upmin/types/associations/#{partial_name}"
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def RenderHelpers.partials_for(node, options)
       partials = []
       partials << options[:partial] if options[:partial]

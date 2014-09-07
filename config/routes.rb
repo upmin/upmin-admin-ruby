@@ -1,11 +1,11 @@
 Upmin::Engine.routes.draw do
   root to: "models#dashboard"
 
-  scope :models do
+  scope :m do
     # TODO(jon): Put dashboards elsewhere prob.. whatever for now.
     get "/", as: :upmin_dashboard, controller: :models, action: :dashboard
 
-    scope "/:model_name" do
+    scope "/:klass" do
       match "/", as: :upmin_search, controller: :models, action: :search, via: [:get, :post]
 
       scope "/:id" do
