@@ -1,0 +1,14 @@
+- if unknown.any?
+  %p
+    - unknown.each do |u|
+      - nested_upmin_model = Upmin::Model.new(u)
+      %a.active-tag-link{href: upmin_model_path(nested_upmin_model.path_hash)}
+        %span.label{class: nested_upmin_model.color}
+          = nested_upmin_model.title
+
+- else
+  %p.well
+    None
+
+
+

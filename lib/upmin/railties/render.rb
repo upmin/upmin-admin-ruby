@@ -43,7 +43,7 @@ module Upmin::Railties
 
       partials = RenderHelpers.association_partials(upmin_model, assoc_name, options)
 
-      data = upmin_model.get_assoc(attr_name, options)
+      data = upmin_model.association(assoc_name, options)
       return up_render([data].flatten, partials, options)
     end
 
@@ -62,6 +62,13 @@ module Upmin::Railties
       # If we get here we tried all of the partials and nothing matched. This *shouldn't* be possible but might happen if partials are deleted.
       raise "Failed to find a matching partial while trying to render the following: #{object.inspect}"
     end
+
+
+
+
+
+
+
 
 
     def upmin_render(model_or_node, options = {})

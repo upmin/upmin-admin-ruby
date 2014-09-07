@@ -9,7 +9,8 @@
 -# In general, the upmin_model makes it significantly easier to
 -# render a view, so I suggest using it. It is way simpler than
 -# trying to find all associations for a model on your own.
-
+-#
+-# Just an FYI: upmin_model.instance == unknown
 
 .upmin-model{class: upmin_model.color}
   -# Display the model title as "Model # ID"
@@ -28,25 +29,27 @@
     -# Render each attribute
     - upmin_model.klass.attributes.each do |attribute|
       .form-group
-        = f.label(attribute)
-        - puts attribute
-        = up_attribute(unknown, attribute, locals: { form_builder: f })
+        -# = f.label(attribute.to_s) # Not using this because it drops _id and this isn't always desirable
+
+        %label{for: upmin_model.attribute_form_id(attribute)}
+          = upmin_model.attribute_label_name(attribute)
+        = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f })
 
     = f.submit("Save", class: "btn btn-primary")
 
 
 
 
-  -# %br
-  -# %br
-  -# %br
-  -# %h3{style: "color: #333;"}
-  -#   Relationships
-  -# %hr
-  -# - upmin_model.klass.associations.each do |association|
-  -#   %h5
-  -#     = association
-  -#   = up_association(unknown, association, limit: 5)
+  %br
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Relationships
+  %hr
+  - upmin_model.klass.associations.each do |association|
+    %h5
+      = association.to_s.humanize
+    = up_association(upmin_model.instance, association, limit: 5)
 
 
   -# %br

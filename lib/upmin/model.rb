@@ -79,5 +79,31 @@ module Upmin
       return "#{klass.name.underscore}_#{attr_name}"
     end
 
+    def attribute_label_name(attr_name)
+      return attr_name.to_s.gsub(/_/, " ").capitalize
+    end
+
+
+    # Returns the type of an association. If we can't figure it
+    # out we fall back to :unknown
+    def association_type(assoc_name)
+      type = klass.association_type(assoc_name)
+      if type == :unknown && data = association(assoc_name).first
+        type = data.class.name.underscore
+      end
+      return type
+    end
+
+    def association(assoc_name, options = {})
+      association = instance.send(assoc_name)
+      if association.respond_to?(:each)
+        # We have a collection, at least we hope we do.
+        if options[:limit] && association.respond_to?(:limit)
+          association = association.limit(5)
+        end
+      end
+      return association
+    end
+
   end
 end

@@ -11,9 +11,9 @@ module Upmin::Railties
 
     def RenderHelpers.attribute_partials(upmin_model, attr_name, options)
       partials = []
-      # <model_name>_<attr_name>
-      # <model_name>_<attr_type>
-      # <attr_type>
+      # <model_name>_<attr_name>, eg: user_name
+      # <model_name>_<attr_type>, eg: user_string
+      # <attr_type>, eg: string
       # unknown
       model_name = upmin_model.klass.name.underscore
       attr_type = upmin_model.attribute_type(attr_name)
@@ -31,8 +31,20 @@ module Upmin::Railties
     #   return partials
     # end
 
-    def RenderHelpers.association_partials(upmin_model, options)
+
+    # NOTE: assoc_type is sketchy at best. It tries to determine it, but in some cases it has to be guessed at, so if you have polymorphic associations it will choose the data type of the first association it finds - eg if user.things returns [Order, Product, Review] it will use the type of "order"
+    def RenderHelpers.association_partials(upmin_model, assoc_name, options)
       partials = []
+      # <model_name>_<assoc_name>, eg: user_recent_orders
+      # <model_name>_<assoc_type>, eg: user_orders
+      # <attr_type>, eg: orders
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+      assoc_type = upmin_model.association_type(assoc_name)
+
+      partials << build_association_path("#{model_name}_#{assoc_name}")
+      partials << build_association_path("#{model_name}_#{assoc_type}")
+      partials << build_association_path(assoc_type)
       partials << build_association_path(:unknown)
       return partials
     end

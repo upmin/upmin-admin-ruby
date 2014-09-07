@@ -64,10 +64,25 @@ module Upmin
       return @associations = all - ignored
     end
 
+    # Tries to find an association type based on the reflection
+    def association_type(assoc_name)
+      reflection = reflections.select { |r| r.name == assoc_name.to_sym }.first
+
+      if reflection
+        return reflection.foreign_type.to_s.gsub(/_type$/, "").pluralize.to_sym
+      else
+        return :unknown
+      end
+    end
+
     def plural_associations
       return model.reflect_on_all_associations
         .select{ |r| r.collection? }
         .map{ |r| r.name.to_sym }
+    end
+
+    def reflections
+      return model.reflect_on_all_associations
     end
 
 
