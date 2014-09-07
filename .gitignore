@@ -10,3 +10,4 @@ test/dummy/.sass-cache
 .DS_Store
 notes.jon.md
 upmin-*.gem
+*.sublime-workspace
