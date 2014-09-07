@@ -1,0 +1,7 @@
+- integer ||= nil
+- if editable && f = form_builder
+  = f.number_field(attr_name, value: integer, class: "form-control")
+
+- else
+  %p.well
+    = integer

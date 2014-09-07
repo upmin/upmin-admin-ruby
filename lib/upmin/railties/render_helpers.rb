@@ -1,6 +1,103 @@
 
 module Upmin::Railties
   module RenderHelpers
+
+    def RenderHelpers.model_partials(upmin_model, options)
+      partials = []
+      partials << build_model_path(upmin_model.klass.name.underscore)
+      partials << build_model_path(:unknown)
+      return partials
+    end
+
+    def RenderHelpers.attribute_partials(upmin_model, attr_name, options)
+      partials = []
+      # <model_name>_<attr_name>, eg: user_name
+      # <model_name>_<attr_type>, eg: user_string
+      # <attr_type>, eg: string
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+      attr_type = upmin_model.attribute_type(attr_name)
+
+      partials << build_attribute_path("#{model_name}_#{attr_name}")
+      partials << build_attribute_path("#{model_name}_#{attr_type}")
+      partials << build_attribute_path(attr_type)
+      partials << build_attribute_path(:unknown)
+      return partials
+    end
+
+    # def RenderHelpers.action_partials(upmin_model, action, options)
+    #   partials = []
+    #   partials << build_action_path(:unknown)
+    #   return partials
+    # end
+
+
+    # NOTE: assoc_type is sketchy at best. It tries to determine it, but in some cases it has to be guessed at, so if you have polymorphic associations it will choose the data type of the first association it finds - eg if user.things returns [Order, Product, Review] it will use the type of "order"
+    def RenderHelpers.association_partials(upmin_model, assoc_name, options)
+      partials = []
+      # <model_name>_<assoc_name>, eg: user_recent_orders
+      # <model_name>_<assoc_type>, eg: user_orders
+      # <attr_type>, eg: orders
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+      assoc_type = upmin_model.association_type(assoc_name)
+
+      partials << build_association_path("#{model_name}_#{assoc_name}")
+      partials << build_association_path("#{model_name}_#{assoc_type}")
+      partials << build_association_path(assoc_type)
+      partials << build_association_path(:unknown)
+      return partials
+    end
+
+    def RenderHelpers.action_partials(upmin_model, action_name, options)
+      partials = []
+      # <model_name>_<action_name>, eg: order_refund
+      # <action_name>, eg: refund
+      # unknown
+      model_name = upmin_model.klass.name.underscore
+
+      partials << build_action_path("#{model_name}_#{action_name}")
+      partials << build_action_path(action_name)
+      partials << build_action_path(:unknown)
+      return partials
+    end
+
+
+    def RenderHelpers.build_model_path(partial_name)
+      return "#{root_path}/models/#{partial_name}"
+    end
+
+    def RenderHelpers.build_attribute_path(partial_name)
+      return "#{root_path}/attributes/#{partial_name}"
+    end
+
+    def RenderHelpers.build_action_path(partial_name)
+      partial_name = partial_name.to_s.gsub(/[!?]/, "")
+      return "#{root_path}/actions/#{partial_name}"
+    end
+
+    def RenderHelpers.build_association_path(partial_name)
+      return "#{root_path}/associations/#{partial_name}"
+    end
+
+    def RenderHelpers.root_path
+      return "upmin/partials"
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def RenderHelpers.partials_for(node, options)
       partials = []
       partials << options[:partial] if options[:partial]

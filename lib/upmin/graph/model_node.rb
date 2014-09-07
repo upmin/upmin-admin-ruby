@@ -107,7 +107,7 @@ module Upmin::Graph
             model.upmin_get_attr(u_attr), {
             depth: depth + 1,
             editable: editable && model.upmin_attr_editable?(u_attr),
-            type: model.upmin_attr_type(u_attr),
+            type: model.attribute_type(u_attr),
             method_name: u_attr,
             parent_name: model.class.to_s.underscore
           })

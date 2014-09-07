@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require ./jquery-clockpicker
+//= require ./moment
+//= require ./pikaday
 //= require_tree .
 
 function runUpmin() {

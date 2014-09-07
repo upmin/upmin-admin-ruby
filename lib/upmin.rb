@@ -1,11 +1,7 @@
 require "upmin/engine"
 
+require "upmin/klass"
 require "upmin/model"
-
-# For displaying views and finding children
-require "upmin/graph/collection_node"
-require "upmin/graph/data_node"
-require "upmin/graph/model_node"
 
 # Monkey patch code into rails
 require "upmin/railties/active_record"

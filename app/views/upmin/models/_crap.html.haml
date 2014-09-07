@@ -1,0 +1,75 @@
+-# The following are all available to you here:
+-# unknown - This is the model passed into the up_model method.
+-#    This attribute is always present in any partial rendered
+-#    by Upmin, and will always match the name of the partial
+-#    *UNLESS* nil, true, or false are passed in.
+-# upmin_model - This is an Upmin::Model instantiated with unknown
+-#    and is always present.
+-#
+-# In general, the upmin_model makes it significantly easier to
+-# render a view, so I suggest using it. It is way simpler than
+-# trying to find all associations for a model on your own.
+
+
+.upmin-model{class: upmin_model.color}
+  -# Display the model title as "Model # ID"
+  %h3
+    = upmin_model.title
+
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Attributes
+  %hr
+  -# Create a form to wrap the attributes in.
+  -# TODO(jon): Update the URL with a decent helper?
+  = form_for(upmin_model.instance, url: upmin_instance_path(node.path_hash), html: { method: :put }) do |f|
+
+    -# Render each attribute
+    - upmin_model.attributes.each do |attribute|
+      .form-group
+        = f.label(attribute)
+        = up_attribute(unknown, attribute, form_builder: f)
+
+    = f.submit("Save", class: "btn btn-primary")
+
+
+
+
+  %br
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Relationships
+  %hr
+  - upmin_model.associations.each do |association|
+    %h5
+      = association
+    = up_association(unknown, association, limit: 5)
+
+
+  %br
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Actions
+  %hr
+  - upmin_model.actions.each do |action|
+    %h4{style: "color: #333;"}
+      = action.to_s.capitalize.humanize
+    .well
+      = form_tag(upmin_action_path(model_name: params[:model_name], id: params[:id], up_action: action)) do
+        - unknown_model.method(action).parameters.each do |a_type, a_name|
+          - next if a_type == :block # Skip blocks
+          .form-group
+            = label(action, a_name, a_name.to_s.capitalize.gsub("_", " "))
+            = text_field(action, a_name, class: "form-control")
+            - if a_type == :opt
+              %small
+                * Optional
+        = submit_tag("Submit", class: "btn btn-primary")
+
+
+  -# - if node.editable?
+
+
