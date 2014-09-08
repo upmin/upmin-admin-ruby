@@ -18,6 +18,10 @@ module Upmin
       return Upmin::Model.new(model.find(*args))
     end
 
+    def ransack(*args)
+      return model.ransack(*args)
+    end
+
 
     # Returns all of the upmin attributes for the ActiveRecord model
     # referenced by this Klass object.

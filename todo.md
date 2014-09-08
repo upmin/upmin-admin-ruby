@@ -19,7 +19,7 @@ Shooting for a launch by Sep 5. Who knows.
 # 0.0.35 Alpha (maybe beta?) Release
 
 - [ ] Clean up the code (a lot)!
-  - [ ] Nodes should probably be replaced. They aren't really necessary in the current version and could be replaced with a nice clean implementation of `Upmin::Model` and `Upmin::ModelInstance`
+  - [x] Nodes should probably be replaced. They aren't really necessary in the current version and could be replaced with a nice clean implementation of `Upmin::Model` and `Upmin::ModelInstance`
 
   - [ ] Things like `product_id` probably shouldn't be shown on forms when the relation is shown as well.
 
