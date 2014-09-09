@@ -84,7 +84,7 @@ When `up_model` attempts to render a model, it creates a priority list of partia
 
 2. **model.name.underscore** - this is determined by the model provided as the first argument in `up_model`. For example, `up_model(User.first)` would attempt to use the partial `app/views/upmin/partials/models/_user`.
 
-3. **The default `model` partial** - Upmin provides a default partial that can render any model in a generic way. The default partial can be [seen here](app/views/upmin/partials/models/_model.html.haml) and you can override this by creating your own partial under the directory `app/views/upmin/partials/models/_model` in your own applicatoin.
+3. **The default `model` partial** - Upmin provides a default partial that can render any model in a generic way. The default partial can be [seen here](../app/views/upmin/partials/models/_model.html.haml) and you can override this by creating your own partial under the directory `app/views/upmin/partials/models/_model` in your own applicatoin.
 
 
 #### Creating a Custom Model Partial
@@ -93,12 +93,12 @@ Modifying your own custom partial is simple to do, despite sounding tricky at fi
 
 - **object** - This is an object with the same name as your partial, and references the model you are trying to render. eg the partial `_user.html.haml` would have a `user` object.
 
-- **upmin_model** - This is an instance of the [Upmin::Model](lib/upmin/model.rb) class, that contains the model you are trying to render as well as a few helper methods.
+- **upmin_model** - This is an instance of the [Upmin::Model](../lib/upmin/model.rb) class, that contains the model you are trying to render as well as a few helper methods.
 
 
 For example, in the [store_demo](https://github.com/upmin/store_demo) application you could change the default user view:
 
-![default user view](docs/assets/default_user_view.png)
+![default user view](assets/default_user_view.png)
 
 And create a custom partial `app/views/upmin/partials/models/_user.html.erb` with the following content:
 
@@ -199,7 +199,7 @@ And create a custom partial `app/views/upmin/partials/models/_user.html.erb` wit
 
 And your users will start rendering using the new partial, giving you a user view that looks like:
 
-![customized user view](docs/assets/updated_user_view.png)
+![customized user view](assets/updated_user_view.png)
 
 
 
