@@ -96,11 +96,116 @@ Modifying your own custom partial is simple to do, despite sounding tricky at fi
 - **upmin_model** - This is an instance of the [Upmin::Model](lib/upmin/model.rb) class, that contains the model you are trying to render as well as a few helper methods.
 
 
+For example, in the [store_demo](https://github.com/upmin/store_demo) application you could change the default user view:
+
+![default user view](docs/assets/default_user_view.png)
+
+And create a custom partial `app/views/upmin/partials/models/_user.html.erb` with the following content:
+
+```erb
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <img src="<%= user.avatar_url %>" class="user-avatar">
+    </div>
+    <div class="col-md-10">
+      <span class="label label-info user-id pull-right">ID: <%= user.id %></span>
+
+      <h1>
+        <%= user.name %>
+        <br/>
+        <small>
+          <%= user.email %>
+        </small>
+      </h1>
+
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-7">
+      <h3>
+        Attributes
+      </h3>
+      <div class="well">
+        <%= form_for(upmin_model.instance, url: upmin_model_path(upmin_model.path_hash), html: { method: :put }) do |f| %>
+          <% # Render each attribute %>
+          <% upmin_model.klass.attributes.each do |attribute| %>
+            <div class="form-group">
+              <% # = f.label(attribute.to_s) # Not using this because it drops _id and this isn't always desirable %>
+              <label for="<%= upmin_model.attribute_form_id(attribute) %>">
+                <%= upmin_model.attribute_label_name(attribute) %>
+              </label>
+              <%= up_attribute(upmin_model.instance, attribute, locals: { form_builder: f }) %>
+            </div>
+          <% end %>
+          <%= f.submit("Save", class: "btn btn-primary") %>
+        <% end %>
+      </div>
+      <% if upmin_model.klass.associations.any? %>
+        <% upmin_model.klass.associations.each do |association| %>
+          <h4>
+            <%= association.to_s.humanize %>
+          </h4>
+          <%= up_association(upmin_model.instance, association, limit: 5) %>
+          <br>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-5">
+      <% if upmin_model.klass.actions.any? %>
+        <h3>
+          Actions
+        </h3>
+        <hr/>
+        <% upmin_model.klass.actions.each do |action| %>
+          <h4>
+            <%= action.to_s.capitalize.humanize %>
+          </h4>
+          <%= up_action(upmin_model.instance, action) %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- This can also be placed into your own css files, just prefix everything with the .m-User class which Upmin adds
+     to the body tag when rendering any user model. -->
+<% content_for(:head) do %>
+  <style>
+    .user-id {
+      font-size: 1em;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+
+    .user-avatar {
+      border-radius: 40px;
+      max-width: 80px;
+      max-height: 80px;
+      margin-top: 20px;
+    }
+  </style>
+<% end %>
+
+<% content_for(:javascript) do %>
+  <script>
+    // Insert your javascript here
+  </script>
+<% end %>
+```
+
+And your users will start rendering using the new partial, giving you a user view that looks like:
+
+![customized user view](docs/assets/updated_user_view.png)
+
 
 
 ### Customizing Attribute Views
 
-Attributes are rendered by default with the upmin helper method `up_attribute`. This method needs to be passed
+Attributes are rendered by default with the upmin helper method `up_attribute`.
 
 To customize attributes you can use regular partials that you and your team are used to working with. You don't need to learn anything new like Arbre - you can simply work the way you have been working all along.
 

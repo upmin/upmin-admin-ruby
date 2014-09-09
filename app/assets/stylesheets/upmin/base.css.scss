@@ -22,3 +22,17 @@ body {
     }
   }
 }
+
+.label {
+  margin-right: 10px;
+  font-weight: 500;
+
+  @each $color in $color_list {
+    $name: nth($color, 1);
+    $hex: nth($color, 2);
+
+    &.#{$name} {
+      background-color: $hex;
+    }
+  }
+}

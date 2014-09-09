@@ -11,6 +11,9 @@
     %link{href: "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet"}
     %script{:src => "//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"}
 
+    - if content_for?(:head)
+      = yield(:head)
+
 
   %body{ class: body_classes, data: body_data.merge(root_path: root_path) }
     .page-wrap
