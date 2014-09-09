@@ -48,7 +48,6 @@ module Upmin
 
     def action
       # begin
-      puts "arguments are: #{@arguments.inspect}"
       response = @model.perform_action(params[:method], @arguments)
       flash[:notice] = "Action successfully performed with a response of: #{response}"
         redirect_to(upmin_model_path(@model.path_hash))
@@ -61,8 +60,6 @@ module Upmin
   private
 
       def set_klass
-        puts params[:klass]
-        puts Upmin::Klass.all.inspect
         @klass = Upmin::Klass.find(params[:klass])
         raise "Invalid klass name" if @klass.nil?
       end

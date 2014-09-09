@@ -1,20 +1,9 @@
 .container
   .row
     .col-md-8
-      - @results.each do |r|
-        %a.search-result-link{href: upmin_model_path(model_name: params[:model_name], id: r.id)}
-          .upmin-model{class: r.upmin_color}
-            %dl.dl-horizontal
-              - r.upmin_attributes.each do |u_attr|
-                %dt
-                  = u_attr.to_s.capitalize.gsub("_", " ")
-                %dd
-                  = r.send(u_attr)
-
+      -# TODO(jon): Add pagination w/ search results
+      = up_search_results(@q, @results)
 
     .col-md-4
-      .well
-        = upmin_render_search_box(@model, {})
-
-
-
+      -# TODO(jon): Implement up_search_box
+      = up_search_box(@klass)

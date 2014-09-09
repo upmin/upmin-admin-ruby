@@ -36,6 +36,7 @@ module Upmin
 
       if type == :unknown
         # See if we can deduce it by looking at the data
+        data = attribute(attr_name)
         class_sym = data.class.to_s.underscore.to_sym
         if class_sym == :false_class || class_sym == :true_class
           type = :boolean
@@ -62,13 +63,14 @@ module Upmin
       return false if attr_name == :id
       return false if attr_name == :created_at
       return false if attr_name == :updated_at
-      # TODO(jon): Add a way to lock this later
+      # TODO(jon): Add a way to declare which attributes are editable and which are not later.
       return instance.respond_to?("#{attr_name}=")
     end
 
     # Returns the value of the attr_name method
     def attribute(attr_name)
       attr_name = attr_name.to_sym
+      # TODO(jon): Add some way to handle exceptions. Probably a custom error that we display.
       return instance.send(attr_name)
     end
 
@@ -117,17 +119,13 @@ module Upmin
         if param_type == :req
           raise "Missing argument: #{param_name}" unless arguments[param_name]
           params_array << arguments[param_name]
-          puts "Added: #{arguments[param_name].inspect}"
         elsif param_type == :opt
-          puts arguments.inspect
           params_array << arguments[param_name] if arguments[param_name]
-          puts "Added: #{arguments[param_name].inspect}"
         else # :block or ??
           next
         end
       end
       return instance.send(action, *params_array)
-
     end
 
 

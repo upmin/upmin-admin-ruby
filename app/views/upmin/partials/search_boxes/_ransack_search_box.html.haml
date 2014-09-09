@@ -1,0 +1,37 @@
+%h4
+  Search
+  = klass.humanized_name
+
+-# Upmin default search uses the ransack gem, see: https://github.com/activerecord-hackery/ransack
+= form_tag(upmin_search_path(klass: klass.name), method: :get) do
+  - klass.attributes.each do |attr_name|
+    - type = klass.attribute_type(attr_name)
+
+    -# TODO(jon): Make sure these retain their data on a search
+    -# TODO(jon): Break these into partials possibly?
+    - if type == :string
+      .form-group
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        = text_field(:q, "#{attr_name}_cont", class: "form-control")
+
+    - if type == :integer
+      .form-group
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        .input-group
+          .input-group-addon From
+          = number_field(:q, "#{attr_name}_gteq", class: "form-control")
+          .input-group-addon to
+          = number_field(:q, "#{attr_name}_lteq", class: "form-control")
+
+    - if type == :datetime && Rails::VERSION::MAJOR == 4
+      -# TODO(jon): Add date fields to search boxes for Rails 3
+      .form-group
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        %br
+        From
+        = date_field(:q, "#{attr_name}_gteq", class: "form-control")
+        To
+        = date_field(:q, "#{attr_name}_lteq", class: "form-control")
+
+  = submit_tag("Search", class: "btn btn-primary btn-block")
+  = link_to("Clear All", upmin_search_path(klass: klass.name), class: "btn btn-default btn-block")

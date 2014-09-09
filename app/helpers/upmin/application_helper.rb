@@ -1,9 +1,20 @@
 module Upmin
   module ApplicationHelper
     def body_classes
+      ret = []
+
       controller = "c-#{params[:controller].gsub(/_/, "-").gsub("upmin/", "")}"
+      ret << controller
+
       action = "a-#{params[:action].gsub(/_/, "-")}"
-      return [controller, action]
+      ret << action
+
+      if params[:klass]
+        model = "m-#{params[:klass]}"
+        ret << model
+      end
+
+      return ret
     end
 
     def body_data

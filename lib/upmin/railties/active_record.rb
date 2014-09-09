@@ -13,7 +13,7 @@ module Upmin::Railties
       # before upmin_attributes the attributes will not include any defaults
       # attributes.
       def upmin_attribute(attribute)
-        @upmin_attributes ||= []
+        upmin_attributes unless defined?(@upmin_attributes)
 
         attribute = attribute.to_sym
         @upmin_attributes << attribute unless @upmin_attributes.include?(attribute)

@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails"
-  s.add_dependency "typhoeus"
   s.add_dependency "haml", [">= 3.0.0"]
   s.add_dependency "jquery-rails"
   s.add_dependency "sass-rails"

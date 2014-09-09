@@ -1,6 +1,6 @@
-- if unknown.any?
+- if associations.any?
   %p
-    - unknown.each do |u|
+    - associations.each do |u|
       - nested_upmin_model = Upmin::Model.new(u)
       %a.active-tag-link{href: upmin_model_path(nested_upmin_model.path_hash)}
         %span.label{class: nested_upmin_model.color}
