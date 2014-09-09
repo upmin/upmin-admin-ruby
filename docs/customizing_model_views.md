@@ -102,7 +102,7 @@ For example, in the [store_demo](https://github.com/upmin/store_demo) applicatio
 
 And create a custom partial `app/views/upmin/partials/models/_user.html.erb` with the following content:
 
-```erb
+```html
 <div class="container">
   <div class="row">
     <div class="col-md-2">
