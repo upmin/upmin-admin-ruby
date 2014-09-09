@@ -1,0 +1,11 @@
+- state ||= nil
+- states ||= []
+%ol.progbar{data: { "progbar-steps" => states.length }}
+  - index = states.find_index(state) || -1
+  - states.each_with_index do |cur_state, cur_index|
+    - if index >= cur_index
+      %li.progbar-done
+        = cur_state.to_s.humanize
+    - else
+      %li.progbar-todo
+        = cur_state.to_s.humanize
