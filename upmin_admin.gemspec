@@ -5,10 +5,10 @@ require "upmin/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "upmin"
+  s.name        = "upmin_admin"
   s.version     = Upmin::VERSION
   s.authors     = ["Jon Calhoun"]
-  s.email       = ["joncalhoun@gmail.com"]
+  s.email       = ["dev@upmin.com"]
   s.homepage    = "https://www.upmin.com"
   s.summary     = "Quick and Easy Admin Dashboards"
   s.description = "Customizable admin dashbaords generated with only a few lines of code."
