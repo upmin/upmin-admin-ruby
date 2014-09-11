@@ -7,11 +7,12 @@ require "upmin/version"
 Gem::Specification.new do |s|
   s.name        = "upmin-admin"
   s.version     = Upmin::VERSION
-  s.authors     = ["Jon Calhoun"]
+  s.authors     = ["Jon Calhoun", "Shane Calhoun"]
   s.email       = ["dev@upmin.com"]
-  s.homepage    = "https://www.upmin.com"
+  s.homepage    = "https://www.upmin.com/admin-rails"
   s.summary     = "Quick and Easy Admin Dashboards"
   s.description = "Customizable admin dashbaords generated with only a few lines of code."
+  s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
