@@ -5,6 +5,8 @@ module Upmin
     before_filter :set_klass, only: [:show, :update, :search, :action]
     before_filter :set_model, only: [:show, :update, :action]
 
+    before_filter :set_page, only: [:search]
+
     before_filter :set_method, only: [:action]
     before_filter :set_arguments, only: [:action]
 
@@ -43,7 +45,7 @@ module Upmin
 
     def search
       @q = @klass.ransack(params[:q])
-      @results = @q.result(distinct: true)
+      @results = @q.result(distinct: true).page(@page).per(30)
     end
 
     def action
@@ -75,6 +77,10 @@ module Upmin
       def set_arguments
         arguments = params[@method] || {}
         @arguments = arguments.select{|k, v| !v.empty? }
+      end
+
+      def set_page
+        @page = params[:page] || 0
       end
 
       # TODO(jon): Figure out a better way to do transforms that is easy to extend.

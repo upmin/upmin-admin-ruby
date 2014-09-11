@@ -3,7 +3,10 @@
     .col-md-8
       -# TODO(jon): Add pagination w/ search results
       = up_search_results(@q, @results)
-
+      %br
+      = paginate @results
+      %br
+      %br
     .col-md-4
       -# TODO(jon): Implement up_search_box
       = up_search_box(@klass)

@@ -5,7 +5,7 @@ require "upmin/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "upmin_admin"
+  s.name        = "upmin-admin"
   s.version     = Upmin::VERSION
   s.authors     = ["Jon Calhoun"]
   s.email       = ["dev@upmin.com"]
@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "haml", [">= 3.0.0"]
   s.add_dependency "jquery-rails"
   s.add_dependency "sass-rails"
+  s.add_dependency "kaminari"
   s.add_dependency "ransack"
 end
