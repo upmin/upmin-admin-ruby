@@ -120,7 +120,15 @@ And Upmin would generate fully functional forms for you that look (roughly) like
 
 ## Going Forward
 
-You can see a [list of active todos](todo.md) and let me know what you want to see added in.
+There are a lot of things that need built going forward and we are looking for anyone who wants to get involved. Just hop in our hipchat (link below) or email us (link also below).
+
+The major features that are being worked on now are:
+
+1. DataMapper support
+2. Fixing bugs - specifically ones like ActsAsTaggable causing the menu to have far too many models.
+3. Implementing the Dashboard
+4. Adding useful widgets, such as an EasyPost Tracking label widget, a Stripe Card widget, and other commonly used APIs, as well as Map widgets for plotting routes or just showing a location.
+
 
 ## Support/Feedback
 
