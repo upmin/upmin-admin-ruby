@@ -1,21 +1,18 @@
-# Upmin
+# Upmin Admin
 
-Upmin is a framework for creating powerful admin backends with minimal effort.
+Upmin Admin is a framework for creating powerful admin backends with minimal effort.
 
+## Demo Videos
 
-## Demo
-
-To see a demo of Upmin, go to [https://www.upmin.com/demo](https://www.upmin.com/demo).
-
-You should probably just install Upmin rather than using the demo. It only takes a few lines of code you will be able to use your own data, rather than fake data provided be me.
+To see videos showing how to install and giving a pretty good overview of the main features of `upmin-admin` go to [https://www.upmin.com/admin-rails](https://www.upmin.com/admin-rails).
 
 
 ## Installation
 
-Installing Upmin is incredibly easy. Simple add the gem to your `Gemfile`:
+Installing `upmin-admin` is incredibly easy. Simple add the gem to your `Gemfile`:
 
 ```ruby
-gem 'upmin'
+gem 'upmin-admin'
 ```
 
 And then mount the engine in your `routes.rb` file:
@@ -137,4 +134,3 @@ The goal of Upmin is to make it easier to build admin pages with minimal effort.
 Email - [support@upmin.com](support@upmin.com)
 
 Chat - [http://www.hipchat.com/gvREostp6](http://www.hipchat.com/gvREostp6)
-
