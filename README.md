@@ -35,6 +35,10 @@ authenticate :user, lambda { |u| u.admin? } do
 end
 ```
 
+## Documentation
+
+We are currently working on the docs on our [Wiki](https://github.com/upmin/upmin-admin-ruby/wiki), but they are far from complete so if you have any trouble or can't find the documentation to do something please let us know via email - [support@upmin.com](support@upmin.com) or HipChat - [http://www.hipchat.com/gvREostp6](http://www.hipchat.com/gvREostp6).
+
 
 ## Going Forward
 
