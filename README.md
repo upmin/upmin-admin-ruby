@@ -127,7 +127,7 @@ The major features that are being worked on now are:
 4. Adding useful widgets, such as an EasyPost Tracking label widget, a Stripe Card widget, and other commonly used APIs, as well as Map widgets for plotting routes or just showing a location.
 
 
-## Support/Feedback
+## Support & Feedback
 
 The goal of Upmin is to make it easier to build admin pages with minimal effort. With that in mind, we are always looking for feedback and suggestions. You can get in touch several ways.
 
