@@ -1,0 +1,7 @@
+- boolean ||= nil
+- if editable && f = form_builder
+  = f.check_box(attr_name, value: boolean, class: "boolean")
+
+- else
+  %p.well
+    = string
