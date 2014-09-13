@@ -24,16 +24,25 @@
             hiddenInput = $('##{form_id}'),
             date = new Date(hiddenInput.val());
 
+        if (hiddenInput.val() == "" ){
+          date = null;
+        }
+
         // Date Specific Code
         var handleDateSelect = function() {
           var pickerDate = datePicker.getDate();
           console.log("Setting the date from " + date + " to " + pickerDate);
 
-          date.setUTCFullYear(pickerDate.getUTCFullYear());
-          date.setUTCMonth(pickerDate.getUTCMonth());
-          date.setUTCDate(pickerDate.getUTCDate());
+          if (pickerDate != null) {
+            date = date || new Date();
+            date.setUTCFullYear(pickerDate.getUTCFullYear());
+            date.setUTCMonth(pickerDate.getUTCMonth());
+            date.setUTCDate(pickerDate.getUTCDate());
 
-          hiddenInput.val(date.toUTCString());
+            hiddenInput.val(date.toUTCString());
+          } else {
+            hiddenInput.val("");
+          }
         }
 
         datePicker = new Pikaday({ field: $('##{form_id}-date')[0], onSelect: handleDateSelect });
@@ -62,12 +71,17 @@
         }
 
         var handleTimeSelect = function() {
-          var time = parseTime(timeInput.val());
+          if (date != null && timeInput.val() != "") {
+            var time = parseTime(timeInput.val());
 
-          date.setUTCHours(time.getUTCHours());
-          date.setUTCMinutes(time.getUTCMinutes());
+            date = date || new Date();
+            date.setUTCHours(time.getUTCHours());
+            date.setUTCMinutes(time.getUTCMinutes());
 
-          hiddenInput.val(date.toUTCString());
+            hiddenInput.val(date.toUTCString());
+          } else {
+            hiddenInput.val("");
+          }
         }
 
         timeInput.clockpicker({
@@ -75,10 +89,11 @@
           donetext: "Done",
           twelvehour: true,
           afterDone: handleTimeSelect,
-          default: date.getHours() + ":" + date.getMinutes()
         });
 
-        timeInput.val(date.getHours() + ":" + date.getMinutes());
+        if (date != null) {
+          timeInput.val(strftime('%l:%M%p', date));
+        }
 
 
         // Make sure we set times when the form is input in case the user typed in values.

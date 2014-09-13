@@ -1,7 +1,8 @@
-- boolean ||= nil
-- if editable && f = form_builder
+- boolean ||= "false"
+- f = form_builder
+- if editable
   = f.check_box(attr_name, value: boolean, class: "boolean")
 
 - else
   %p.well
-    = string
+    = f.check_box(attr_name, {value: boolean, class: "boolean", disabled: "disabled"})
