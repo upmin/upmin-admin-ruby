@@ -35,6 +35,16 @@ authenticate :user, lambda { |u| u.admin? } do
 end
 ```
 
+### Rails 4.2
+
+Add the following to your gemfile:
+
+```ruby
+gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+```
+
+`upmin-admin` currently depends on ransack, and you need to use the 4.2 branch of ransack due to changes in ActiveRecord.
+
 ## Documentation
 
 We are currently working on the docs on our [Wiki](https://github.com/upmin/upmin-admin-ruby/wiki), but they are far from complete so if you have any trouble or can't find the documentation to do something please let us know via email - [support@upmin.com](support@upmin.com) or chat with us on [HipChat](http://www.hipchat.com/gvREostp6).
