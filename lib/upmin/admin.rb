@@ -11,6 +11,7 @@ require "upmin/railties/render_helpers"
 require "upmin/railtie"
 
 # gems and stuff we use
+require "jquery-rails"
 require "ransack"
 require "haml"
 require "sass-rails"
