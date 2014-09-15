@@ -45,7 +45,7 @@ module Upmin
 
     def search
       @q = @klass.ransack(params[:q])
-      @results = @q.result(distinct: true).page(@page).per(30)
+      @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
     end
 
     def action
@@ -80,7 +80,7 @@ module Upmin
       end
 
       def set_page
-        @page = params[:page] || 0
+        @page = params[:page] || 1
       end
 
       # TODO(jon): Figure out a better way to do transforms that is easy to extend.
