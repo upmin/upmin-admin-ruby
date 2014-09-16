@@ -1,107 +1,33 @@
 - datetime ||= nil
+- datetime_str = datetime.utc.iso8601 if datetime
 - if editable && f = form_builder
-  = f.hidden_field(attr_name, value: datetime)
-  - # TODO(jon): Figure out a better way to do transforms. This works for now though.
-  = f.hidden_field("transforms[#{attr_name}]", value: "DateTime#parse")
-  .row
+  .row.datetime-attribute{class: form_id}
+    = f.hidden_field(attr_name, value: datetime_str)
+    - # TODO(jon): Figure out a better way to do transforms. This works for now though.
+    = f.hidden_field("transforms[#{attr_name}]", value: "DateTime#parse")
+
     .col-xs-12.col-md-4
       .input-group.pikadate
-        %input.form-control{type: :text, value: datetime, id: "#{form_id}-date"}
+        %input.form-control{type: :text, value: datetime_str, id: "#{form_id}-date"}
         %span.input-group-addon
           %span.glyphicon.glyphicon-calendar
+
     .col-xs-12.col-md-4
       .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
-        %input.form-control{:type => "text", :value => datetime, id: "#{form_id}-time"}
+        %input.form-control{:type => "text", :value => datetime_str, id: "#{form_id}-time"}
         %span.input-group-addon
           %span.glyphicon.glyphicon-time
 
+    .col-xs-12.col-md-4
+      %small
+        Date & Time are shown in UTC. If not time is provided, the current time in UTC will be used.
 
 
   - content_for(:javascript) do
     :javascript
-      (function() {
-        var datePicker,
-            hiddenInput = $('##{form_id}'),
-            date = new Date(hiddenInput.val());
-
-        if (hiddenInput.val() == "" ){
-          date = null;
-        }
-
-        // Date Specific Code
-        var handleDateSelect = function() {
-          var pickerDate = datePicker.getDate();
-          console.log("Setting the date from " + date + " to " + pickerDate);
-
-          if (pickerDate != null) {
-            date = date || new Date();
-            date.setUTCFullYear(pickerDate.getUTCFullYear());
-            date.setUTCMonth(pickerDate.getUTCMonth());
-            date.setUTCDate(pickerDate.getUTCDate());
-
-            hiddenInput.val(date.toUTCString());
-          } else {
-            hiddenInput.val("");
-          }
-        }
-
-        datePicker = new Pikaday({ field: $('##{form_id}-date')[0], onSelect: handleDateSelect });
-
-        // Time Specific Code
-        var timeInput = $('##{form_id}-time');
-
-        var parseTime = function(timeString) {
-          var ret = new Date();
-
-          var time = timeString.match(/(\d+)(?::(\d\d))?\s*(p?)/i);
-          if (!time) {
-            return NaN;
-          }
-          var hours = parseInt(time[1], 10);
-          if (hours == 12 && !time[3]) {
-            hours = 0;
-          } else {
-            hours += (hours < 12 && time[3]) ? 12 : 0;
-          }
-
-          ret.setHours(hours);
-          ret.setMinutes(parseInt(time[2], 10) || 0);
-          ret.setSeconds(0, 0);
-          return ret;
-        }
-
-        var handleTimeSelect = function() {
-          if (date != null && timeInput.val() != "") {
-            var time = parseTime(timeInput.val());
-
-            date = date || new Date();
-            date.setUTCHours(time.getUTCHours());
-            date.setUTCMinutes(time.getUTCMinutes());
-
-            hiddenInput.val(date.toUTCString());
-          } else {
-            hiddenInput.val("");
-          }
-        }
-
-        timeInput.clockpicker({
-          autoclose: true,
-          donetext: "Done",
-          twelvehour: true,
-          afterDone: handleTimeSelect,
-        });
-
-        if (date != null) {
-          timeInput.val(strftime('%l:%M%p', date));
-        }
-
-
-        // Make sure we set times when the form is input in case the user typed in values.
-        timeInput.closest("form").submit(function(event) {
-          // TODO(jon): Add code to handle typed in dates.
-          handleTimeSelect();
-        });
-      })();
+      $(document).ready(function() {
+        window.Upmin.Attributes.DateTime("#{form_id}");
+      });
 
 
 - else

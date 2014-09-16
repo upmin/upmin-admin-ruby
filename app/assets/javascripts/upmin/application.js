@@ -16,7 +16,6 @@
 //= require ./moment
 //= require ./pikaday
 //= require ./helpers
-//= require ./strftime
 //= require_tree .
 
 function runUpmin() {
