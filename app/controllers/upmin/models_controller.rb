@@ -27,7 +27,7 @@ module Upmin
         # TODO(jon): Figure out a better way to do transforms.
         #   This could cause issues and is exploitable, but it
         #   should be fine for now since this is only on admin pages
-        if transforms[key]
+        if transforms[key] and not value.blank?
           value = transform(transforms, key, value)
         end
 

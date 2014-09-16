@@ -1,0 +1,7 @@
+- float ||= nil
+- if editable && f = form_builder
+  = f.text_field(attr_name, value: float, class: "form-control")
+
+- else
+  %p.well
+    = float
