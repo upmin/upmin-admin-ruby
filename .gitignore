@@ -42,3 +42,7 @@ test/dummy/.sass-cache
 .DS_Store
 notes.*.md
 *.sublime-workspace
+
+
+Gemfile.lock
+gemfiles/*.lock
