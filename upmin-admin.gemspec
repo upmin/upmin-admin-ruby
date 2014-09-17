@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["dev@upmin.com"]
   s.homepage    = "https://www.upmin.com/admin-rails"
   s.summary     = "Quick and Easy Admin Dashboards"
-  s.description = "Customizable admin dashbaords generated with only a few lines of code."
+  s.description = "Customizable admin dashboards generated with only a few lines of code."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
