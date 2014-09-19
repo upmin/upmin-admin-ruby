@@ -35,6 +35,19 @@ authenticate :user, lambda { |u| u.admin? } do
 end
 ```
 
+## Configuration
+
+By default Upmin Admin will just work.
+You can customize your admin interface by adding an initializer :
+
+```ruby
+# config/initializers/upmin.rb
+Upmin.configure do |config|
+  config.models = [ :product, :order, :shipment, :user ]
+  config.colors = [ :green, :yellow, :red ]
+end
+```
+
 ### Rails 4.2
 
 Add the following to your gemfile:
