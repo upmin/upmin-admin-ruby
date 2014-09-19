@@ -1,6 +1,7 @@
 require "upmin"
 require "upmin/engine"
 
+require "upmin/configuration"
 require "upmin/klass"
 require "upmin/model"
 

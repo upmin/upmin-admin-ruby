@@ -129,37 +129,12 @@ module Upmin
       return @all if defined?(@all)
       all = []
 
-      models.each_with_index do |model, i|
-        klass = Klass.new(model, color: colors[i % colors.length])
+      Upmin.configuration.models.each_with_index do |model, i|
+        klass = Klass.new(model.to_s.classify.constantize, color: Upmin.configuration.colors[i % Upmin.configuration.colors.length])
         all << klass
       end
 
       return @all = all
     end
-
-    def Klass.colors
-      return [
-        :light_blue,
-        :blue_green,
-        :red,
-        :yellow,
-        :orange,
-        :purple,
-        :dark_blue,
-        :dark_red,
-        :green
-      ]
-    end
-
-    def Klass.models
-      # If Rails
-      ::Rails.application.eager_load!
-      rails_models = ::ActiveRecord::Base.descendants.select do |m|
-        m.to_s != "ActiveRecord::SchemaMigration"
-      end
-
-      return rails_models
-    end
-
   end
 end
