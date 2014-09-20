@@ -34,11 +34,16 @@ build/
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-test/dummy/db/*.sqlite3
-test/dummy/db/*.sqlite3-journal
-test/dummy/log/*.log
-test/dummy/tmp/
-test/dummy/.sass-cache
 .DS_Store
 notes.*.md
 *.sublime-workspace
+
+
+Gemfile.lock
+gemfiles/*.lock
+/spec/test_app/tmp
+/spec/test_app/log
+spec/dummy/db/*.sqlite3
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/.sass-cache

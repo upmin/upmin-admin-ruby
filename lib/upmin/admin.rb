@@ -22,6 +22,8 @@ require "sass-rails"
 # If WillPaginate is present we just use it, but by default upmin-admin uses Kaminari
 require "kaminari" unless defined?(WillPaginate)
 
+require 'rails'
+
 module Upmin
   module Admin
   end

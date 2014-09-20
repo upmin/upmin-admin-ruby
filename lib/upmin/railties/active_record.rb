@@ -12,11 +12,9 @@ module Upmin::Railties
       # Add a single attribute to upmin attributes. If this is called
       # before upmin_attributes the attributes will not include any defaults
       # attributes.
-      def upmin_attribute(attribute)
-        upmin_attributes unless defined?(@upmin_attributes)
-
-        attribute = attribute.to_sym
-        @upmin_attributes << attribute unless @upmin_attributes.include?(attribute)
+      def upmin_attribute(attribute = nil)
+        @upmin_extra_attrs = [] unless defined?(@upmin_extra_attrs)
+        @upmin_extra_attrs << attribute.to_sym if attribute
       end
 
       # Sets the upmin_attributes to the provided attributes if any are
@@ -25,11 +23,14 @@ module Upmin::Railties
       # then the upmin_attributes are set to the default attributes.
       # Returns the upmin_attributes
       def upmin_attributes(*attributes)
+        @upmin_extra_attrs = [] unless defined?(@upmin_extra_attrs)
+
         if attributes.any?
           @upmin_attributes = attributes.map{|a| a.to_sym}
         end
+
         @upmin_attributes ||= attribute_names.map{|a| a.to_sym}
-        return @upmin_attributes
+        return (@upmin_attributes + @upmin_extra_attrs).uniq
       end
 
 
