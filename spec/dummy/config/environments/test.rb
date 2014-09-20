@@ -1,3 +1,3 @@
 Dummy::Application.configure do
-  config.eager_load = false
+  config.eager_load = true
 end
