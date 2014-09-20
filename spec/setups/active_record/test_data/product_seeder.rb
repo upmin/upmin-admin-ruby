@@ -1,3 +1,5 @@
+Dir["#{File.dirname(__FILE__)}/../models/*.rb"].each { |f| require f }
+
 class ProductSeeder
   def ProductSeeder.seed
     file = File.new("#{File.dirname(__FILE__)}/products.json")

@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
     "Rakefile",
     "README.md"
   ]
-
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails"
@@ -31,9 +30,10 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "bundler", [">= 0"]
   s.add_development_dependency "rake", [">= 0"]
-  s.add_development_dependency "rspec", [">= 0"]
+  s.add_development_dependency "sqlite3", [">= 0"]
+  s.add_development_dependency "rspec-rails", [">= 0"]
   s.add_development_dependency "capybara", [">= 0"]
+  s.add_development_dependency "factory_girl_rails", [">= 0"]
+  s.add_development_dependency "database_cleaner", [">= 0"]
   s.add_development_dependency "launchy", [">= 0"]
-  s.add_development_dependency "database_cleaner", ['>= 0']
-
 end

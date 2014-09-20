@@ -16,6 +16,10 @@ class CreateProducts < ActiveRecord::Migration
       t.timestamps
     end
   end
+
+  def self.down
+    drop_table :products
+  end
 end
 
 class CreateUsers < ActiveRecord::Migration
@@ -29,6 +33,10 @@ class CreateUsers < ActiveRecord::Migration
       t.timestamps
     end
   end
+
+  def self.down
+    drop_table :users
+  end
 end
 
 class CreateOrders < ActiveRecord::Migration
@@ -40,6 +48,10 @@ class CreateOrders < ActiveRecord::Migration
 
       t.timestamps
     end
+  end
+
+  def self.down
+    drop_table :orders
   end
 end
 
@@ -53,6 +65,10 @@ class CreateProductOrders < ActiveRecord::Migration
 
       t.timestamps
     end
+  end
+
+  def self.down
+    drop_table :product_orders
   end
 end
 
@@ -69,19 +85,29 @@ class CreateShipments < ActiveRecord::Migration
       t.timestamps
     end
   end
+
+  def self.down
+    drop_table :shipments
+  end
 end
 
-class CreateAllTables
-  def self.migrate
+class AllTables
+  def self.up
     CreateProducts.up
     CreateUsers.up
     CreateOrders.up
     CreateProductOrders.up
     CreateShipments.up
   end
+
+  def self.down
+    CreateProducts.down
+    CreateUsers.down
+    CreateOrders.down
+    CreateProductOrders.down
+    CreateShipments.down
+  end
+
 end
 
 ActiveRecord::Migration.verbose = false
-CreateAllTables.migrate
-
-
