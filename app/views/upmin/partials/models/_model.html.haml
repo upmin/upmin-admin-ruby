@@ -28,7 +28,8 @@
 
     -# Render each attribute
     - upmin_model.klass.attributes.each do |attribute|
-      .form-group
+      - any_errors = model.errors[attribute].any?
+      .form-group{class: any_errors ? "has-error" : ""}
         -# = f.label(attribute.to_s) # Not using this because it drops _id and this isn't always desirable
 
         %label{for: upmin_model.attribute_form_id(attribute)}
