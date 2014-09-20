@@ -1,3 +1,5 @@
+Dir["#{File.dirname(__FILE__)}/../models/*.rb"].each { |f| require f }
+
 class UserSeeder
   def UserSeeder.seed
     file = File.new("#{File.dirname(__FILE__)}/names.json")
@@ -16,11 +18,10 @@ class UserSeeder
         email = "#{first_name}#{last_name}@yahoo.com"
       end
 
-      u = User.new(
-        name: "#{first_name} #{last_name}",
-        email: email,
-        stripe_card_id: random_id(8)
-      )
+      u = User.new()
+      u.name = "#{first_name} #{last_name}"
+      u.email = email
+      u.stripe_card_id = random_id(8)
       u.save!
     end
   end

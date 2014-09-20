@@ -1,10 +1,9 @@
 # encoding: UTF-8
 require 'spec_helper'
-require 'test_app/active_record/seeders/all_seeder'
 
 feature('Search') do
   background do
-    AllSeeder.seed
+    # Setup BG Stuff
   end
 
   scenario("pagination") do
@@ -36,6 +35,11 @@ feature('Search') do
         expect(page).to(have_content('3'))
       end
     end
-
   end
+
+  scenario("search box") do
+    visit('/upmin/m/User')
+  end
+
+
 end

@@ -1,3 +1,5 @@
+Dir["#{File.dirname(__FILE__)}/../models/*.rb"].each { |f| require f }
+
 class OrderSeeder
   def OrderSeeder.seed
     (1..200).each do |i|

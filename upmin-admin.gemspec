@@ -29,11 +29,16 @@ Gem::Specification.new do |s|
   s.add_dependency "kaminari", [">= 0"]
   s.add_dependency "ransack", [">= 0"]
 
-  s.add_development_dependency "bundler", [">= 0"]
-  s.add_development_dependency "rake", [">= 0"]
-  s.add_development_dependency "rspec", [">= 0"]
-  s.add_development_dependency "capybara", [">= 0"]
-  s.add_development_dependency "launchy", [">= 0"]
-  s.add_development_dependency "database_cleaner", ['>= 0']
+  # s.add_development_dependency "bundler", [">= 0"]
+  # s.add_development_dependency "rake", [">= 0"]
+  # # s.add_development_dependency "rspec", [">= 0"]
+  # # s.add_development_dependency "capybara", [">= 0"]
+  # s.add_development_dependency "launchy", [">= 0"]
+
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "capybara"
+  s.add_development_dependency "factory_girl_rails"
+  s.add_development_dependency "database_cleaner"
 
 end
