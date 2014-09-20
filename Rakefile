@@ -1,50 +1,77 @@
 #!/usr/bin/env rake
 # encoding: utf-8
 
-begin
-  require 'bundler/setup'
-rescue LoadError
-  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
-end
-
-APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
-load 'rails/tasks/engine.rake'
-
+require 'bundler'
 Bundler::GemHelper.install_tasks
 
-Dir[File.join(File.dirname(__FILE__), "tasks/**/*.rake")].each {|f| load f }
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
-require "rspec/core"
-require "rspec/core/rake_task"
-
-desc "Run all specs in spec directory (excluding plugin specs)"
-RSpec::Core::RakeTask.new(:spec => 'app:db:test:prepare')
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
+end
 
 task :default => "spec:all"
 
 namespace :spec do
-  %w(active_record_42 active_record_41 active_record_40 active_record_32 will_paginate).each do |gemfile|
+  # Full bundle install & test.
+  %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate).each do |gemfile|
     desc "Run Tests against #{gemfile}"
-    task gemfile do
-      prefix = "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' RAILS_ENV=test"
-      sh "#{prefix} bundle install --quiet"
-      sh "#{prefix} bundle exec rake spec"
+    task "#{gemfile}" do
+      Dir.chdir("test_apps/#{gemfile}")
+      puts "Testing in #{`pwd`}"
+      sh "bundle install --quiet"
+      sh "bundle update --quiet"
+
+      # Drop migrations and recreate
+      sh "rm -rf db/migrate/*"
+      sh "bundle exec rake railties:install:migrations --quiet"
+
+      if gemfile == "active_record_32"
+        sh "bundle exec rake db:drop db:create db:migrate --quiet"
+      end
+
+      sh "RAILS_ENV=test bundle exec rake db:drop db:create db:migrate --quiet"
+
+      # Drop and reload spec files
+      sh "rm -rf spec/"
+      sh "cp -R ../../spec spec"
+      sh "cp ../../.rspec .rspec"
+
+      # Run tests
+      sh "bundle exec rake"
     end
   end
 
-  desc "Run Tests against Postgresql"
-  task :postgresql do
-    prefix = "TEST_DB=postgresql BUNDLE_GEMFILE='gemfiles/postgresql.gemfile' RAILS_ENV=test"
-    sh "#{prefix} bundle install --quiet"
-    sh "#{prefix} bundle exec rake db:drop db:create"
-    sh "#{prefix} bundle exec rake spec"
-    sh "#{prefix} bundle exec rake db:drop"
+  # Use existing models & install and just rake.
+  %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate).each do |gemfile|
+    desc "Run Tests against #{gemfile}"
+    task "#{gemfile}_quick" do
+      Dir.chdir("test_apps/#{gemfile}")
+      puts "Re-testing in #{`pwd`}. Bundle install and migration updates will NOT happen!"
+
+      # Drop and reload spec files
+      sh "rm -rf spec/"
+      sh "cp -R ../../spec spec"
+      sh "cp ../../.rspec .rspec"
+
+      # Run tests
+      sh "bundle exec rake"
+    end
   end
 
   desc "Run Tests against all ORMs"
   task :all do
-    %w(active_record_42 active_record_41 active_record_40 active_record_32 will_paginate postgresql).each do |gemfile|
+    %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate).each do |gemfile|
       sh "rake spec:#{gemfile}"
     end
   end
+
+  desc "Run Tests against all ORMs"
+  task :all_quick do
+    %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate).each do |gemfile|
+      sh "rake spec:#{gemfile}_quick"
+    end
+  end
+
 end
