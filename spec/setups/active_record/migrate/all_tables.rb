@@ -2,7 +2,7 @@ class CreateProducts < ActiveRecord::Migration
   def self.up
     create_table :products do |t|
       t.string :name
-      t.string :short_desc
+      t.text :short_desc
       t.integer :best_selling_rank
       t.string :thumbnail
       t.decimal :price

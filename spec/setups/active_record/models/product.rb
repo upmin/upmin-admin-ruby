@@ -4,7 +4,7 @@
 #
 #  id                :integer          not null, primary key
 #  name              :string(255)
-#  short_desc        :string(255)
+#  short_desc        :text
 #  best_selling_rank :integer
 #  thumbnail         :string(255)
 #  price             :decimal(, )

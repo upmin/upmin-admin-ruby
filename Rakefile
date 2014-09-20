@@ -26,16 +26,25 @@ namespace :spec do
   %w(active_record_42 active_record_41 active_record_40 active_record_32 will_paginate).each do |gemfile|
     desc "Run Tests against #{gemfile}"
     task gemfile do
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle install --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake RAILS_ENV=test spec"
+      prefix = "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' RAILS_ENV=test"
+      sh "#{prefix} bundle install --quiet"
+      sh "#{prefix} bundle exec rake spec"
     end
+  end
+
+  desc "Run Tests against Postgresql"
+  task :postgresql do
+    prefix = "TEST_DB=postgresql BUNDLE_GEMFILE='gemfiles/postgresql.gemfile' RAILS_ENV=test"
+    sh "#{prefix} bundle install --quiet"
+    sh "#{prefix} bundle exec rake db:drop db:create"
+    sh "#{prefix} bundle exec rake spec"
+    sh "#{prefix} bundle exec rake db:drop"
   end
 
   desc "Run Tests against all ORMs"
   task :all do
-    %w(active_record_42 active_record_41 active_record_40 active_record_32 will_paginate).each do |gemfile|
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle install --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake RAILS_ENV=test spec"
+    %w(active_record_42 active_record_41 active_record_40 active_record_32 will_paginate postgresql).each do |gemfile|
+      sh "rake spec:#{gemfile}"
     end
   end
 end

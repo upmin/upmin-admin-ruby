@@ -5,6 +5,7 @@ require 'rspec/rails'
 # require 'rspec/autorun'
 require 'factory_girl_rails'
 require 'database_cleaner'
+require 'capybara/rspec'
 
 # Active Record Models, Table, and Seeder
 if defined?(ActiveRecord) || true
@@ -44,5 +45,11 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
+  end
+
+  config.after do |example|
+    if example.metadata[:type] == :feature && example.exception.present?
+      save_and_open_page
+    end
   end
 end
