@@ -23,17 +23,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails"
   s.add_dependency "haml", [">= 3.0.0"]
-  s.add_dependency "jquery-rails", [">= 0"]
-  s.add_dependency "sass-rails", [">= 0"]
-  s.add_dependency "kaminari", [">= 0"]
-  s.add_dependency "ransack", [">= 0"]
-
-  s.add_development_dependency "bundler", [">= 0"]
-  s.add_development_dependency "rake", [">= 0"]
-  s.add_development_dependency "sqlite3", [">= 0"]
-  s.add_development_dependency "rspec-rails", [">= 0"]
-  s.add_development_dependency "capybara", [">= 0"]
-  s.add_development_dependency "factory_girl_rails", [">= 0"]
-  s.add_development_dependency "database_cleaner", [">= 0"]
-  s.add_development_dependency "launchy", [">= 0"]
+  s.add_dependency "jquery-rails"
+  s.add_dependency "sass-rails"
+  s.add_dependency "kaminari"
+  s.add_dependency "ransack"
 end

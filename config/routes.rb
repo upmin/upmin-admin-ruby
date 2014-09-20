@@ -5,7 +5,7 @@ Upmin::Engine.routes.draw do
   # TODO(jon): Move dashboards to an appropriate controller
   get "/", as: :upmin_dashboard, controller: :models, action: :dashboard
 
-  scope :m do
+  scope "m" do
     scope "/:klass" do
       match "/", as: :upmin_search, controller: :models, action: :search, via: [:get, :post]
 
