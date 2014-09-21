@@ -35,7 +35,10 @@
 
         %label{for: upmin_model.attribute_form_id(attribute)}
           = upmin_model.attribute_label_name(attribute)
-        = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f })
+        - if upmin_model.attribute_type(attribute) == :string
+          = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f }, as: :nilable)
+        - else
+          = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f })
 
     = f.submit("Create", class: "btn btn-primary")
 

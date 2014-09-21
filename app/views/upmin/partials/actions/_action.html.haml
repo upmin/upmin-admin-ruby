@@ -1,4 +1,4 @@
-.well
+.well.action-well
   = form_tag(upmin_action_path(upmin_model.path_hash.merge(method: action_name))) do
     - upmin_model.action_parameters(action_name).each do |param_type, param_name|
 
@@ -6,8 +6,19 @@
 
       .form-group
         = label(action_name, param_name, param_name.to_s.capitalize.gsub("_", " "))
-        = text_field(action_name, param_name, class: "form-control")
+
         - if param_type == :opt
+          .input-group
+            = text_field(action_name, param_name, class: "form-control")
+            .input-group-addon.nilable-addon
+              .form-group
+                %label{for: "#{action_name}_#{param_name}_is_nil"}
+                  Do Not Provide
+                = check_box(action_name, "#{param_name}_is_nil", class: "boolean")
           %small
             * Optional
+        - else
+          = text_field(action_name, param_name, class: "form-control")
+
+
     = submit_tag("Submit", class: "btn btn-primary")

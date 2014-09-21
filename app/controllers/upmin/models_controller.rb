@@ -38,7 +38,16 @@ module Upmin
           value = transform(transforms, key, value)
         end
 
-        instance.send("#{key}=", value)
+        # TODO(jon): Remove duplicate code between update and create
+        if args["#{key}_is_nil"] == "1"
+          instance.send("#{key}=", nil)
+        else
+          if key.ends_with?("_is_nil")
+            # Skip this, since we use the non _is_nil arg.
+          else
+            instance.send("#{key}=", value)
+          end
+        end
       end
 
       if instance.save
@@ -65,7 +74,16 @@ module Upmin
           value = transform(transforms, key, value)
         end
 
-        instance.send("#{key}=", value)
+        # TODO(jon): Remove duplicate code between update and create
+        if updates["#{key}_is_nil"] == "1"
+          instance.send("#{key}=", nil)
+        else
+          if key.ends_with?("_is_nil")
+            # Skip this, since we use the non _is_nil arg.
+          else
+            instance.send("#{key}=", value)
+          end
+        end
       end
 
       if instance.save
@@ -110,7 +128,14 @@ module Upmin
 
       def set_arguments
         arguments = params[@method] || {}
-        @arguments = arguments.select{|k, v| !v.empty? }
+        @arguments = {}
+        arguments.each do |k, v|
+          unless k.ends_with?("_is_nil")
+            if arguments["#{k}_is_nil"] != "1"
+              @arguments[k] = v
+            end
+          end
+        end
       end
 
       def set_page

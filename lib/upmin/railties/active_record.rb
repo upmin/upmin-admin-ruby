@@ -41,7 +41,7 @@ module Upmin::Railties
         @upmin_actions ||= []
 
         action = action.to_sym
-        @upmin_actions << action unless @upmin_actions.include?(attribute)
+        @upmin_actions << action unless @upmin_actions.include?(action)
       end
 
       # Sets the upmin_actions to the provided actions if any are

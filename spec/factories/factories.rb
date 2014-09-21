@@ -5,4 +5,12 @@ FactoryGirl.define do
     email "joncalhoun@gmail.com"
     stripe_card_id "sc_123ab1123"
   end
+
+  factory(:product) do
+    name "Office Home & Student 2013 - Windows"
+    short_desc "Create, communicate and learn using streamlined touch, pen or keyboard commands"
+    price "139.99"
+    manufacturer "Microsoft"
+    free_shipping true
+  end
 end
