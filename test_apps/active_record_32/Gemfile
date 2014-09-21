@@ -14,8 +14,6 @@ gem 'jquery-rails'
 
 
 # Used for testing
-gem 'database_cleaner'
-
 gem 'test_models', git: "git://github.com/upmin/test_models.git"
 
 gemspec :path => '../../'
