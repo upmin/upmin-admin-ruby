@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require "spec_helper"
 
-feature("Creating a Model Views") do
+feature("Creating new models") do
   background do
     # Setup BG Stuff
   end
