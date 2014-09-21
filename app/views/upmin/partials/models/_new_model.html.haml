@@ -1,0 +1,41 @@
+-# The following are all available to you here:
+-# unknown - This is the model passed into the up_model method.
+-#    This attribute is always present in any partial rendered
+-#    by Upmin, and will always match the name of the partial
+-#    *UNLESS* nil, true, or false are passed in.
+-# upmin_model - This is an Upmin::Model instantiated with unknown
+-#    and is always present.
+-#
+-# In general, the upmin_model makes it significantly easier to
+-# render a view, so I suggest using it. It is way simpler than
+-# trying to find all associations for a model on your own.
+-#
+-# Just an FYI: upmin_model.instance == unknown
+
+.upmin-model{class: upmin_model.color}
+  -# Display the model title as "Model # ID"
+  %h3
+    Create a
+    = upmin_model.title
+
+  %br
+  %br
+  %h3{style: "color: #333;"}
+    Attributes
+  %hr
+  -# Create a form to wrap the attributes in.
+  -# TODO(jon): Update the URL with a decent helper?
+  = form_for(upmin_model.instance, url: upmin_create_model_path(klass: @klass.name), html: { method: :post }) do |f|
+
+    -# Render each attribute
+    - upmin_model.klass.attributes.each do |attribute|
+      - any_errors = new_model.errors[attribute].any?
+      .form-group{class: any_errors ? "has-error" : ""}
+        -# = f.label(attribute.to_s) # Not using this because it drops _id and this isn't always desirable
+
+        %label{for: upmin_model.attribute_form_id(attribute)}
+          = upmin_model.attribute_label_name(attribute)
+        = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f })
+
+    = f.submit("Create", class: "btn btn-primary")
+
