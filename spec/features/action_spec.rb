@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require "spec_helper"
 
-feature("Create a new model") do
+feature("Performing an action") do
   background do
     # Setup BG Stuff
   end
