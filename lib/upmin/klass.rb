@@ -101,7 +101,7 @@ module Upmin
     # Returns the class name, split at camelCase,
     # with the last word pluralized if it is plural.
     def humanized_name(type = :plural)
-      names = model.name.split(/(?=[A-Z])/)
+      names = name.split(/(?=[A-Z])/).map(&:strip)
       if type == :plural
         names[names.length-1] = names.last.pluralize
       end
@@ -110,7 +110,13 @@ module Upmin
 
     # Returns the class name, capitalized as it would be with User.name or OrderShipment.name - "User", or "OrderShipment"
     def name
-      return model.name
+      if Upmin::Model.model_names.has_key?(model)
+        Upmin::Model.model_names[model]
+      elsif model.respond_to?(:upmin_name)
+        model.upmin_name
+      else
+        model.name
+      end
     end
 
     def path_hash
@@ -126,7 +132,7 @@ module Upmin
     # Takes a Rails ActiveRecord or the name of one and returns an
     # Upmin::Klass instance of the model.
     def Klass.find(model)
-      return all.select{|k| k.name == model.to_s}.first
+      return all.detect{|k| k.model.name == model.to_s || k.name == model.to_s}
     end
 
     # Returns an array of all Klass instances

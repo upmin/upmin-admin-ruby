@@ -27,7 +27,7 @@ module Upmin
       @model = @klass.new
       instance = @model.instance
 
-      args = params[@klass.name.underscore]
+      args = params[@klass.model.name.underscore]
       transforms = args.delete(:transforms) || {}
 
       args.each do |key, value|
@@ -63,7 +63,7 @@ module Upmin
     # PUT /:model_name/:id
     def update
       instance = @model.instance
-      updates = params[@klass.name.underscore]
+      updates = params[@klass.model.name.underscore]
       transforms = updates.delete(:transforms) || {}
 
       updates.each do |key, value|

@@ -1,6 +1,16 @@
 module Upmin
   class Model
 
+    class << self
+
+      attr_writer :model_names
+
+      def model_names
+        @model_names ||= {}
+      end
+
+    end
+
     attr_accessor :instance
     attr_accessor :klass
 
