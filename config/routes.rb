@@ -9,7 +9,10 @@ Upmin::Engine.routes.draw do
     scope "/:klass" do
       match "/", as: :upmin_search, controller: :models, action: :search, via: [:get, :post]
 
-      scope "/:id" do
+      get "/new", as: :upmin_new_model, controller: :models, action: :new
+      post "/new", as: :upmin_create_model, controller: :models, action: :create
+
+      scope "/i/:id" do
         get "/", as: :upmin_model, controller: :models, action: :show
         put "/", controller: :models, action: :update
 

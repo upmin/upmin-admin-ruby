@@ -2,7 +2,7 @@ require_dependency "upmin/application_controller"
 
 module Upmin
   class ModelsController < ApplicationController
-    before_filter :set_klass, only: [:show, :update, :search, :action]
+    before_filter :set_klass, only: [:new, :create, :show, :update, :search, :action]
     before_filter :set_model, only: [:show, :update, :action]
 
     before_filter :set_page, only: [:search]
@@ -16,6 +16,40 @@ module Upmin
     # GET /:model_name/:id
     def show
     end
+
+    # GET /:model_name/new
+    def new
+      @model = @klass.new
+    end
+
+    # POST /:model_name
+    def create
+      @model = @klass.new
+      instance = @model.instance
+
+      args = params[@klass.name.underscore]
+      transforms = args.delete(:transforms) || {}
+
+      args.each do |key, value|
+        # TODO(jon): Figure out a better way to do transforms.
+        #   This could cause issues and is exploitable, but it
+        #   should be fine for now since this is only on admin pages
+        if transforms[key] and not value.blank?
+          value = transform(transforms, key, value)
+        end
+
+        instance.send("#{key}=", value)
+      end
+
+      if instance.save
+        flash[:notice] = "#{@klass.humanized_name(:singular)} created successfully with id=#{instance.id}."
+        redirect_to(upmin_model_path(@model.path_hash))
+      else
+        flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT created."
+        render(:new)
+      end
+    end
+
 
     # PUT /:model_name/:id
     def update

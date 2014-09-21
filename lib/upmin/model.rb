@@ -25,6 +25,10 @@ module Upmin
       }
     end
 
+    def new_record?
+      return instance.new_record?
+    end
+
     ## Methods for getting attributes, associations, etc and anything relevant to them.
 
 
