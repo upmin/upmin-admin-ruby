@@ -10,3 +10,8 @@
     .col-md-4
       -# TODO(jon): Implement up_search_box
       = up_search_box(@klass)
+      .new-button-wrapper
+        %a.btn.btn-block.btn-success{href: upmin_new_model_path(klass: @klass.name)}
+          Create a new
+          = @klass.humanized_name(:singular)
+        %br
