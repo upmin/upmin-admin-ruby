@@ -12,6 +12,11 @@ module Upmin
       end
     end
 
+    def new(*args)
+      m = model.new(*args)
+      return Upmin::Model.new(m)
+    end
+
     # Exposing a model method, but wrapping the result in
     # an Upmin::Model
     def find(*args)

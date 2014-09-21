@@ -4,13 +4,15 @@ module Upmin::Railties
 
     def RenderHelpers.model_partials(upmin_model, options)
       partials = []
+      # Add "new_" in front of any partial for the partial for new view.
       # <options[:as]>
       # <model_name>
       # model
+      prefix = upmin_model.new_record? ? "new_" : ""
 
       partials << build_model_path(options[:as]) if options[:as]
-      partials << build_model_path(upmin_model.klass.name.underscore)
-      partials << build_model_path(:model)
+      partials << build_model_path(upmin_model.klass.name.underscore, prefix)
+      partials << build_model_path(:model, prefix)
       return partials
     end
 
@@ -111,8 +113,8 @@ module Upmin::Railties
     end
 
 
-    def RenderHelpers.build_model_path(partial_name)
-      return "#{root_path}/models/#{partial_name}"
+    def RenderHelpers.build_model_path(partial_name, prefix = "")
+      return "#{root_path}/models/#{prefix}#{partial_name}"
     end
 
     def RenderHelpers.build_attribute_path(partial_name)

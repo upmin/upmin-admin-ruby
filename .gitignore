@@ -47,3 +47,5 @@ spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/.sass-cache
+test_apps/**/db/migrate/**/*.rb
+test_apps/**/spec/**/*.rb

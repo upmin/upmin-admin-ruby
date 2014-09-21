@@ -5,11 +5,13 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'capybara/rails'
 require 'database_cleaner'
+require 'factory_girl_rails'
 
 
 if defined?(ActiveRecord)
   require File.expand_path('../../../../seed/seeder', __FILE__)
 end
+
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -43,4 +45,6 @@ RSpec.configure do |config|
       save_and_open_page
     end
   end
+
+  config.include(FactoryGirl::Syntax::Methods)
 end
