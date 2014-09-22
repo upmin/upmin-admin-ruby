@@ -1,36 +1,38 @@
-- datetime ||= nil
-- datetime_str = datetime.utc.iso8601 if datetime
-- if editable && f = form_builder
-  .row.datetime-attribute{class: form_id}
-    = f.hidden_field(attr_name, value: datetime_str)
-    - # TODO(jon): Figure out a better way to do transforms. This works for now though.
-    = f.hidden_field("transforms[#{attr_name}]", value: "DateTime#parse")
+- iso8601 = attribute.value.nil? ? nil : attribute.value.utc.iso8601
 
-    .col-xs-12.col-md-4
-      .input-group.pikadate
-        %input.form-control{type: :text, value: datetime_str, id: "#{form_id}-date"}
-        %span.input-group-addon
-          %span.glyphicon.glyphicon-calendar
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
 
-    .col-xs-12.col-md-4
-      .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
-        %input.form-control{:type => "text", :value => datetime_str, id: "#{form_id}-time"}
-        %span.input-group-addon
-          %span.glyphicon.glyphicon-time
+  - if attribute.editable? && f = form_builder
+    .row.datetime-attribute{class: attribute.form_id}
+      = f.hidden_field(attribute.name, value: iso8601)
 
-    .col-xs-12.col-md-4
-      %small
-        Date & Time are shown in UTC. If not time is provided, the current time in UTC will be used.
+      .col-xs-12.col-md-4
+        .input-group.pikadate
+          %input.form-control{type: :text, value: iso8601, id: "#{attribute.form_id}-date"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-calendar
 
+      .col-xs-12.col-md-4
+        .input-group.clockpicker{"data-align" => "top", "data-autoclose" => "true", "data-placement" => "right"}
+          %input.form-control{type: "text", value: iso8601, id: "#{attribute.form_id}-time"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-time
 
-  - content_for(:javascript) do
-    :javascript
-      $(document).ready(function() {
-        window.Upmin.Attributes.DateTime("#{form_id}");
-      });
+      .col-xs-12.col-md-4
+        %small
+          Date & Time are shown in UTC. If no time is provided, the current time in UTC will be used.
 
 
-- else
-  %p.well
-    -# TODO(jon): Make this show an uneditable date and time field.
-    = datetime
+    - content_for(:javascript) do
+      :javascript
+        $(document).ready(function() {
+          window.Upmin.Attributes.DateTime("#{attribute.form_id}");
+        });
+
+
+  - else
+    %p.well
+      -# TODO(jon): Make this show an uneditable date and time field.
+      = iso8601

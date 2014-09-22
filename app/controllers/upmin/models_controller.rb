@@ -62,6 +62,7 @@ module Upmin
 
     # PUT /:model_name/:id
     def update
+
       instance = @model.instance
       updates = params[@klass.name.underscore]
       transforms = updates.delete(:transforms) || {}
@@ -112,14 +113,12 @@ module Upmin
     end
 
   private
-
-      def set_klass
-        @klass = Upmin::Klass.find(params[:klass])
-        raise "Invalid klass name" if @klass.nil?
+      def set_model
+        @model = @klass.new(id: params[:id])
       end
 
-      def set_model
-        @model = @klass.find(params[:id])
+      def set_klass
+        @klass = Upmin::AdminModel.find_class(params[:klass])
       end
 
       def set_method

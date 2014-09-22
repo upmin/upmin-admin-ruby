@@ -9,13 +9,13 @@
       %button.close{"data-dismiss" => "alert", type: "button"}
         %span{"aria-hidden" => "true"} &times;
       = alert
-      - if @model.instance.errors.any?
+      - if @model.errors.any?
         %ul
-          - @model.instance.errors.each do |field, error|
+          - @model.errors.each do |field, error|
             %li
               %b
                 = field
               = error
   .row
     .col-sm-12
-      = up_model(@model.instance)
+      = up_model(@model)

@@ -1,8 +1,10 @@
-- boolean ||= "false"
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
 
-- if editable && f = form_builder
-  = f.check_box(attr_name, value: boolean, class: "boolean")
+  - if attribute.editable? && f = form_builder
+    = f.check_box(attribute.name, value: boolean, class: "boolean")
 
-- else
-  %p.well
-    = f.check_box(attr_name, {value: boolean, class: "boolean", disabled: "disabled"})
+  - else
+    %p.well
+      = attribute.value

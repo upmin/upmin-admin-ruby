@@ -14,13 +14,13 @@ module Upmin
 
     def new(*args)
       m = model.new(*args)
-      return Upmin::Model.new(m)
+      return Upmin::AdminModel.new(m)
     end
 
     # Exposing a model method, but wrapping the result in
     # an Upmin::Model
     def find(*args)
-      return Upmin::Model.new(model.find(*args))
+      return Upmin::AdminModel.new(model.find(*args))
     end
 
     def ransack(*args)
@@ -96,17 +96,17 @@ module Upmin
 
 
 
-    ## Methods for prettying up things to display them in views etc.
+    # ## Methods for prettying up things to display them in views etc.
 
-    # Returns the class name, split at camelCase,
-    # with the last word pluralized if it is plural.
-    def humanized_name(type = :plural)
-      names = model.name.split(/(?=[A-Z])/)
-      if type == :plural
-        names[names.length-1] = names.last.pluralize
-      end
-      return names.join(" ")
-    end
+    # # Returns the class name, split at camelCase,
+    # # with the last word pluralized if it is plural.
+    # def humanized_name(type = :plural)
+    #   names = model.name.split(/(?=[A-Z])/)
+    #   if type == :plural
+    #     names[names.length-1] = names.last.pluralize
+    #   end
+    #   return names.join(" ")
+    # end
 
     # Returns the class name, capitalized as it would be with User.name or OrderShipment.name - "User", or "OrderShipment"
     def name

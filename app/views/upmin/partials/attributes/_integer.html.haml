@@ -1,7 +1,11 @@
-- integer ||= nil
-- if editable && f = form_builder
-  = f.number_field(attr_name, value: integer, class: "form-control")
 
-- else
-  %p.well
-    = integer
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+
+  - if attribute.editable? && f = form_builder
+    = f.number_field(attribute.name, value: attribute.value, class: "form-control")
+
+  - else
+    %p.well
+      = attribute.value

@@ -1,8 +1,8 @@
-%a.search-result-link{href: upmin_model_path(upmin_model.path_hash)}
+%a.search-result-link{href: upmin_model.path}
   .upmin-model{class: upmin_model.color}
     %dl.dl-horizontal
       - @klass.attributes.each do |attribute|
         %dt
-          = upmin_model.attribute_label_name(attribute)
+          = upmin_model.attribute_label(attribute)
         %dd
-          = upmin_model.attribute(attribute)
+          = upmin_model.send(attribute)
