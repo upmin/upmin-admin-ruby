@@ -1,0 +1,11 @@
+
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+
+  - if attribute.editable? && f = form_builder
+    = f.text_field(attribute.name, value: attribute.value, class: "form-control")
+
+  - else
+    %p.well
+      = attribute.value
