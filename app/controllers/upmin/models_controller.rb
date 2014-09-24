@@ -25,34 +25,28 @@ module Upmin
     # POST /:model_name
     def create
       @model = @klass.new
-      instance = @model.instance
+      raw_model = @model.model
 
-      args = params[@klass.name.underscore]
-      transforms = args.delete(:transforms) || {}
+      args = params[@klass.underscore_name]
 
       args.each do |key, value|
-        # TODO(jon): Figure out a better way to do transforms.
-        #   This could cause issues and is exploitable, but it
-        #   should be fine for now since this is only on admin pages
-        if transforms[key] and not value.blank?
-          value = transform(transforms, key, value)
-        end
+        # TODO(jon): Figure out a way to do transforms.
 
         # TODO(jon): Remove duplicate code between update and create
         if args["#{key}_is_nil"] == "1"
-          instance.send("#{key}=", nil)
+          raw_model.send("#{key}=", nil)
         else
           if key.ends_with?("_is_nil")
             # Skip this, since we use the non _is_nil arg.
           else
-            instance.send("#{key}=", value)
+            raw_model.send("#{key}=", value)
           end
         end
       end
 
-      if instance.save
-        flash[:notice] = "#{@klass.humanized_name(:singular)} created successfully with id=#{instance.id}."
-        redirect_to(upmin_model_path(@model.path_hash))
+      if raw_model.save
+        flash[:notice] = "#{@klass.humanized_name(:singular)} created successfully with id=#{raw_model.id}."
+        redirect_to(@model.path)
       else
         flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT created."
         render(:new)
@@ -63,33 +57,25 @@ module Upmin
     # PUT /:model_name/:id
     def update
 
-      instance = @model.instance
-      updates = params[@klass.name.underscore]
-      transforms = updates.delete(:transforms) || {}
+      raw_model = @model.model
+      updates = params[@klass.underscore_name]
 
       updates.each do |key, value|
-        # TODO(jon): Figure out a better way to do transforms.
-        #   This could cause issues and is exploitable, but it
-        #   should be fine for now since this is only on admin pages
-        if transforms[key] and not value.blank?
-          value = transform(transforms, key, value)
-        end
-
         # TODO(jon): Remove duplicate code between update and create
         if updates["#{key}_is_nil"] == "1"
-          instance.send("#{key}=", nil)
+          raw_model.send("#{key}=", nil)
         else
           if key.ends_with?("_is_nil")
             # Skip this, since we use the non _is_nil arg.
           else
-            instance.send("#{key}=", value)
+            raw_model.send("#{key}=", value)
           end
         end
       end
 
-      if instance.save
+      if raw_model.save
         flash[:notice] = "#{@klass.humanized_name(:singular)} updated successfully."
-        redirect_to(upmin_model_path(@model.path_hash))
+        redirect_to(@model.path)
       else
         flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT updated."
         render(:show)

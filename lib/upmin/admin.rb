@@ -6,6 +6,7 @@ require "upmin/klass"
 require "upmin/model"
 require "upmin/automatic_delegation"
 require "upmin/attribute"
+require "upmin/association"
 require "upmin/admin_model"
 
 require "upmin/paginator"

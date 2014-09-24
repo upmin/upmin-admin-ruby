@@ -14,6 +14,7 @@ module Upmin
     end
 
     def type
+      # TODO(jon): Add a way to override with widgets?
       return @type if defined?(@type)
 
       # Try to get it from the model_class' columns hash

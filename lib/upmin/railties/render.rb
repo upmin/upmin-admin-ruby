@@ -25,18 +25,18 @@ module Upmin::Railties
     end
 
     def up_search_box(klass, options = {})
-      options[:locals] ||= {}
+      # options[:locals] ||= {}
 
-      klass = Upmin::Klass.find(klass) unless klass.is_a?(Upmin::Klass)
-      if klass.nil?
-        raise "Invalid klass provided in `up_search_box`"
-      end
+      # klass = Upmin::Klass.find(klass) unless klass.is_a?(Upmin::Klass)
+      # if klass.nil?
+      #   raise "Invalid klass provided in `up_search_box`"
+      # end
 
-      options[:locals][:klass] = klass
+      # options[:locals][:klass] = klass
 
-      partials = RenderHelpers.search_box_partials(klass, options)
+      # partials = RenderHelpers.search_box_partials(klass, options)
 
-      return up_render(klass, partials, options, :up_search_box)
+      # return up_render(klass, partials, options, :up_search_box)
     end
 
 

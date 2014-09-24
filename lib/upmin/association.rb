@@ -16,69 +16,54 @@ module Upmin
     def type
       return @type if defined?(@type)
 
-      # Try to get it from the model_class' columns hash
-      if adapter = model.class.columns_hash[name.to_s]
-        return @type = adapter.type
+      if reflection
+        @type = reflection.foreign_type.to_s.gsub(/_type$/, "")
+        if collection?
+          @type = @type.pluralize.to_sym
+        else
+          @type = @type.to_sym
+        end
       else
-        return @type = :unknown
+        @type = :unknown
       end
 
-      # If we still don't know the type, try to infer it from the value
-      if @type == :unknown
-        @type = infer_type_from_value
+      if @type == :unknown && first = [value].flatten.first
+        @type = first.class.name.underscore
+        if collection? || value.responds_to?(:each)
+          @type = @type.pluralize.to_sym
+        else
+          @type = @type.to_sym
+        end
       end
 
       return @type
     end
 
-    def editable?
-      case name.to_sym
-      when :id
-        return false
-      when :created_at
-        return false
-      when :updated_at
-        return false
-      else
-        # TODO(jon): Add a way to declare which attributes are editable and which are not later.
-        return model.respond_to?("#{name}=")
-      end
+    def collection?
+      return reflection.collection?
     end
 
-    def errors?
-      return model.errors[name].any?
-    end
-
-    def label_name
-      return name.to_s.gsub(/_/, " ").capitalize
-    end
-
-    def form_id
-      return "#{model.underscore_name}_#{name}"
-    end
-
-    def nilable_id
-      return "#{form_id}_is_nil"
+    def reflection
+      return @reflection if defined?(@reflection)
+      @reflection = model.model_class.reflect_on_all_associations.select do |r|
+          r.name == name
+      end.first
+      return @reflection
     end
 
 
     private
 
       def infer_type_from_value
-        class_sym = value.class.to_s.underscore.to_sym
-        if class_sym == :false_class || class_sym == :true_class
-          return :boolean
-        elsif class_sym == :nil_class
-          return :unknown
-        elsif class_sym == :fixnum
-          return :integer
-        elsif class_sym == :big_decimal
-          return :decimal
-        elsif class_sym == :"active_support/time_with_zone"
-          return :datetime
+        if reflection
+          type = reflection.foreign_type.to_s.gsub(/_type$/, "")
+          if collection?
+            return type.pluralize.to_sym
+          else
+            return type.to_sym
+          end
         else
-          # This should prevent any classes from being skipped, but we may not have an exhaustive list yet.
-          return class_sym
+          return :unknown
         end
       end
 

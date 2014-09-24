@@ -9,6 +9,7 @@ module Upmin
     delegate(:color, to: :class)
     delegate(:humanized_name, to: :class)
     delegate(:underscore_name, to: :class)
+    delegate(:model_class, to: :class)
     delegate(:model_class_name, to: :class)
 
     def initialize(model = nil, options = {})
@@ -16,9 +17,9 @@ module Upmin
         unless model.has_key?(:id)
           raise ":id or model instance is required."
         end
-        @model = self.class.find(model[:id])
+        @model = self.model_class.find(model[:id])
       elsif model.nil?
-        @model = self.class.model_class.new
+        @model = self.model_class.new
       else
         @model = model
       end
@@ -32,11 +33,11 @@ module Upmin
       return upmin_create_model_path(klass: model_class_name)
     end
 
-    def up_title
+    def title
       return "#{humanized_name(:singular)} # #{id}"
     end
 
-    def up_attributes
+    def attributes
       attributes = []
       self.class.attributes.each do |attr_name|
         attributes << Upmin::Attribute.new(self, attr_name)
@@ -44,13 +45,33 @@ module Upmin
       return attributes
     end
 
+    def associations
+      associations = []
+      self.class.associations.each do |assoc_name|
+        associations << Upmin::Association.new(self, assoc_name)
+      end
+      return associations
+    end
 
 
 
 
+    def AdminModel.associations
+      return @associations if defined?(@associations)
 
+      all = []
+      ignored = []
+      model_class.reflect_on_all_associations.each do |reflection|
+        all << reflection.name.to_sym
 
+        # We need to remove the ignored later because we don't know the order they come in.
+        if reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+          ignored << reflection.options[:through]
+        end
+      end
 
+      return @associations = all - ignored
+    end
 
 
 

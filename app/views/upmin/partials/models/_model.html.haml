@@ -1,6 +1,6 @@
 .upmin-model{class: model.color}
   %h3
-    = model.up_title
+    = model.title
 
   %br
   %br
@@ -12,24 +12,23 @@
   = form_for(model.model, url: model.path, html: { method: :put }) do |f|
 
     -# Render each attribute
-    - model.up_attributes.each do |attribute|
-      = up_attribute(attribute, locals: { form_builder: f })
+    - model.attributes.each do |attribute|
+      = up_render(attribute, locals: { form_builder: f })
 
     = f.submit("Save", class: "btn btn-primary")
 
 
-
-  -# - if model.klass.associations.any?
-  -#   %br
-  -#   %br
-  -#   %br
-  -#   %h3{style: "color: #333;"}
-  -#     Associations
-  -#   %hr
-  -#   - model.klass.associations.each do |association|
-  -#     %h5
-  -#       = association.to_s.humanize
-  -#     = up_association(model.instance, association, limit: 5)
+  - if model.associations.any?
+    %br
+    %br
+    %br
+    %h3{style: "color: #333;"}
+      Associations
+    %hr
+    - model.associations.each do |association|
+      %h5
+        = association.title
+      = up_render(association, limit: 5)
 
   -# - if model.klass.actions.any?
   -#   %br
