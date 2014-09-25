@@ -32,7 +32,7 @@ module Upmin
 
     def upmin_results
       return @upmin_results if defined?(@upmin_results)
-      @upmin_results = paginated_results.map{ |r| Upmin::AdminModel.find_class(r.class).new(r) }
+      @upmin_results = paginated_results.map{ |r| r.upmin_model }
       return @upmin_results
     end
 

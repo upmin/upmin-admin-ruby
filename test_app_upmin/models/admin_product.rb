@@ -1,4 +1,4 @@
-class AdminProduct < Upmin::AdminModel
+class AdminProduct < Upmin::Model
   attributes :name, :short_desc, :price, :manufacturer, :free_shipping
 
   action :update_price

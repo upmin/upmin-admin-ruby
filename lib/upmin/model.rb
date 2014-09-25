@@ -1,137 +1,288 @@
 module Upmin
   class Model
+    include Upmin::Engine.routes.url_helpers
+    include Upmin::AutomaticDelegation
 
-    attr_accessor :instance
-    attr_accessor :klass
+    attr_reader :model
+    alias_method :object, :model # For delegation
 
-    def initialize(instance, options = {})
-      self.instance = instance
-      self.klass = Upmin::Klass.find(instance.class.name)
+    def initialize(model = nil, options = {})
+      if model.is_a?(Hash)
+        unless model.has_key?(:id)
+          raise ":id or model instance is required."
+        end
+        @model = self.model_class.find(model[:id])
+      elsif model.nil?
+        @model = self.model_class.new
+      else
+        @model = model
+      end
     end
 
-    ## Methods for rendering in views
+    def path
+      if new_record?
+        return upmin_new_model_path(klass: model_class_name)
+      else
+        return upmin_model_path(klass: model_class_name, id: id)
+      end
+    end
+
+    def create_path
+      return upmin_create_model_path(klass: model_class_name)
+    end
+
     def title
-      return "#{klass.humanized_name(:singular)} # #{instance.id}"
+      return "#{humanized_name(:singular)} # #{id}"
     end
 
+    def attributes
+      return @attributes if defined?(@attributes)
+      @attributes = []
+      self.class.attributes.each do |attr_name|
+        @attributes << Upmin::Attribute.new(self, attr_name)
+      end
+      return @attributes
+    end
+
+    def associations
+      return @associations if defined?(@associations)
+      @associations = []
+      self.class.associations.each do |assoc_name|
+        @associations << Upmin::Association.new(self, assoc_name)
+      end
+      return @associations
+    end
+
+    def actions
+      return @actions if defined?(@actions)
+      @actions = []
+      self.class.actions.each do |action_name|
+        @actions << Upmin::Action.new(self, action_name)
+      end
+      return @actions
+    end
+
+
+
+    ###########################################################
+    ###  Delegated instance methods                         ###
+    ###########################################################
+
+    # TODO(jon): Figure out why delegations here weren't working in 3.2 tests
+    # delegate(:color, to: :class)
     def color
-      return klass.color
+      return self.class.color
+    end
+    # delegate(:humanized_name, to: :class)
+    def humanized_name(type = :plural)
+      return self.class.humanized_name(type)
+    end
+    # delegate(:underscore_name, to: :class)
+    def underscore_name
+      return self.class.underscore_name
+    end
+    # delegate(:model_class, to: :class)
+    def model_class
+      return self.class.model_class
+    end
+    # delegate(:model_class_name, to: :class)
+    def model_class_name
+      return self.class.model_class_name
     end
 
-    def path_hash
-      return {
-        klass: klass.name,
-        id: instance.id
-      }
-    end
-
-    def new_record?
-      return instance.new_record?
-    end
-
-    ## Methods for getting attributes, associations, etc and anything relevant to them.
 
 
-    # Returns the type of an attribute. If it is nil and we can't
-    # figure it out from the db columns we just fall back to
-    # :unknown
-    def attribute_type(attr_name)
-      type = klass.attribute_type(attr_name)
 
-      if type == :unknown
-        # See if we can deduce it by looking at the data
-        data = attribute(attr_name)
-        class_sym = data.class.to_s.underscore.to_sym
-        if class_sym == :false_class || class_sym == :true_class
-          type = :boolean
-        elsif class_sym == :nil_class
-          type = :unknown
-        elsif class_sym == :fixnum
-          type = :integer
-        elsif class_sym == :big_decimal
-          type = :decimal
-        elsif class_sym == :"active_support/time_with_zone"
-          type = :datetime
-        else
-          # This should prevent any classes from being skipped, but we may not have an exhaustive list yet.
-          type = class_sym
+    ###########################################################
+    ###  Class methods                                      ###
+    ###########################################################
+
+    def Model.associations
+      return @associations if defined?(@associations)
+
+      all = []
+      ignored = []
+      model_class.reflect_on_all_associations.each do |reflection|
+        all << reflection.name.to_sym
+
+        # We need to remove the ignored later because we don't know the order they come in.
+        if reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
+          ignored << reflection.options[:through]
         end
       end
 
-      return type
+      return @associations = all - ignored
     end
 
-    # Returns whether or not the attr_name is an attribute that can be edited.
-    def attribute_editable?(attr_name)
-      attr_name = attr_name.to_sym
-      return false if attr_name == :id
-      return false if attr_name == :created_at
-      return false if attr_name == :updated_at
-      # TODO(jon): Add a way to declare which attributes are editable and which are not later.
-      return instance.respond_to?("#{attr_name}=")
+    def Model.find_class(model)
+      return find_or_create_class(model.to_s)
     end
 
-    # Returns the value of the attr_name method
-    def attribute(attr_name)
-      attr_name = attr_name.to_sym
-      # TODO(jon): Add some way to handle exceptions. Probably a custom error that we display.
-      return instance.send(attr_name)
+    def Model.find_or_create_class(model_name)
+      ::Rails.application.eager_load!
+      return "Admin#{model_name}".constantize
+    rescue NameError
+      eval("class ::Admin#{model_name} < Upmin::Model; end")
+      return "Admin#{model_name}".constantize
     end
 
-    def attribute_form_id(attr_name)
-      return "#{klass.name.underscore}_#{attr_name}"
-    end
-
-    def attribute_label_name(attr_name)
-      return attr_name.to_s.gsub(/_/, " ").capitalize
-    end
-
-
-    # Returns the type of an association. If we can't figure it
-    # out we fall back to :unknown
-    def association_type(assoc_name)
-      type = klass.association_type(assoc_name)
-      if type == :unknown && data = association(assoc_name).first
-        type = data.class.name.underscore
+    # Returns all admin models.
+    def Model.all
+      return @all if defined?(@all)
+      @all = []
+      all_models.each do |m|
+        @all << find_or_create_class(m.name)
       end
-      return type
+      return @all
     end
 
-    def association(assoc_name, options = {})
-      association = instance.send(assoc_name)
-      if association.respond_to?(:each)
-        # We have a collection, at least we hope we do.
-        if options[:limit] && association.respond_to?(:limit)
-          association = association.limit(5)
-        end
-      end
-      return association
-    end
-
-    def action_parameters(action)
-      instance.method(action).parameters
-    end
-
-    def perform_action(action, arguments)
-      unless klass.actions.include?(action.to_sym)
-        raise "Invalid action: #{action}"
+    def Model.all_models
+      # If Rails
+      ::Rails.application.eager_load!
+      rails_models = ::ActiveRecord::Base.descendants.select do |m|
+        m.to_s != "ActiveRecord::SchemaMigration"
       end
 
-      params = action_parameters(action)
-      params_array = []
-      params.each do |param_type, param_name|
-        if param_type == :req
-          raise "Missing argument: #{param_name}" unless arguments[param_name]
-          params_array << arguments[param_name]
-        elsif param_type == :opt
-          params_array << arguments[param_name] if arguments[param_name]
-        else # :block or ??
-          next
-        end
-      end
-      return instance.send(action, *params_array)
+      return rails_models
     end
 
+    def Model.model_class
+      @model_class ||= inferred_model_class
+    end
+
+    def Model.model_class?
+      return model_class
+    rescue Upmin::UninferrableSourceError
+      return false
+    end
+
+    def Model.model_class
+      return @model_class ||= inferred_model_class
+    end
+
+    def Model.inferred_model_class
+      name = model_class_name
+      return name.constantize
+    rescue NameError => error
+      raise if name && !error.missing_name?(name)
+      raise Upmin::UninferrableSourceError.new(self)
+    end
+
+    def Model.model_class_name
+      raise NameError if name.nil? || name.demodulize !~ /Admin.+$/
+      return name.demodulize[5..-1]
+    end
+
+    def Model.humanized_name(type = :plural)
+      names = model_class_name.split(/(?=[A-Z])/)
+      if type == :plural
+        names[names.length-1] = names.last.pluralize
+      end
+      return names.join(" ")
+    end
+
+    def Model.underscore_name(type = :singular)
+      if type == :singular
+        return model_class_name.underscore
+      else
+        return model_class_name.pluralize.underscore
+      end
+    end
+
+    def Model.search_path
+      return Upmin::Engine.routes.url_helpers.upmin_search_path(klass: model_class_name)
+    end
+
+    def Model.color
+      return @color if defined?(@color)
+      @color = Model.next_color
+      return @color
+    end
+
+    def Model.next_color
+      @color_index ||= 0
+      next_color = colors[@color_index]
+      @color_index = (@color_index + 1) % colors.length
+      return next_color
+    end
+
+    def Model.colors(*colors)
+      @colors = colors if colors.any?
+      @colors ||= [
+        :light_blue,
+        :blue_green,
+        :red,
+        :yellow,
+        :orange,
+        :purple,
+        :dark_blue,
+        :dark_red,
+        :green
+      ]
+      return @colors
+    end
+
+
+
+    ###########################################################
+    ### Customization methods for Admin<Model> classes      ###
+    ###########################################################
+
+    # Add a single attribute to upmin attributes.
+    # If this is called before upmin_attributes
+    # the attributes will not include any defaults
+    # attributes.
+    def Model.attribute(attribute = nil)
+      @extra_attrs = [] unless defined?(@extra_attrs)
+      @extra_attrs << attribute.to_sym if attribute
+    end
+
+    # Sets the attributes to the provided attributes # if any are any provided.
+    # If no attributes are provided then the
+    # attributes are set to the default attributes of
+    # the model class.
+    def Model.attributes(*attributes)
+      @extra_attrs = [] unless defined?(@extra_attrs)
+
+      if attributes.any?
+        @attributes = attributes.map{|a| a.to_sym}
+      end
+
+      @attributes ||= model_class.attribute_names.map{|a| a.to_sym}
+      return (@attributes + @extra_attrs).uniq
+    end
+
+    def Model.attribute_type(attribute)
+      if adapter = model_class.columns_hash[attribute.to_s]
+        return adapter.type
+      else
+        return :unknown
+      end
+    end
+
+    # Add a single action to upmin actions. If this is called
+    # before upmin_actions the actions will not include any defaults
+    # actions.
+    def Model.action(action)
+      @actions ||= []
+
+      action = action.to_sym
+      @actions << action unless @actions.include?(action)
+    end
+
+    # Sets the upmin_actions to the provided actions if any are
+    # provided.
+    # If no actions are provided, and upmin_actions hasn't been defined,
+    # then the upmin_actions are set to the default actions.
+    # Returns the upmin_actions
+    def Model.actions(*actions)
+      if actions.any?
+        # set the actions
+        @actions = actions.map{|a| a.to_sym}
+      end
+      @actions ||= []
+      return @actions
+    end
 
   end
 end

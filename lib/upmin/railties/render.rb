@@ -4,7 +4,7 @@ module Upmin::Railties
 
     # Render method that is used by upmin-admin. Tries to render partials in order, passing data in as the :object, along with options.
     def up_render(data, options = {})
-      if data.is_a?(Upmin::AdminModel)
+      if data.is_a?(Upmin::Model)
         options = RenderHelpers.model_options(data, options)
         partials = RenderHelpers.model_partials(data, options)
 
@@ -28,7 +28,7 @@ module Upmin::Railties
         options = RenderHelpers.search_results_options(data, options)
         partials = RenderHelpers.search_results_partials(data, options)
 
-      elsif Upmin::AdminModel.all.include?(data)
+      elsif Upmin::Model.all.include?(data)
         # Probably rendering a search box
         options = RenderHelpers.search_box_options(data, options)
         partials = RenderHelpers.search_box_partials(data, options)

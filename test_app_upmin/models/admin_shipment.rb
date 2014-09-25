@@ -1,4 +1,4 @@
-class AdminShipment < Upmin::AdminModel
+class AdminShipment < Upmin::Model
 
   attribute :status
   actions :update_shipment

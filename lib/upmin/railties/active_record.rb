@@ -5,7 +5,7 @@ module Upmin::Railties
     extend ::ActiveSupport::Concern
 
     def upmin_model
-      klass = Upmin::AdminModel.find_class(self.class)
+      klass = Upmin::Model.find_class(self.class)
       return klass.new(self)
     end
 

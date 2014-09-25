@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require ./jquery-clockpicker
-//= require ./moment
 //= require ./pikaday
 //= require ./helpers
 //= require_tree .

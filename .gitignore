@@ -50,3 +50,4 @@ spec/dummy/.sass-cache
 test_apps/**/db/migrate/**/*.rb
 test_apps/**/db/*
 test_apps/**/spec/**/*.rb
+test_apps/**/app/upmin/**/*.rb

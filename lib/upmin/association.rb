@@ -25,7 +25,7 @@ module Upmin
         vals = [value]
       end
 
-      return vals.map{ |m| Upmin::AdminModel.find_class(m.class).new(m) }
+      return vals.map{ |m| m.upmin_model }
     end
 
     def type

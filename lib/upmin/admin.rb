@@ -1,18 +1,17 @@
 require "upmin"
 require "upmin/engine"
 
-require "upmin/errors"
-require "upmin/klass"
-require "upmin/model"
 require "upmin/automatic_delegation"
+require "upmin/errors"
+require "upmin/paginator"
+
+require "upmin/model"
 require "upmin/attribute"
 require "upmin/association"
 require "upmin/action"
 require "upmin/parameter"
 require "upmin/query"
-require "upmin/admin_model"
 
-require "upmin/paginator"
 
 # Monkey patch code into rails
 require "upmin/railties/active_record"

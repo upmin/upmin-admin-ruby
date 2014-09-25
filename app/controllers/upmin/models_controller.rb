@@ -109,7 +109,7 @@ module Upmin
       end
 
       def set_klass
-        @klass = Upmin::AdminModel.find_class(params[:klass])
+        @klass = Upmin::Model.find_class(params[:klass])
       end
 
       def set_action

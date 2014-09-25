@@ -19,7 +19,7 @@ def update_files
   sh "cp -R ../../spec spec"
   sh "cp ../../.rspec .rspec"
 
-  # Drop and reloda Upmin::Model files
+  # Drop and reload Upmin::Model files
   sh "rm -rf app/upmin/"
   sh "cp -R ../../test_app_upmin app/upmin"
 end

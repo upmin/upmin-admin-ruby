@@ -9,7 +9,7 @@
         %span.icon-bar
     #navbar-main.navbar-collapse.collapse
       %ul.nav.navbar-nav
-        - Upmin::Klass.all.each do |m|
+        - Upmin::Model.all.each do |m|
           %li
-            %a{href: upmin_search_path(klass: m.name)}
-              = m.name.pluralize
+            %a{href: m.search_path}
+              = m.humanized_name(:plural)

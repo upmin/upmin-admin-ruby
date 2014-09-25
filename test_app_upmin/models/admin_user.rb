@@ -1,4 +1,4 @@
-class AdminUser < Upmin::AdminModel
+class AdminUser < Upmin::Model
 
   action :issue_coupon
 
