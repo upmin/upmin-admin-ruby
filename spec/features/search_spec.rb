@@ -73,5 +73,4 @@ feature("Search Views") do
     expect(page).to(have_content(expected_user.name))
   end
 
-
 end

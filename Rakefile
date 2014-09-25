@@ -13,6 +13,17 @@ end
 
 task :default => "spec:all"
 
+def update_files
+    # Drop and reload spec files
+  sh "rm -rf spec/"
+  sh "cp -R ../../spec spec"
+  sh "cp ../../.rspec .rspec"
+
+  # Drop and reloda Upmin::Model files
+  sh "rm -rf app/upmin/"
+  sh "cp -R ../../test_app_upmin app/upmin"
+end
+
 namespace :spec do
   # Full bundle install & test.
   %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate).each do |gemfile|
@@ -33,10 +44,7 @@ namespace :spec do
 
       sh "RAILS_ENV=test bundle exec rake db:drop db:create db:migrate --quiet"
 
-      # Drop and reload spec files
-      sh "rm -rf spec/"
-      sh "cp -R ../../spec spec"
-      sh "cp ../../.rspec .rspec"
+      update_files
 
       # Run tests
       sh "bundle exec rake"
@@ -50,10 +58,7 @@ namespace :spec do
       Dir.chdir("test_apps/#{gemfile}")
       puts "Re-testing in #{`pwd`}. Bundle install and migration updates will NOT happen!"
 
-      # Drop and reload spec files
-      sh "rm -rf spec/"
-      sh "cp -R ../../spec spec"
-      sh "cp ../../.rspec .rspec"
+      update_files
 
       # Run tests
       sh "bundle exec rake"

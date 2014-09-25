@@ -8,14 +8,15 @@
     Attributes
   %hr
 
-  -# Yes this is meant to be model.model - this is the raw rails model instance.
-  = form_for(model.model, url: model.path, html: { method: :put }) do |f|
+  .attributes
+    -# Yes this is meant to be model.model - this is the raw rails model instance.
+    = form_for(model.model, url: model.path, html: { method: :put }) do |f|
 
-    -# Render each attribute
-    - model.attributes.each do |attribute|
-      = up_render(attribute, locals: { form_builder: f })
+      -# Render each attribute
+      - model.attributes.each do |attribute|
+        = up_render(attribute, locals: { form_builder: f })
 
-    = f.submit("Save", class: "btn btn-primary")
+      = f.submit("Save", class: "btn btn-primary")
 
 
   - if model.associations.any?
@@ -25,9 +26,9 @@
     %h3{style: "color: #333;"}
       Associations
     %hr
-
-    - model.associations.each do |association|
-      = up_render(association)
+    .associations
+      - model.associations.each do |association|
+        = up_render(association)
 
 
   - if model.actions.any?
@@ -37,6 +38,7 @@
     %h3{style: "color: #333;"}
       Actions
     %hr
-    - model.actions.each do |action|
-      = up_render(action)
+    .actions
+      - model.actions.each do |action|
+        = up_render(action)
 

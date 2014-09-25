@@ -6,12 +6,6 @@ module Upmin
     attr_reader :model
     alias_method :object, :model # For delegation
 
-    delegate(:color, to: :class)
-    delegate(:humanized_name, to: :class)
-    delegate(:underscore_name, to: :class)
-    delegate(:model_class, to: :class)
-    delegate(:model_class_name, to: :class)
-
     def initialize(model = nil, options = {})
       if model.is_a?(Hash)
         unless model.has_key?(:id)
@@ -70,8 +64,38 @@ module Upmin
 
 
 
+    #############################################
+    ###  Delegated instance methods           ###
+    #############################################
+
+    # TODO(jon): Figure out why delegations here weren't working in 3.2 tests
+    # delegate(:color, to: :class)
+    def color
+      return self.class.color
+    end
+    # delegate(:humanized_name, to: :class)
+    def humanized_name(type = :plural)
+      return self.class.humanized_name(type)
+    end
+    # delegate(:underscore_name, to: :class)
+    def underscore_name
+      return self.class.underscore_name
+    end
+    # delegate(:model_class, to: :class)
+    def model_class
+      return self.class.model_class
+    end
+    # delegate(:model_class_name, to: :class)
+    def model_class_name
+      return self.class.model_class_name
+    end
 
 
+
+
+    #############################################
+    ###  Class methods                        ###
+    #############################################
 
     def AdminModel.associations
       return @associations if defined?(@associations)
@@ -89,73 +113,6 @@ module Upmin
 
       return @associations = all - ignored
     end
-
-    # def color(color = nil)
-    #   @color ||= color
-    #   @color ||= klass.color
-    #   return @color
-    # end
-
-    #############################################
-    #### Methods used to customize the model ####
-    #############################################
-
-    # Add a single attribute to upmin attributes.
-    # If this is called before upmin_attributes
-    # the attributes will not include any defaults
-    # attributes.
-    def AdminModel.attribute(attribute = nil)
-      @extra_attrs = [] unless defined?(@extra_attrs)
-      @extra_attrs << attribute.to_sym if attribute
-    end
-
-    # Sets the attributes to the provided attributes # if any are any provided.
-    # If no attributes are provided then the
-    # attributes are set to the default attributes of
-    # the model class.
-    def AdminModel.attributes(*attributes)
-      @extra_attrs = [] unless defined?(@extra_attrs)
-
-      if attributes.any?
-        @attributes = attributes.map{|a| a.to_sym}
-      end
-
-      @attributes ||= model_class.attribute_names.map{|a| a.to_sym}
-      return (@attributes + @extra_attrs).uniq
-    end
-
-    def AdminModel.attribute_type(attribute)
-      if adapter = model_class.columns_hash[attribute.to_s]
-        return adapter.type
-      else
-        return :unknown
-      end
-    end
-
-    # Add a single action to upmin actions. If this is called
-    # before upmin_actions the actions will not include any defaults
-    # actions.
-    def AdminModel.action(action)
-      @actions ||= []
-
-      action = action.to_sym
-      @actions << action unless @actions.include?(action)
-    end
-
-    # Sets the upmin_actions to the provided actions if any are
-    # provided.
-    # If no actions are provided, and upmin_actions hasn't been defined,
-    # then the upmin_actions are set to the default actions.
-    # Returns the upmin_actions
-    def AdminModel.actions(*actions)
-      if actions.any?
-        # set the actions
-        @actions = actions.map{|a| a.to_sym}
-      end
-      @actions ||= []
-      return @actions
-    end
-
 
     def AdminModel.find_class(model)
       return find_or_create_class(model.to_s)
@@ -229,6 +186,69 @@ module Upmin
     def AdminModel.color
       # TODO(jon)[v1.0]: Make colors dynamic again.
       return :green
+    end
+
+
+
+    #############################################
+    ### Customization methods called in       ###
+    ### Admin<Model> classes                  ###
+    #############################################
+
+    # Add a single attribute to upmin attributes.
+    # If this is called before upmin_attributes
+    # the attributes will not include any defaults
+    # attributes.
+    def AdminModel.attribute(attribute = nil)
+      @extra_attrs = [] unless defined?(@extra_attrs)
+      @extra_attrs << attribute.to_sym if attribute
+    end
+
+    # Sets the attributes to the provided attributes # if any are any provided.
+    # If no attributes are provided then the
+    # attributes are set to the default attributes of
+    # the model class.
+    def AdminModel.attributes(*attributes)
+      @extra_attrs = [] unless defined?(@extra_attrs)
+
+      if attributes.any?
+        @attributes = attributes.map{|a| a.to_sym}
+      end
+
+      @attributes ||= model_class.attribute_names.map{|a| a.to_sym}
+      return (@attributes + @extra_attrs).uniq
+    end
+
+    def AdminModel.attribute_type(attribute)
+      if adapter = model_class.columns_hash[attribute.to_s]
+        return adapter.type
+      else
+        return :unknown
+      end
+    end
+
+    # Add a single action to upmin actions. If this is called
+    # before upmin_actions the actions will not include any defaults
+    # actions.
+    def AdminModel.action(action)
+      @actions ||= []
+
+      action = action.to_sym
+      @actions << action unless @actions.include?(action)
+    end
+
+    # Sets the upmin_actions to the provided actions if any are
+    # provided.
+    # If no actions are provided, and upmin_actions hasn't been defined,
+    # then the upmin_actions are set to the default actions.
+    # Returns the upmin_actions
+    def AdminModel.actions(*actions)
+      if actions.any?
+        # set the actions
+        @actions = actions.map{|a| a.to_sym}
+      end
+      @actions ||= []
+      return @actions
     end
 
   end

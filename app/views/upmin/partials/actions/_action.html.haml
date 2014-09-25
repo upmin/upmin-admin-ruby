@@ -1,7 +1,7 @@
 %h4{style: "color: #333;"}
   = action.title
 .well.action-well
-  = form_tag(action.path) do
+  = form_tag(action.path, class: action.name) do
     - action.parameters.each do |parameter|
       -# = Upmin::Railties::RenderHelpers.parameter_partials(parameter)
       = up_render(parameter)

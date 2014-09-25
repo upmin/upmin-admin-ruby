@@ -16,7 +16,9 @@ module Upmin
       return model.respond_to?(method)
     end
 
-    delegate(:delegated?, to: :class)
+    def delegated?(method)
+      return self.class.delegated?(method)
+    end
 
     def respond_to?(method)
       super || delegatable?(method)

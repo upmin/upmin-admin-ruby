@@ -71,6 +71,10 @@
     padding: 9px;
     margin-bottom: 0;
     min-height: 40px;
+
+    &.action-well {
+      margin-bottom: 32px;
+    }
   }
 
   a.active-tag-link {
