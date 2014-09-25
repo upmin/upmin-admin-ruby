@@ -6,8 +6,9 @@ module Upmin
     before_filter :set_model, only: [:show, :update, :action]
 
     before_filter :set_page, only: [:search]
+    before_filter :set_query, only: [:search]
 
-    before_filter :set_method, only: [:action]
+    before_filter :set_action, only: [:action]
     before_filter :set_arguments, only: [:action]
 
     def dashboard
@@ -25,34 +26,28 @@ module Upmin
     # POST /:model_name
     def create
       @model = @klass.new
-      instance = @model.instance
+      raw_model = @model.model
 
-      args = params[@klass.name.underscore]
-      transforms = args.delete(:transforms) || {}
+      args = params[@klass.underscore_name]
 
       args.each do |key, value|
-        # TODO(jon): Figure out a better way to do transforms.
-        #   This could cause issues and is exploitable, but it
-        #   should be fine for now since this is only on admin pages
-        if transforms[key] and not value.blank?
-          value = transform(transforms, key, value)
-        end
+        # TODO(jon): Figure out a way to do transforms.
 
         # TODO(jon): Remove duplicate code between update and create
         if args["#{key}_is_nil"] == "1"
-          instance.send("#{key}=", nil)
+          raw_model.send("#{key}=", nil)
         else
           if key.ends_with?("_is_nil")
             # Skip this, since we use the non _is_nil arg.
           else
-            instance.send("#{key}=", value)
+            raw_model.send("#{key}=", value)
           end
         end
       end
 
-      if instance.save
-        flash[:notice] = "#{@klass.humanized_name(:singular)} created successfully with id=#{instance.id}."
-        redirect_to(upmin_model_path(@model.path_hash))
+      if raw_model.save
+        flash[:notice] = "#{@klass.humanized_name(:singular)} created successfully with id=#{raw_model.id}."
+        redirect_to(@model.path)
       else
         flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT created."
         render(:new)
@@ -62,33 +57,26 @@ module Upmin
 
     # PUT /:model_name/:id
     def update
-      instance = @model.instance
-      updates = params[@klass.name.underscore]
-      transforms = updates.delete(:transforms) || {}
+
+      raw_model = @model.model
+      updates = params[@klass.underscore_name]
 
       updates.each do |key, value|
-        # TODO(jon): Figure out a better way to do transforms.
-        #   This could cause issues and is exploitable, but it
-        #   should be fine for now since this is only on admin pages
-        if transforms[key] and not value.blank?
-          value = transform(transforms, key, value)
-        end
-
         # TODO(jon): Remove duplicate code between update and create
         if updates["#{key}_is_nil"] == "1"
-          instance.send("#{key}=", nil)
+          raw_model.send("#{key}=", nil)
         else
           if key.ends_with?("_is_nil")
             # Skip this, since we use the non _is_nil arg.
           else
-            instance.send("#{key}=", value)
+            raw_model.send("#{key}=", value)
           end
         end
       end
 
-      if instance.save
+      if raw_model.save
         flash[:notice] = "#{@klass.humanized_name(:singular)} updated successfully."
-        redirect_to(upmin_model_path(@model.path_hash))
+        redirect_to(@model.path)
       else
         flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT updated."
         render(:show)
@@ -96,15 +84,15 @@ module Upmin
     end
 
     def search
-      @q = @klass.ransack(params[:q])
-      @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
+      # @q = @klass.ransack(params[:q])
+      # @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
     end
 
     def action
-      # begin
-      response = @model.perform_action(params[:method], @arguments)
-      flash[:notice] = "Action successfully performed with a response of: #{response}"
-        redirect_to(upmin_model_path(@model.path_hash))
+      @response = @action.perform(@arguments)
+
+      flash[:notice] = "Action successfully performed with a response of: #{@response}"
+      redirect_to(@model.path)
       # rescue Exception => e
       #   flash.now[:alert] = "Action failed with the error message: #{e.message}"
       #   render(:show)
@@ -112,22 +100,27 @@ module Upmin
     end
 
   private
-
-      def set_klass
-        @klass = Upmin::Klass.find(params[:klass])
-        raise "Invalid klass name" if @klass.nil?
+      def set_query
+        @query = Upmin::Query.new(@klass, params[:q], page: @page, per_page: 30)
       end
 
       def set_model
-        @model = @klass.find(params[:id])
+        @model = @klass.new(id: params[:id])
       end
 
-      def set_method
-        @method = params[:method].to_sym
+      def set_klass
+        @klass = Upmin::Model.find_class(params[:klass])
+      end
+
+      def set_action
+        action_name = params[:method].to_sym
+        @action = @model.actions.select{ |action| action.name == action_name }.first
+
+        raise Upmin::InvalidAction.new(params[:method]) unless @action
       end
 
       def set_arguments
-        arguments = params[@method] || {}
+        arguments = params[@action.name] || {}
         @arguments = {}
         arguments.each do |k, v|
           unless k.ends_with?("_is_nil")
@@ -136,6 +129,7 @@ module Upmin
             end
           end
         end
+        @arguments = ActiveSupport::HashWithIndifferentAccess.new(@arguments)
       end
 
       def set_page

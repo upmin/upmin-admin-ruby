@@ -1,7 +1,9 @@
-- text ||= nil
-- if editable && f = form_builder
-  = f.text_area(attr_name, value: text, rows: 4, class: "form-control")
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+  - if attribute.editable? && f = form_builder
+    = f.text_area(attribute.name, value: attribute.value, rows: 4, class: "form-control")
 
-- else
-  %p.well
-    = text
+  - else
+    %p.well
+      = attribute.value

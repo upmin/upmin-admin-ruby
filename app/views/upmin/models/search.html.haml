@@ -2,16 +2,16 @@
   .row
     .col-md-8
       -# TODO(jon): Add pagination w/ search results
-      = up_search_results(@q, @results)
+      = up_render(@query)
       %br
-      = up_paginate(@results)
+      = up_paginate(@query.paginated_results)
       %br
       %br
     .col-md-4
       -# TODO(jon): Implement up_search_box
-      = up_search_box(@klass)
+      = up_render(@klass)
       .new-button-wrapper
-        %a.btn.btn-block.btn-success{href: upmin_new_model_path(klass: @klass.name)}
+        %a.btn.btn-block.btn-success{href: upmin_new_model_path(klass: @klass.model_class_name)}
           Create a new
           = @klass.humanized_name(:singular)
         %br

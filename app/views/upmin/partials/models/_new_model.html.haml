@@ -1,44 +1,22 @@
--# The following are all available to you here:
--# unknown - This is the model passed into the up_model method.
--#    This attribute is always present in any partial rendered
--#    by Upmin, and will always match the name of the partial
--#    *UNLESS* nil, true, or false are passed in.
--# upmin_model - This is an Upmin::Model instantiated with unknown
--#    and is always present.
--#
--# In general, the upmin_model makes it significantly easier to
--# render a view, so I suggest using it. It is way simpler than
--# trying to find all associations for a model on your own.
--#
--# Just an FYI: upmin_model.instance == unknown
 
-.upmin-model{class: upmin_model.color}
-  -# Display the model title as "Model # ID"
+.upmin-model{class: model.color}
   %h3
     Create a
-    = upmin_model.klass.humanized_name(:singular)
+    = model.humanized_name(:singular)
 
   %br
   %br
   %h3{style: "color: #333;"}
     Attributes
   %hr
-  -# Create a form to wrap the attributes in.
-  -# TODO(jon): Update the URL with a decent helper?
-  = form_for(upmin_model.instance, url: upmin_create_model_path(klass: @klass.name), html: { method: :post }) do |f|
 
-    -# Render each attribute
-    - upmin_model.klass.attributes.each do |attribute|
-      - any_errors = new_model.errors[attribute].any?
-      .form-group{class: any_errors ? "has-error" : ""}
-        -# = f.label(attribute.to_s) # Not using this because it drops _id and this isn't always desirable
+  .attributes
+    -# Yes this is meant to be model.model - this is the raw rails model instance.
+    = form_for(model.model, url: model.create_path, html: { method: :post }) do |f|
 
-        %label{for: upmin_model.attribute_form_id(attribute)}
-          = upmin_model.attribute_label_name(attribute)
-        - if upmin_model.attribute_type(attribute) == :string
-          = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f }, as: :nilable)
-        - else
-          = up_attribute(upmin_model.instance, attribute, locals: { form_builder: f })
+      -# Render each attribute
+      - model.attributes.each do |attribute|
+        = up_render(attribute, locals: { form_builder: f })
 
-    = f.submit("Create", class: "btn btn-primary")
+      = f.submit("Create", class: "btn btn-primary")
 

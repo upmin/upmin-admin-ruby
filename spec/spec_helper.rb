@@ -9,7 +9,7 @@ require 'factory_girl_rails'
 
 
 if defined?(ActiveRecord)
-  require File.expand_path('../../../../seed/seeder', __FILE__)
+  require File.expand_path('../../../../test_seeders/seeder', __FILE__)
 end
 
 
@@ -48,4 +48,5 @@ RSpec.configure do |config|
   # end
 
   config.include(FactoryGirl::Syntax::Methods)
+  config.include(ActionView::Helpers::NumberHelper, type: :view)
 end

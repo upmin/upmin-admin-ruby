@@ -1,7 +1,18 @@
-- string ||= nil
-- if editable && f = form_builder
-  = f.text_field(attr_name, value: string, class: "form-control")
+- is_nil = model.new_record? ? false : attribute.value.nil?
 
-- else
-  %p.well
-    = string
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+
+  - if attribute.editable? && f = form_builder
+    .input-group
+      = f.text_field(attribute.name, value: attribute.value, class: "form-control")
+      .input-group-addon.nilable-addon
+        .form-group
+          %label{for: "#{attribute.form_id}_is_nil"}
+            Make this Nil
+          = check_box(model.underscore_name, "#{attribute.name}_is_nil", class: "boolean", checked: is_nil, value: is_nil)
+
+  - else
+    %p.well
+      = attribute.value

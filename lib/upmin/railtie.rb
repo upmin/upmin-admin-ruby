@@ -1,3 +1,5 @@
+require 'rails/railtie'
+
 module Upmin
   require 'rails'
   class Railtie < Rails::Railtie
