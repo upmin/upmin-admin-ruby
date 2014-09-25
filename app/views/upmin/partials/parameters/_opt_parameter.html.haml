@@ -1,0 +1,14 @@
+.form-group
+  %label{for: parameter.form_id}
+    = parameter.label_name
+
+  .input-group
+    = text_field(action.name, parameter.name, class: "form-control")
+    .input-group-addon.nilable-addon
+      .form-group
+        %label{for: parameter.nil_form_id}
+          Do Not Provide
+        = check_box(parameter.action.name, "#{parameter.name}_is_nil", class: "boolean")
+
+  %small
+    * Optional

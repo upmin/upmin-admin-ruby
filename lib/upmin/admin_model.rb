@@ -26,7 +26,11 @@ module Upmin
     end
 
     def path
-      return upmin_model_path(klass: model_class_name, id: id)
+      if new_record?
+        return upmin_new_model_path(klass: model_class_name)
+      else
+        return upmin_model_path(klass: model_class_name, id: id)
+      end
     end
 
     def create_path
@@ -38,20 +42,33 @@ module Upmin
     end
 
     def attributes
-      attributes = []
+      return @attributes if defined?(@attributes)
+      @attributes = []
       self.class.attributes.each do |attr_name|
-        attributes << Upmin::Attribute.new(self, attr_name)
+        @attributes << Upmin::Attribute.new(self, attr_name)
       end
-      return attributes
+      return @attributes
     end
 
     def associations
-      associations = []
+      return @associations if defined?(@associations)
+      @associations = []
       self.class.associations.each do |assoc_name|
-        associations << Upmin::Association.new(self, assoc_name)
+        @associations << Upmin::Association.new(self, assoc_name)
       end
-      return associations
+      return @associations
     end
+
+    def actions
+      return @actions if defined?(@actions)
+      @actions = []
+      self.class.actions.each do |action_name|
+        @actions << Upmin::Action.new(self, action_name)
+      end
+      return @actions
+    end
+
+
 
 
 
@@ -72,8 +89,6 @@ module Upmin
 
       return @associations = all - ignored
     end
-
-
 
     # def color(color = nil)
     #   @color ||= color

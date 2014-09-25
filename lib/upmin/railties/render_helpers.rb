@@ -22,8 +22,8 @@ module Upmin::Railties
       return options
     end
 
-    def RenderHelpers.build_model_path(partial_name, prefix = "")
-      return "#{root_path}/models/#{prefix}#{partial_name}"
+    def RenderHelpers.build_model_path(partial, prefix = "")
+      return build_path("models", "#{prefix}#{partial}")
     end
 
 
@@ -54,8 +54,8 @@ module Upmin::Railties
       return options
     end
 
-    def RenderHelpers.build_attribute_path(partial_name)
-      return "#{root_path}/attributes/#{partial_name}"
+    def RenderHelpers.build_attribute_path(partial)
+      return build_path("attributes", partial)
     end
 
 
@@ -86,8 +86,8 @@ module Upmin::Railties
       return options
     end
 
-    def RenderHelpers.build_association_path(partial_name)
-      return "#{root_path}/associations/#{partial_name}"
+    def RenderHelpers.build_association_path(partial)
+      return build_path("associations", partial)
     end
 
 
@@ -109,14 +109,45 @@ module Upmin::Railties
 
     def RenderHelpers.action_options(action, options = {})
       options[:locals] ||= {}
-      options[:locals][:model] ||= model
+      options[:locals][:model] ||= action.model
       options[:locals][:action] = action
       return options
     end
 
-    def RenderHelpers.build_action_path(partial_name)
-      partial_name = partial_name.to_s.gsub(/[!?]/, "")
-      return "#{root_path}/actions/#{partial_name}"
+    def RenderHelpers.build_action_path(partial)
+      return build_path("actions", partial)
+    end
+
+
+
+    def RenderHelpers.parameter_partials(parameter, options = {})
+      partials = []
+      # <options[:as]>
+      # <model_name>_<action_name>_<param_name>, eg: order_refund_amount
+      # <action_name>_<param_name>, eg: refund_amount
+      # <param_name>, eg: amount
+      # <param_type>_parameter, eg: opt_parameter and req_parameter
+      model_name = parameter.model.underscore_name
+      action_name = parameter.action.name
+
+      partials << build_parameter_path(options[:as]) if options[:as]
+      partials << build_parameter_path("#{model_name}_#{action_name}_#{parameter.name}")
+      partials << build_parameter_path("#{action_name}_#{parameter.name}")
+      partials << build_parameter_path(parameter.name)
+      partials << build_parameter_path("#{parameter.type}_parameter")
+      return partials
+    end
+
+    def RenderHelpers.parameter_options(parameter, options = {})
+      options[:locals] ||= {}
+      options[:locals][:model] ||= parameter.model
+      options[:locals][:action] ||= parameter.action
+      options[:locals][:parameter] = parameter
+      return options
+    end
+
+    def RenderHelpers.build_parameter_path(partial)
+      return build_path("parameters", partial)
     end
 
 
@@ -147,8 +178,8 @@ module Upmin::Railties
       return partials
     end
 
-    def RenderHelpers.build_search_result_path(partial_name)
-      return "#{root_path}/search_results/#{partial_name}"
+    def RenderHelpers.build_search_result_path(partial)
+      return build_path("search_results", partial)
     end
 
 
@@ -163,11 +194,15 @@ module Upmin::Railties
       return partials
     end
 
-    def RenderHelpers.build_search_box_path(partial_name)
-      return "#{root_path}/search_boxes/#{partial_name}"
+    def RenderHelpers.build_search_box_path(partial)
+      return build_path("search_boxes", partial)
     end
 
 
+    def RenderHelpers.build_path(folder, partial)
+      partial = partial.to_s.gsub(/[!?]/, "")
+      "#{root_path}/#{folder}/#{partial}"
+    end
 
     def RenderHelpers.root_path
       return "upmin/partials"

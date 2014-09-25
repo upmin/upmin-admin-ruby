@@ -13,11 +13,28 @@ module Upmin
     end
 
     def delegatable?(method)
-      model.respond_to?(method)
+      return model.respond_to?(method)
     end
+
+    delegate(:delegated?, to: :class)
 
     def respond_to?(method)
       super || delegatable?(method)
+    end
+
+    def method(method_name)
+      if delegated?(method_name)
+        return model.method(method_name)
+      else
+        return super(method_name)
+      end
+    rescue NameError => e
+      if delegatable?(method_name)
+        self.class.delegate(method_name, to: :model)
+        return method(method_name)
+      else
+        super(method_name)
+      end
     end
 
     module ClassMethods
@@ -30,6 +47,17 @@ module Upmin
 
       def delegatable?(method)
         model_class? && model_class.respond_to?(method)
+      end
+
+      def delegate(method, *args)
+        @delegated ||= []
+        @delegated << method.to_sym
+        super(method, *args)
+      end
+
+      def delegated?(method)
+        @delegated ||= []
+        return @delegated.include?(method.to_sym)
       end
 
       # Avoids reloading the model class when ActiveSupport clears autoloaded

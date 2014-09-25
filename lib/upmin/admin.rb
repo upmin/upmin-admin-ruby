@@ -7,6 +7,8 @@ require "upmin/model"
 require "upmin/automatic_delegation"
 require "upmin/attribute"
 require "upmin/association"
+require "upmin/action"
+require "upmin/parameter"
 require "upmin/admin_model"
 
 require "upmin/paginator"

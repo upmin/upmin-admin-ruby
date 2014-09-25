@@ -7,7 +7,7 @@ module Upmin
 
     before_filter :set_page, only: [:search]
 
-    before_filter :set_method, only: [:action]
+    before_filter :set_action, only: [:action]
     before_filter :set_arguments, only: [:action]
 
     def dashboard
@@ -88,10 +88,10 @@ module Upmin
     end
 
     def action
-      # begin
-      response = @model.perform_action(params[:method], @arguments)
-      flash[:notice] = "Action successfully performed with a response of: #{response}"
-        redirect_to(upmin_model_path(@model.path_hash))
+      @response = @action.perform(@arguments)
+
+      flash[:notice] = "Action successfully performed with a response of: #{@response}"
+      redirect_to(@model.path)
       # rescue Exception => e
       #   flash.now[:alert] = "Action failed with the error message: #{e.message}"
       #   render(:show)
@@ -107,12 +107,15 @@ module Upmin
         @klass = Upmin::AdminModel.find_class(params[:klass])
       end
 
-      def set_method
-        @method = params[:method].to_sym
+      def set_action
+        action_name = params[:method].to_sym
+        @action = @model.actions.select{ |action| action.name == action_name }.first
+
+        raise Upmin::InvalidAction.new(params[:method]) unless @action
       end
 
       def set_arguments
-        arguments = params[@method] || {}
+        arguments = params[@action.name] || {}
         @arguments = {}
         arguments.each do |k, v|
           unless k.ends_with?("_is_nil")
@@ -121,6 +124,7 @@ module Upmin
             end
           end
         end
+        @arguments = ActiveSupport::HashWithIndifferentAccess.new(@arguments)
       end
 
       def set_page

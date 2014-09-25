@@ -52,6 +52,12 @@ module Upmin::Railties
       elsif data.is_a?(Upmin::Association)
         options = RenderHelpers.association_options(data, options)
         partials = RenderHelpers.association_partials(data, options)
+      elsif data.is_a?(Upmin::Action)
+        options = RenderHelpers.action_options(data, options)
+        partials = RenderHelpers.action_partials(data, options)
+      elsif data.is_a?(Upmin::Parameter)
+        options = RenderHelpers.parameter_options(data, options)
+        partials = RenderHelpers.parameter_partials(data, options)
       else
         raise Upmin::ArgumentError.new(data)
       end
