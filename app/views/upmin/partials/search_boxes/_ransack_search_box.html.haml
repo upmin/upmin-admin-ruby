@@ -3,11 +3,10 @@
   = klass.humanized_name
 
 -# Upmin default search uses the ransack gem, see: https://github.com/activerecord-hackery/ransack
-= form_tag(upmin_search_path(klass: klass.name), method: :get) do
+= form_tag(klass.search_path, method: :get) do
   - klass.attributes.each do |attr_name|
     - type = klass.attribute_type(attr_name)
 
-    -# TODO(jon): Make sure these retain their data on a search
     -# TODO(jon): Break these into partials possibly?
     - if type == :string
       .form-group
@@ -34,4 +33,4 @@
         = date_field(:q, "#{attr_name}_lteq", class: "form-control")
 
   = submit_tag("Search", class: "btn btn-primary btn-block")
-  = link_to("Clear All", upmin_search_path(klass: klass.name), class: "btn btn-default btn-block")
+  = link_to("Clear All", klass.search_path, class: "btn btn-default btn-block")

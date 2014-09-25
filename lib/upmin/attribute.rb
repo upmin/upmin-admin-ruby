@@ -17,12 +17,8 @@ module Upmin
       # TODO(jon): Add a way to override with widgets?
       return @type if defined?(@type)
 
-      # Try to get it from the model_class' columns hash
-      if adapter = model.class.columns_hash[name.to_s]
-        return @type = adapter.type
-      else
-        return @type = :unknown
-      end
+      # Try to get it from the model_class
+      @type = model.class.attribute_type(name)
 
       # If we still don't know the type, try to infer it from the value
       if @type == :unknown

@@ -6,6 +6,7 @@ module Upmin
     before_filter :set_model, only: [:show, :update, :action]
 
     before_filter :set_page, only: [:search]
+    before_filter :set_query, only: [:search]
 
     before_filter :set_action, only: [:action]
     before_filter :set_arguments, only: [:action]
@@ -83,8 +84,8 @@ module Upmin
     end
 
     def search
-      @q = @klass.ransack(params[:q])
-      @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
+      # @q = @klass.ransack(params[:q])
+      # @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
     end
 
     def action
@@ -99,6 +100,10 @@ module Upmin
     end
 
   private
+      def set_query
+        @query = Upmin::Query.new(@klass, params[:q], page: @page, per_page: 30)
+      end
+
       def set_model
         @model = @klass.new(id: params[:id])
       end

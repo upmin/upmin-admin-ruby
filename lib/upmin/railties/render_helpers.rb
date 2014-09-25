@@ -152,33 +152,26 @@ module Upmin::Railties
 
 
 
-    def RenderHelpers.search_results_partials(ransack_search, options = {})
+    def RenderHelpers.search_results_partials(query, options = {})
       partials = []
       # <options[:as]>
       # <model_name # plural>, eg: orders
       # results
-      model_name_plural = ransack_search.klass.name.underscore.pluralize
+      model_name_plural = query.underscore_name(:plural)
 
-      partials << build_search_result_path(options[:as]) if options[:as]
-      partials << build_search_result_path(model_name_plural)
-      partials << build_search_result_path(:results)
+      partials << build_search_results_path(options[:as]) if options[:as]
+      partials << build_search_results_path(model_name_plural)
+      partials << build_search_results_path(:results)
       return partials
     end
 
-    def RenderHelpers.search_result_partials(model, options = {})
-      partials = []
-      # <options[:as]>
-      # <model_name # singular>, eg: order
-      # results
-      model_name = model.klass.name.underscore
-
-      partials << build_search_result_path(options[:as]) if options[:as]
-      partials << build_search_result_path(model_name)
-      partials << build_search_result_path(:result)
-      return partials
+    def RenderHelpers.search_results_options(query, options = {})
+      options[:locals] ||= {}
+      options[:locals][:query] = query
+      return options
     end
 
-    def RenderHelpers.build_search_result_path(partial)
+    def RenderHelpers.build_search_results_path(partial)
       return build_path("search_results", partial)
     end
 
@@ -194,9 +187,16 @@ module Upmin::Railties
       return partials
     end
 
+    def RenderHelpers.search_box_options(klass, options = {})
+      options[:locals] ||= {}
+      options[:locals][:klass] = klass
+      return options
+    end
+
     def RenderHelpers.build_search_box_path(partial)
       return build_path("search_boxes", partial)
     end
+
 
 
     def RenderHelpers.build_path(folder, partial)

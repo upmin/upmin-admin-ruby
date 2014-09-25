@@ -124,6 +124,14 @@ module Upmin
       return (@attributes + @extra_attrs).uniq
     end
 
+    def AdminModel.attribute_type(attribute)
+      if adapter = model_class.columns_hash[attribute.to_s]
+        return adapter.type
+      else
+        return :unknown
+      end
+    end
+
     # Add a single action to upmin actions. If this is called
     # before upmin_actions the actions will not include any defaults
     # actions.
@@ -206,12 +214,16 @@ module Upmin
       return names.join(" ")
     end
 
-    def AdminModel.underscore_name
-      return model_class_name.underscore
+    def AdminModel.underscore_name(type = :singular)
+      if type == :singular
+        return model_class_name.underscore
+      else
+        return model_class_name.pluralize.underscore
+      end
     end
 
-    def AdminModel.model_class_path
-      return Upmin::Engine.routes.url_helpers.upmin_search_path(klass: klass_name)
+    def AdminModel.search_path
+      return Upmin::Engine.routes.url_helpers.upmin_search_path(klass: model_class_name)
     end
 
     def AdminModel.color
