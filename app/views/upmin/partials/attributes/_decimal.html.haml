@@ -1,0 +1,7 @@
+- decimal ||= nil
+- if editable && f = form_builder
+  = f.text_field(attr_name, value: decimal, class: "form-control")
+
+- else
+  %p.well
+    = decimal
