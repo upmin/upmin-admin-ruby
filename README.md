@@ -12,6 +12,8 @@ There is also a demo application you can test out here: [store_demo](https://git
 
 If you do choose to use the [store_demo](https://github.com/upmin/store_demo), please follow the directions in the [README](https://github.com/upmin/store_demo/blob/master/README.md) to ensure you have seed data to work with.
 
+You can generate a starter application using [Rails Composer](http://www.railscomposer.com/) that sets up Devise, role-based authorization, and upmin-admin. See [Upmin Admin Interface in Rails Composer](http://blog.railsapps.org/post/97584175990/upmin-admin-interface-in-rails-composer).
+
 
 ## Installation
 
