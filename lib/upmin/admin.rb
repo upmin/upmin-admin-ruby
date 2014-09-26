@@ -2,6 +2,7 @@ require "upmin"
 require "upmin/engine"
 
 require "upmin/automatic_delegation"
+require "upmin/configuration"
 require "upmin/errors"
 require "upmin/paginator"
 

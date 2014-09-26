@@ -126,24 +126,14 @@ module Upmin
       return "Admin#{model_name}".constantize
     end
 
-    # Returns all admin models.
+    # Returns all upmin models.
     def Model.all
       return @all if defined?(@all)
       @all = []
-      all_models.each do |m|
-        @all << find_or_create_class(m.name)
+      Upmin.configuration.models.each do |m|
+        @all << find_or_create_class(m.to_s.camelize)
       end
       return @all
-    end
-
-    def Model.all_models
-      # If Rails
-      ::Rails.application.eager_load!
-      rails_models = ::ActiveRecord::Base.descendants.select do |m|
-        m.to_s != "ActiveRecord::SchemaMigration"
-      end
-
-      return rails_models
     end
 
     def Model.model_class
@@ -199,29 +189,26 @@ module Upmin
       return @color
     end
 
+    def Model.colors
+      return Upmin.configuration.colors
+    end
+
     def Model.next_color
+      puts "Picking a color"
       @color_index ||= 0
       next_color = colors[@color_index]
+      puts "colors is going to be #{next_color}"
       @color_index = (@color_index + 1) % colors.length
+      puts "color index is #{@color_index}"
       return next_color
     end
 
-    def Model.colors(*colors)
-      @colors = colors if colors.any?
-      @colors ||= [
-        :light_blue,
-        :blue_green,
-        :red,
-        :yellow,
-        :orange,
-        :purple,
-        :dark_blue,
-        :dark_red,
-        :green
-      ]
-      return @colors
+    # This is not currently used, but could be used to ensure colors are always the same.
+    def Model.color_index
+      return @color_index if defined?(@color_index)
+      @color_index = model_class_name.split("").map(&:ord).inject(:+) % colors.length
+      return @color_index
     end
-
 
 
     ###########################################################
