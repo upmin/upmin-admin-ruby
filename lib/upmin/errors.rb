@@ -23,6 +23,12 @@ module Upmin
     end
   end
 
+  class UnsupportedObjectMapper < ::StandardError
+    def initialize
+      super("The ORM or ODM you are using is not supported. Please create an issue on github if one doesn't exist - https://github.com/upmin/upmin-admin-ruby/issues")
+    end
+  end
+
   class UninferrableAdminError < NameError
     def initialize(klass)
       super("Could not infer an Admin class for #{klass}.")
