@@ -8,6 +8,24 @@ module Upmin
 
     delegate(:underscore_name, to: :klass)
 
+    def Query.new(*args)
+      unless args[0]
+        raise ::ArgumentError.new("wrong number of arguments (#{args.length} for 1..3)")
+      end
+      unless args[0].superclass == Upmin::Model
+        raise ArgumentError.new(args[0])
+      end
+
+      mc = args[0].model_class
+      if mc.is_a?(DataMapper::Model)
+        return DataMapperQuery.new(*args)
+      elsif mc.superclass == ActiveRecord::Base
+        return ActiveRecordQuery.new(*args)
+      else
+        raise ArgumentError.new(args[0])
+      end
+    end
+
     def initialize(klass, search_options = {}, options = {})
       @klass = klass
       @search_options = search_options
@@ -16,18 +34,11 @@ module Upmin
     end
 
     def results
-      return klass.ransack(search_options).result(distinct: true)
+      raise NotImplementedError
     end
 
     def paginated_results
-      return @paginated_results if defined?(@paginated_results)
-      if page && per_page
-        pr = Upmin::Paginator.paginate(results, page, per_page)
-      else
-        pr = Upmin::Paginator.paginate(results)
-      end
-      @paginated_results = pr
-      return @paginated_results
+      raise NotImplementedError
     end
 
     def upmin_results
@@ -35,6 +46,7 @@ module Upmin
       @upmin_results = paginated_results.map{ |r| r.upmin_model }
       return @upmin_results
     end
+
 
     private
 

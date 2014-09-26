@@ -11,7 +11,7 @@ module Upmin
         unless model.has_key?(:id)
           raise ":id or model instance is required."
         end
-        @model = self.model_class.find(model[:id])
+        @model = self.class.find(model[:id])
       elsif model.nil?
         @model = self.model_class.new
       else
@@ -60,6 +60,30 @@ module Upmin
         @actions << Upmin::Action.new(self, action_name)
       end
       return @actions
+    end
+
+
+
+    ###########################################################
+    ### Rails methods that may need mapped to something     ###
+    ### else with other ORMs                                ###
+    ###########################################################
+
+    def new_record?
+      if self.class.active_record?
+        return model.new_record?
+      elsif self.class.data_mapper?
+        return model.new?
+      end
+    end
+
+    def to_key
+      if self.class.active_record?
+        return model.to_key
+      elsif self.class.data_mapper?
+        # TODO(jon): Make this better, but this may work for now.
+        return [model.id]
+      end
     end
 
 
@@ -114,6 +138,15 @@ module Upmin
       return @associations = all - ignored
     end
 
+    def Model.find(*args)
+      if data_mapper?
+        model_class.get(*args)
+      elsif active_record?
+        model_class.find(*args)
+      end
+    end
+
+
     def Model.find_class(model)
       return find_or_create_class(model.to_s)
     end
@@ -163,6 +196,10 @@ module Upmin
       return name.demodulize[5..-1]
     end
 
+    def Model.model_name
+      return ActiveModel::Name.new(model_class)
+    end
+
     def Model.humanized_name(type = :plural)
       names = model_class_name.split(/(?=[A-Z])/)
       if type == :plural
@@ -210,6 +247,14 @@ module Upmin
       return @color_index
     end
 
+    def Model.active_record?
+      return model_class.superclass == ActiveRecord::Base
+    end
+
+    def Model.data_mapper?
+      return model_class.is_a?(DataMapper::Model)
+    end
+
 
     ###########################################################
     ### Customization methods for Admin<Model> classes      ###
@@ -234,17 +279,25 @@ module Upmin
       if attributes.any?
         @attributes = attributes.map{|a| a.to_sym}
       end
+      @attributes ||= default_attributes
 
-      @attributes ||= model_class.attribute_names.map{|a| a.to_sym}
       return (@attributes + @extra_attrs).uniq
     end
 
-    def Model.attribute_type(attribute)
-      if adapter = model_class.columns_hash[attribute.to_s]
-        return adapter.type
-      else
-        return :unknown
+    def Model.default_attributes
+      if active_record?
+        return model_class.attribute_names.map(&:to_sym)
+      elsif data_mapper?
+        return model_class.properties.map(&:name)
       end
+    end
+
+    def Model.attribute_type(attribute)
+      if active_record?
+        adapter = model_class.columns_hash[attribute.to_s]
+        return adapter.type if adapter
+      end
+      return :unknown
     end
 
     # Add a single action to upmin actions. If this is called

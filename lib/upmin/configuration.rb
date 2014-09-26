@@ -17,10 +17,7 @@ module Upmin
     attr_writer :colors
 
     def initialize
-      if defined?(ActiveRecord)
-        # Eager load on init so even if models are set custom an eager load has happened.
-        ::Rails.application.eager_load!
-      end
+      ::Rails.application.eager_load!
     end
 
     def colors
@@ -34,19 +31,34 @@ module Upmin
     private
 
       def default_models
+        def_models = []
+        orm_found = false
+
         if defined?(ActiveRecord)
-          # If Rails
+          orm_found = true
           ::Rails.application.eager_load!
-          rails_models = ::ActiveRecord::Base.descendants
+          def_models += ::ActiveRecord::Base.descendants
             .map(&:to_s)
             .select{ |m| m != "ActiveRecord::SchemaMigration" }
             .sort
             .map(&:underscore)
             .map(&:to_sym)
-          return rails_models
-        else
+        end
+
+        if defined?(DataMapper)
+          orm_found = true
+          def_models += DataMapper::Model.descendants.entries
+            .map(&:to_s)
+            .sort
+            .map(&:underscore)
+            .map(&:to_sym)
+        end
+
+        unless orm_found
           raise UnsupportedObjectMapper.new
         end
+
+        return def_models
       end
 
       def default_colors

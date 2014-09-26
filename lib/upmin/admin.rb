@@ -11,7 +11,10 @@ require "upmin/attribute"
 require "upmin/association"
 require "upmin/action"
 require "upmin/parameter"
+
 require "upmin/query"
+require "upmin/active_record_query"
+require "upmin/data_mapper_query"
 
 
 # Monkey patch code into rails

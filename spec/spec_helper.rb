@@ -28,6 +28,11 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
+    if defined?(DataMapper)
+      DataMapper.finalize
+      DataMapper.auto_migrate!
+    end
+
     Seeder.seed
   end
 
