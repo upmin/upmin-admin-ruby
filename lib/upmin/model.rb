@@ -4,7 +4,7 @@ module Upmin
     include Upmin::AutomaticDelegation
 
     attr_reader :model
-    alias_method :object, :model # For delegation
+    alias_method :object, :model
 
     def initialize(model = nil, options = {})
       if self.class.active_record?
@@ -102,6 +102,10 @@ module Upmin
     ###########################################################
     ###  Class methods
     ###########################################################
+
+    def Model.count(*args)
+      return model_class.count(*args)
+    end
 
     def Model.find_class(model)
       return find_or_create_class(model.to_s)

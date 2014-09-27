@@ -3,27 +3,27 @@
 class OrderSeeder
   def OrderSeeder.seed
     (1..200).each do |i|
-      user = User.find(rand(User.count) + 1)
+      user = AdminUser.new(id: rand(AdminUser.count) + 1)
 
-      order = Order.new
-      order.user = user
+      order = AdminOrder.new
+      order.user = user.model
       order.save!
 
       num_products = rand(4) + 1
       (1..num_products).each do |k|
         quantity = rand(4) + 1
-        product = Product.find(rand(Product.count) + 1)
+        product = AdminProduct.new(id: rand(AdminProduct.count) + 1)
 
-        po = ProductOrder.new
-        po.order = order
-        po.product = product
+        po = AdminProductOrder.new
+        po.order = order.model
+        po.product = product.model
         po.quantity = quantity
         po.purchase_price = product.price
         po.save!
       end
 
-      shipment = Shipment.new
-      shipment.order = order
+      shipment = AdminShipment.new
+      shipment.order = order.model
       shipment.price = (rand(1000) / 100.0) + 10.0
       shipment.carrier = [:ups, :usps, :fedex, :dhl][rand(4)]
       shipment.delivered = [true, true, false][rand(3)]

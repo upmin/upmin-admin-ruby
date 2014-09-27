@@ -8,7 +8,7 @@ class ProductSeeder
     json_array.each_with_index do |json_product, index|
       break if index >= 100
 
-      product = Product.new
+      product = AdminProduct.new
       product.name = json_product["name"]
       product.short_desc = json_product["shortDescription"]
       product.best_selling_rank = json_product["bestSellingRank"]
@@ -20,7 +20,7 @@ class ProductSeeder
       product.image = json_product["image"]
       product.category = json_product["category"]
       product.free_shipping = !json_product["shipping"].nil?
-      product.save
+      product.save!
     end
   end
 end
