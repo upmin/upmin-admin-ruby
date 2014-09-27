@@ -8,21 +8,13 @@ module Upmin
 
     delegate(:underscore_name, to: :klass)
 
-    def Query.new(*args)
-      unless args[0]
-        raise ::ArgumentError.new("wrong number of arguments (#{args.length} for 1..3)")
-      end
-      unless args[0].superclass == Upmin::Model
-        raise ArgumentError.new(args[0])
-      end
-
-      mc = args[0].model_class
-      if mc.is_a?(DataMapper::Model)
-        return DataMapperQuery.new(*args)
-      elsif mc.superclass == ActiveRecord::Base
-        return ActiveRecordQuery.new(*args)
+    def Query.new(klass, search_options = {}, options = {})
+      if klass.data_mapper?
+        return DataMapper::Query.new(klass, search_options, options)
+      elsif klass.active_record?
+        return ActiveRecord::Query.new(klass, search_options, options)
       else
-        raise ArgumentError.new(args[0])
+        raise ArgumentError.new(klass)
       end
     end
 

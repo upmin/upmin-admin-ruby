@@ -11,13 +11,17 @@ require "upmin/attribute"
 require "upmin/association"
 require "upmin/action"
 require "upmin/parameter"
-
 require "upmin/query"
-require "upmin/active_record_query"
-require "upmin/data_mapper_query"
+
+# ActiveRecord Specifics.
+Dir["#{File.dirname(__FILE__)}/active_record/**/*.rb"].each { |f| require f }
+
+# DataMapper Specifics
+Dir["#{File.dirname(__FILE__)}/data_mapper/**/*.rb"].each { |f| require f }
 
 
 # Monkey patch code into rails
+require "upmin/railties/data_mapper"
 require "upmin/railties/active_record"
 require "upmin/railties/paginator"
 require "upmin/railties/render"
@@ -39,3 +43,4 @@ module Upmin
   module Admin
   end
 end
+

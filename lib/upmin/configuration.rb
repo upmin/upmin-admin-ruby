@@ -47,7 +47,7 @@ module Upmin
 
         if defined?(DataMapper)
           orm_found = true
-          def_models += DataMapper::Model.descendants.entries
+          def_models += ::DataMapper::Model.descendants.entries
             .map(&:to_s)
             .sort
             .map(&:underscore)

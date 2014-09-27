@@ -5,10 +5,18 @@ module Upmin
   class Railtie < Rails::Railtie
     initializer('upmin.insert_into_active_record') do
       ActiveSupport.on_load(:active_record) do
-        ::ActiveRecord::Base.send(:include, Upmin::Railties::ActiveRecord)
+        if defined?(ActiveRecord)
+          ::ActiveRecord::Base.send(:include, Upmin::Railties::ActiveRecord)
+        end
+
+        if defined?(DataMapper)
+          ::DataMapper::Resource.send(:include, Upmin::Railties::DataMapper)
+        end
         # ::ActiveRecord::Relation.send(:include, Upmin::ActiveRecordRelation)
       end
+    end
 
+    initializer('upmin.insert_view_helpers') do
       ActiveSupport.on_load(:action_controller) do
         ::ActionController::Base.send(:include, Upmin::Railties::Render)
         ::ActionController::Base.send(:include, Upmin::Railties::Paginator)
