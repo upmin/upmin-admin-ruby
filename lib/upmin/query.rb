@@ -8,17 +8,15 @@ module Upmin
 
     delegate(:underscore_name, to: :klass)
 
-    def Query.new(klass, search_options = {}, options = {})
-      if klass.data_mapper?
-        return DataMapper::Query.new(klass, search_options, options)
-      elsif klass.active_record?
-        return ActiveRecord::Query.new(klass, search_options, options)
+    def initialize(klass, search_options = {}, options = {})
+      if klass.active_record?
+        extend Upmin::ActiveRecord::Query
+      elsif klass.data_mapper?
+        extend Upmin::DataMapper::Query
       else
         raise ArgumentError.new(klass)
       end
-    end
 
-    def initialize(klass, search_options = {}, options = {})
       @klass = klass
       @search_options = search_options
       @page = options[:page]

@@ -1,5 +1,5 @@
 module Upmin::ActiveRecord
-  class Query < Upmin::Query
+  module Query
 
     def results
       return klass.ransack(search_options).result(distinct: true)

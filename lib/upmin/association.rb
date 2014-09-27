@@ -5,10 +5,8 @@ module Upmin
 
     def initialize(model, assoc_name, options = {})
       if model.class.active_record?
-        puts "Extending AR"
         extend Upmin::ActiveRecord::Association
       elsif model.class.data_mapper?
-        puts "Extending DM"
         extend Upmin::DataMapper::Association
       else
         raise ArgumentError.new(model)

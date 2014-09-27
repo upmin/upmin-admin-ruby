@@ -1,5 +1,5 @@
 module Upmin::DataMapper
-  class Query < Upmin::Query
+  module Query
 
     attr_reader :klass
     attr_reader :search_options
