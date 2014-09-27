@@ -209,11 +209,19 @@ module Upmin
 
 
     def Model.active_record?
-      return model_class.superclass == ::ActiveRecord::Base
+      if defined?(ActiveRecord)
+        return model_class.superclass == ::ActiveRecord::Base
+      else
+        return false
+      end
     end
 
     def Model.data_mapper?
-      return model_class.is_a?(::DataMapper::Model)
+      if defined?(DataMapper)
+        return model_class.is_a?(::DataMapper::Model)
+      else
+        return false
+      end
     end
 
 

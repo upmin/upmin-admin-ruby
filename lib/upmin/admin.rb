@@ -14,11 +14,14 @@ require "upmin/parameter"
 require "upmin/query"
 
 # ActiveRecord Specifics.
-Dir["#{File.dirname(__FILE__)}/active_record/**/*.rb"].each { |f| require f }
+if defined?(ActiveRecord)
+  Dir["#{File.dirname(__FILE__)}/active_record/**/*.rb"].each { |f| require f }
+end
 
 # DataMapper Specifics
-Dir["#{File.dirname(__FILE__)}/data_mapper/**/*.rb"].each { |f| require f }
-
+if defined?(DataMapper)
+  Dir["#{File.dirname(__FILE__)}/data_mapper/**/*.rb"].each { |f| require f }
+end
 
 # Monkey patch code into rails
 require "upmin/railties/data_mapper"
@@ -33,6 +36,9 @@ require "jquery-rails"
 require "ransack"
 require "haml"
 require "sass-rails"
+
+
+require "ostruct"
 
 # If WillPaginate is present we just use it, but by default upmin-admin uses Kaminari
 require "kaminari" unless defined?(WillPaginate)
