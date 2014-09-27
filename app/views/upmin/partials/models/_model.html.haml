@@ -31,14 +31,14 @@
         = up_render(association)
 
 
-  -# - if model.actions.any?
-  -#   %br
-  -#   %br
-  -#   %br
-  -#   %h3{style: "color: #333;"}
-  -#     Actions
-  -#   %hr
-  -#   .actions
-  -#     - model.actions.each do |action|
-  -#       = up_render(action)
+  - if model.actions.any?
+    %br
+    %br
+    %br
+    %h3{style: "color: #333;"}
+      Actions
+    %hr
+    .actions
+      - model.actions.each do |action|
+        = up_render(action)
 

@@ -71,7 +71,7 @@ module Upmin
 
 
     ###########################################################
-    ###  Delegated instance methods                         ###
+    ###  Delegated instance methods
     ###########################################################
 
     # TODO(jon): Delegations here weren't working in 3.2 so this is done with normal old methods.
@@ -100,7 +100,7 @@ module Upmin
 
 
     ###########################################################
-    ###  Class methods                                      ###
+    ###  Class methods
     ###########################################################
 
     def Model.find_class(model)
@@ -215,7 +215,7 @@ module Upmin
 
 
     ###########################################################
-    ### Customization methods for Admin<Model> classes      ###
+    ### Customization methods for Admin<Model> classes
     ###########################################################
 
     # Add a single attribute to upmin attributes.
