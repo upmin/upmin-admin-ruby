@@ -8,7 +8,7 @@ require 'database_cleaner'
 require 'factory_girl_rails'
 
 
-if defined?(ActiveRecord)
+if defined?(ActiveRecord) || defined?(DataMapper)
   require File.expand_path('../../../../test_seeders/seeder', __FILE__)
 end
 
