@@ -105,8 +105,8 @@ module Upmin
       # Temporarily preserve most search form values. This will break if
       # someone wants to search for "2014-09-05" as a string :(
       def set_q_for_form_values
-        q_hash = params[:q].dup
-        if q_hash
+        if params[:q]
+          q_hash = params[:q].dup
           q_hash.each do |key, value|
             if value.to_s.match(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/)
               q_hash[key] = DateTime.parse(value)

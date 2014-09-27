@@ -28,7 +28,7 @@ module Upmin::Railties
         options = RenderHelpers.search_results_options(data, options)
         partials = RenderHelpers.search_results_partials(data, options)
 
-      elsif Upmin::Model.all.include?(data)
+      elsif data.superclass == Upmin::Model
         # Probably rendering a search box
         options = RenderHelpers.search_box_options(data, options)
         partials = RenderHelpers.search_box_partials(data, options)

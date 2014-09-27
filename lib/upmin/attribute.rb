@@ -34,7 +34,11 @@ module Upmin
         return false
       when :created_at
         return false
+      when :created_on
+        return false
       when :updated_at
+        return false
+      when :updated_on
         return false
       else
         # TODO(jon): Add a way to declare which attributes are editable and which are not later.

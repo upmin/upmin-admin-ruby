@@ -34,6 +34,12 @@ module Upmin
         def_models = []
         orm_found = false
 
+        if defined?(Rails) && Rails.application
+          ::Rails.application.eager_load!
+        else
+          raise "We kinda need rails for a rails engine :("
+        end
+
         if defined?(ActiveRecord)
           orm_found = true
           ::Rails.application.eager_load!
@@ -47,6 +53,7 @@ module Upmin
 
         if defined?(DataMapper)
           orm_found = true
+          ::Rails.application.eager_load!
           def_models += ::DataMapper::Model.descendants.entries
             .map(&:to_s)
             .sort

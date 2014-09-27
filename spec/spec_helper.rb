@@ -7,7 +7,6 @@ require 'capybara/rails'
 require 'database_cleaner'
 require 'factory_girl_rails'
 
-
 if defined?(ActiveRecord) || defined?(DataMapper)
   require File.expand_path('../../../../test_seeders/seeder', __FILE__)
 end
@@ -29,6 +28,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     if defined?(DataMapper)
+      # NOTE: eager_loading needs to be on in the app for testing.
       DataMapper.finalize
       DataMapper.auto_migrate!
     end

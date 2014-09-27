@@ -54,7 +54,6 @@ module Upmin
       return @associations if defined?(@associations)
       @associations = []
       self.class.associations.each do |assoc_name|
-        puts "Assoc_name=#{assoc_name}"
         @associations << Upmin::Association.new(self, assoc_name)
       end
       return @associations
@@ -191,12 +190,9 @@ module Upmin
     end
 
     def Model.next_color
-      puts "Picking a color"
       @color_index ||= 0
       next_color = colors[@color_index]
-      puts "colors is going to be #{next_color}"
       @color_index = (@color_index + 1) % colors.length
-      puts "color index is #{@color_index}"
       return next_color
     end
 

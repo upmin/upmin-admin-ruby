@@ -6,7 +6,7 @@ class Product
   property :short_desc, String
   property :best_selling_rank, Integer
   property :thumbnail, String
-  property :price, Decimal
+  property :price, Decimal, scale: 2
   property :manufacturer, String
   property :url, String
   property :product_type, String

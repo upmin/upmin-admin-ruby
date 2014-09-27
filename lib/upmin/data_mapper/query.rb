@@ -21,9 +21,6 @@ module Upmin::DataMapper
             end
           end
         end
-        puts "prepared search"
-        puts @prepared_search.inspect
-        puts "end of prepared search"
         return @prepared_search
       end
 

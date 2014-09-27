@@ -18,7 +18,7 @@ class UserSeeder
         email = "#{first_name}#{last_name}@yahoo.com"
       end
 
-      u = AdminUser.new
+      u = User.new
       u.name = "#{first_name} #{last_name}"
       u.email = email
       u.stripe_card_id = random_id(8)

@@ -28,8 +28,8 @@ feature("Update an existing model") do
     expect(user.stripe_card_id).to(eq(updated_user.stripe_card_id))
   end
 
-  scenario("with invalid order info") do
-    user = User.first
+  scenario("with invalid user info") do
+    user = create(:user_dif)
     invalid_user = build(:user, email: "invalid")
 
     visit("/upmin/m/User/i/#{user.id}")
@@ -42,6 +42,7 @@ feature("Update an existing model") do
 
     within(".alert.alert-danger") do
       expect(page).to(have_content("User was NOT updated."))
+      expect(page).to(have_selector("li", text: /email/i))
     end
 
     within(".field_with_errors") do
@@ -56,6 +57,7 @@ feature("Update an existing model") do
     expect(user.name).not_to(eq(invalid_user.name))
     expect(user.email).not_to(eq(invalid_user.email))
     expect(user.stripe_card_id).not_to(eq(invalid_user.stripe_card_id))
+
   end
 
   scenario("with a nil attribute") do
