@@ -120,12 +120,11 @@ module Upmin
 
     # Returns all upmin models.
     def Model.all
-      return @all if defined?(@all)
-      @all = []
+      all = []
       Upmin.configuration.models.each do |m|
-        @all << find_or_create_class(m.to_s.camelize)
+        all << find_or_create_class(m.to_s.camelize)
       end
-      return @all
+      return all
     end
 
     def Model.model_class

@@ -13,19 +13,36 @@ module Upmin
   end
 
   class Configuration
-    attr_writer :models
     attr_writer :colors
 
     def initialize
       ::Rails.application.eager_load!
     end
 
+    def colors=(colors)
+      @custom_colors = true
+      @colors = colors
+    end
+
     def colors
-      return @colors ||= default_colors
+      if defined?(@custom_colors)
+        return @colors
+      else
+        return default_colors
+      end
+    end
+
+    def models=(models)
+      @custom_models = true
+      @models = models
     end
 
     def models
-      return @models ||= default_models
+      if defined?(@custom_models)
+        return @models
+      else
+        return default_models
+      end
     end
 
     private
