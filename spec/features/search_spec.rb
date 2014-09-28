@@ -14,7 +14,7 @@ feature("Search Views") do
     visit("/upmin/m/User")
 
     # Make sure some basic pagination exits
-    within(".pagination") do
+    within(".pagination:first-of-type") do
       within(".current") do
         expect(page).to(have_content("1"))
       end
@@ -23,7 +23,7 @@ feature("Search Views") do
       click_link("Next")
     end
 
-    within(".pagination") do
+    within(".pagination:nth-of-type(2)") do
       within(".current") do
         expect(page).to(have_content("2"))
       end
@@ -34,7 +34,7 @@ feature("Search Views") do
       click_link("3")
     end
 
-    within(".pagination") do
+    within(".pagination:last-of-type") do
       within(".current") do
         expect(page).to(have_content("3"))
       end

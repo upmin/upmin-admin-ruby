@@ -52,6 +52,9 @@ body {
   padding-top: 8px;
 }
 
+.pagination:first-of-type {
+  margin-bottom: 0px;
+}
 
 
 .wizard span {padding: 12px 12px 10px 12px; margin-right:5px; background:#efefef; position:relative; display:inline-block; }
