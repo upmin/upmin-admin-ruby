@@ -6,6 +6,10 @@ feature("Search Views") do
     # Setup BG Stuff
   end
 
+  scenario("Nav Bar") do
+    # it("TODO(jon): Write this test")
+  end
+
   scenario("Pagination") do
     visit("/upmin/m/User")
 

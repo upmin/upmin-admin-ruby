@@ -7,6 +7,7 @@ module Upmin
 
     before_filter :set_page, only: [:search]
     before_filter :set_query, only: [:search]
+    before_filter :set_q_for_form_values, only: [:search]
 
     before_filter :set_action, only: [:action]
     before_filter :set_arguments, only: [:action]
@@ -100,6 +101,21 @@ module Upmin
     end
 
   private
+      # TODO(jon): Make the search form fill better than openstruct impl.
+      # Temporarily preserve most search form values. This will break if
+      # someone wants to search for "2014-09-05" as a string :(
+      def set_q_for_form_values
+        if params[:q]
+          q_hash = params[:q].dup
+          q_hash.each do |key, value|
+            if value.to_s.match(/[0-9]{4}\-[0-9]{2}\-[0-9]{2}/)
+              q_hash[key] = DateTime.parse(value)
+            end
+          end
+          @q = OpenStruct.new(q_hash)
+        end
+      end
+
       def set_query
         @query = Upmin::Query.new(@klass, params[:q], page: @page, per_page: 30)
       end

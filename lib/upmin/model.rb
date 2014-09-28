@@ -4,14 +4,20 @@ module Upmin
     include Upmin::AutomaticDelegation
 
     attr_reader :model
-    alias_method :object, :model # For delegation
+    alias_method :object, :model
 
     def initialize(model = nil, options = {})
+      if self.class.active_record?
+        self.class.send(:include, Upmin::ActiveRecord::Model)
+      elsif self.class.data_mapper?
+        self.class.send(:include, Upmin::DataMapper::Model)
+      end
+
       if model.is_a?(Hash)
         unless model.has_key?(:id)
           raise ":id or model instance is required."
         end
-        @model = self.model_class.find(model[:id])
+        @model = self.class.find(model[:id])
       elsif model.nil?
         @model = self.model_class.new
       else
@@ -63,12 +69,11 @@ module Upmin
     end
 
 
-
     ###########################################################
-    ###  Delegated instance methods                         ###
+    ###  Delegated instance methods
     ###########################################################
 
-    # TODO(jon): Figure out why delegations here weren't working in 3.2 tests
+    # TODO(jon): Delegations here weren't working in 3.2 so this is done with normal old methods.
     # delegate(:color, to: :class)
     def color
       return self.class.color
@@ -94,24 +99,11 @@ module Upmin
 
 
     ###########################################################
-    ###  Class methods                                      ###
+    ###  Class methods
     ###########################################################
 
-    def Model.associations
-      return @associations if defined?(@associations)
-
-      all = []
-      ignored = []
-      model_class.reflect_on_all_associations.each do |reflection|
-        all << reflection.name.to_sym
-
-        # We need to remove the ignored later because we don't know the order they come in.
-        if reflection.is_a?(::ActiveRecord::Reflection::ThroughReflection)
-          ignored << reflection.options[:through]
-        end
-      end
-
-      return @associations = all - ignored
+    def Model.count(*args)
+      return model_class.count(*args)
     end
 
     def Model.find_class(model)
@@ -128,12 +120,11 @@ module Upmin
 
     # Returns all upmin models.
     def Model.all
-      return @all if defined?(@all)
-      @all = []
+      all = []
       Upmin.configuration.models.each do |m|
-        @all << find_or_create_class(m.to_s.camelize)
+        all << find_or_create_class(m.to_s.camelize)
       end
-      return @all
+      return all
     end
 
     def Model.model_class
@@ -161,6 +152,10 @@ module Upmin
     def Model.model_class_name
       raise NameError if name.nil? || name.demodulize !~ /Admin.+$/
       return name.demodulize[5..-1]
+    end
+
+    def Model.model_name
+      return ActiveModel::Name.new(model_class)
     end
 
     def Model.humanized_name(type = :plural)
@@ -194,12 +189,9 @@ module Upmin
     end
 
     def Model.next_color
-      puts "Picking a color"
       @color_index ||= 0
       next_color = colors[@color_index]
-      puts "colors is going to be #{next_color}"
       @color_index = (@color_index + 1) % colors.length
-      puts "color index is #{@color_index}"
       return next_color
     end
 
@@ -211,8 +203,26 @@ module Upmin
     end
 
 
+    def Model.active_record?
+      if defined?(ActiveRecord)
+        return model_class.superclass == ::ActiveRecord::Base
+      else
+        return false
+      end
+    end
+
+    def Model.data_mapper?
+      if defined?(DataMapper)
+        return model_class.is_a?(::DataMapper::Model)
+      else
+        return false
+      end
+    end
+
+
+
     ###########################################################
-    ### Customization methods for Admin<Model> classes      ###
+    ### Customization methods for Admin<Model> classes
     ###########################################################
 
     # Add a single attribute to upmin attributes.
@@ -234,17 +244,9 @@ module Upmin
       if attributes.any?
         @attributes = attributes.map{|a| a.to_sym}
       end
+      @attributes ||= default_attributes
 
-      @attributes ||= model_class.attribute_names.map{|a| a.to_sym}
       return (@attributes + @extra_attrs).uniq
-    end
-
-    def Model.attribute_type(attribute)
-      if adapter = model_class.columns_hash[attribute.to_s]
-        return adapter.type
-      else
-        return :unknown
-      end
     end
 
     # Add a single action to upmin actions. If this is called
@@ -269,6 +271,35 @@ module Upmin
       end
       @actions ||= []
       return @actions
+    end
+
+
+
+    ###########################################################
+    ### Methods that need to be to be overridden. If the
+    ### Model.method_name version of these are ever called it
+    ### means that it wasn't overridden, or an instance of
+    ### the class hasn't been created yet.
+    ###########################################################
+
+    def Model.find(*args)
+      new
+      return find(*args)
+    end
+
+    def Model.default_attributes
+      new
+      return default_attributes
+    end
+
+    def Model.attribute_type(attribute)
+      new
+      return attribute_type(attribute)
+    end
+
+    def Model.associations
+      new
+      return associations
     end
 
   end

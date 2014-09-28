@@ -9,6 +9,14 @@ module Upmin
     delegate(:underscore_name, to: :klass)
 
     def initialize(klass, search_options = {}, options = {})
+      if klass.active_record?
+        extend Upmin::ActiveRecord::Query
+      elsif klass.data_mapper?
+        extend Upmin::DataMapper::Query
+      else
+        raise ArgumentError.new(klass)
+      end
+
       @klass = klass
       @search_options = search_options
       @page = options[:page]
@@ -16,7 +24,7 @@ module Upmin
     end
 
     def results
-      return klass.ransack(search_options).result(distinct: true)
+      raise NotImplementedError
     end
 
     def paginated_results
@@ -35,6 +43,7 @@ module Upmin
       @upmin_results = paginated_results.map{ |r| r.upmin_model }
       return @upmin_results
     end
+
 
     private
 

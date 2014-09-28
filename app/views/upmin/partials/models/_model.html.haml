@@ -10,7 +10,7 @@
 
   .attributes
     -# Yes this is meant to be model.model - this is the raw rails model instance.
-    = form_for(model.model, url: model.path, html: { method: :put }) do |f|
+    = form_for(model, url: model.path, html: { method: :put }) do |f|
 
       -# Render each attribute
       - model.attributes.each do |attribute|

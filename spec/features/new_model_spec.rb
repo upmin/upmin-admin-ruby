@@ -53,6 +53,7 @@ feature("Create a new model") do
 
     check("product_name_is_nil")
     fill_in("product_short_desc", with: product.short_desc)
+    fill_in("product_price", with: product.price)
     fill_in("product_manufacturer", with: product.manufacturer)
 
     expect { click_button("Create") }.to(change(Product, :count).by(1))

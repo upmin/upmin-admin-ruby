@@ -20,7 +20,7 @@ class ProductSeeder
       product.image = json_product["image"]
       product.category = json_product["category"]
       product.free_shipping = !json_product["shipping"].nil?
-      product.save
+      product.save!
     end
   end
 end

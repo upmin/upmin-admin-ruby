@@ -3,7 +3,7 @@
 class OrderSeeder
   def OrderSeeder.seed
     (1..200).each do |i|
-      user = User.find(rand(User.count) + 1)
+      user = find_helper(User, rand(User.count) + 1)
 
       order = Order.new
       order.user = user
@@ -12,7 +12,7 @@ class OrderSeeder
       num_products = rand(4) + 1
       (1..num_products).each do |k|
         quantity = rand(4) + 1
-        product = Product.find(rand(Product.count) + 1)
+        product = find_helper(Product, rand(Product.count) + 1)
 
         po = ProductOrder.new
         po.order = order
@@ -37,5 +37,13 @@ class OrderSeeder
     from_now = (1..from_now).to_a.map{|i| i.days.ago}
     all = ago + from_now
     return all[rand(all.length)]
+  end
+
+  def OrderSeeder.find_helper(model, id)
+    if defined?(DataMapper)
+      return model.get(id)
+    else
+      return model.find(id)
+    end
   end
 end

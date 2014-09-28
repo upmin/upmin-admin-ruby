@@ -48,6 +48,10 @@ module Upmin
       end
 
       def delegatable?(method)
+        @test ||={}
+        @test[method] ||= 0
+        @test[method] += 1
+        return false if @test[method] > 2
         model_class? && model_class.respond_to?(method)
       end
 
