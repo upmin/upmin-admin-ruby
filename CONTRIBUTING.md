@@ -65,3 +65,15 @@ Syntax:
 * Use the keyword `return` when your method's return value is supposed to be used. eg `is_admin?` would `return false`, but `set_age(age)` may return the age now, but a future change may cause it to return something else. This helps document when other code should use a return value from a method.
 
 We don't always follow these rules perfectly, so if you see us missing one feel free to make a commit updating it.
+
+If you are using Sublime Text, here are a few preferences that will help with this trimming whitespace, tabs, and creating newlines on files:
+
+```json
+{
+  "ensure_newline_at_eof_on_save": true,
+  "margin": 2,
+  "tab_size": 2,
+  "translate_tabs_to_spaces": true,
+  "trim_trailing_white_space_on_save": true
+}
+```
