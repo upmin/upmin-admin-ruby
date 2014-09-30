@@ -1,7 +1,10 @@
 # Upmin Admin
 
-Upmin Admin is a framework for creating powerful admin backends with minimal effort.
 [![Gem Version](https://badge.fury.io/rb/upmin-admin.svg)](http://badge.fury.io/rb/upmin-admin)
+
+Upmin Admin is a framework for creating powerful Ruby on Rails admin backends with minimal effort.
+
+Upmin Admin currently supports Rails 3.2, 4.0, 4.1 & 4.2.
 
 
 ## Demo Videos
@@ -40,17 +43,6 @@ mount Upmin::Engine => '/ice-ice-baby'
 ```
 
 And you would access your admin page at `localhost:3000/ice-ice-baby` or `yoursite.com/ice-ice-baby`.
-
-
-### Rails 4.2
-
-Add the following to your gemfile:
-
-```ruby
-gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
-```
-
-`upmin-admin` currently depends on ransack, and you need to use the 4.2 branch of ransack due to changes in ActiveRecord.
 
 
 ## Documentation
