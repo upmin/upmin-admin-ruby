@@ -1,6 +1,8 @@
 .container
   .row
     .col-md-8
+      .page_entries_info
+        = page_entries_info(@query.paginated_results)
       = up_paginate(@query.paginated_results)
       -# TODO(jon): Add pagination w/ search results
       = up_render(@query)
