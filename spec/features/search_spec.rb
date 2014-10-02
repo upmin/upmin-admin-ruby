@@ -10,6 +10,25 @@ feature("Search Views") do
     # it("TODO(jon): Write this test")
   end
 
+  scenario("Page Entries Info") do
+    visit("/upmin/m/User")
+
+    # Make sure some basic page entries info exits
+    within(".page_entries_info:first-of-type") do
+      within("b:first-of-type") do
+        expect(page).to(have_content("1 - 30"))
+      end
+
+      expect(page).to(have_content("of"))
+
+      within("b:nth-of-type(2)") do
+        expect(page).to(have_content("100"))
+      end
+
+      expect(page).to(have_content("in total"))
+    end
+  end
+
   scenario("Pagination") do
     visit("/upmin/m/User")
 
