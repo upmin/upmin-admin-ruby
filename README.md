@@ -60,7 +60,7 @@ For further documentation, please visit our [Wiki](https://github.com/upmin/upmi
 
 ## Going Forward
 
-Upmin Admin is new. It has been live for less than a few months, so there are going to be things missing. If you want to make it better, get involved and [create issues](https://github.com/upmin/upmin-admin-ruby/issues) when you find bugs or want new features, and contribute with pull requests.
+Upmin Admin is new. It has been live for less than a few months, so there are going to be things missing. If you want to make it better, get involved and [create issues](https://github.com/upmin/upmin-admin-ruby/issues) when you find bugs or want new features, and [contribute](https://github.com/upmin/upmin-admin-ruby/blob/master/CONTRIBUTING.md) with pull requests.
 
 The major features that are being worked on now are:
 
