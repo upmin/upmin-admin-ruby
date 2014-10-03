@@ -45,6 +45,19 @@ module Upmin
       end
     end
 
+    def items_per_page=(items)
+      @custom_items_per_page = true
+      @items_per_page = items
+    end
+
+    def items_per_page
+      if defined?(@custom_items_per_page)
+        return @items_per_page
+      else
+        return 30
+      end
+    end
+
     private
 
       def default_models
