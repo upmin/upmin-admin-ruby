@@ -95,11 +95,6 @@ module Upmin
       return self.class.model_class_name
     end
     #
-    #def items_per_page
-    #  return self.class.items_per_page
-    #end
-
-
 
 
     ###########################################################
