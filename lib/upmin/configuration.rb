@@ -45,16 +45,27 @@ module Upmin
       end
     end
 
+    # items_per_page can be a hash of models and the number items to display per page for that model
+    # For models not included, the default can be changed by including the symbol :default and a value
+    # or items_per_page can be an integer value, which sets the global default value for all models
+    # (shorthand for {default: <value>})
     def items_per_page=(items)
       @custom_items_per_page = true
-      @items_per_page = items
+      if items.is_a?(Hash)
+        @items_per_page = items
+        @items_per_page[:default] ||= 30
+      elsif items.is_a?(Integer)
+        @items_per_page = {default: items}
+      else
+        @items_per_page = {default: 30}
+      end
     end
 
     def items_per_page
       if defined?(@custom_items_per_page)
         return @items_per_page
       else
-        return 30
+        return {default: 30}
       end
     end
 

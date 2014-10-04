@@ -94,6 +94,10 @@ module Upmin
     def model_class_name
       return self.class.model_class_name
     end
+    #
+    #def items_per_page
+    #  return self.class.items_per_page
+    #end
 
 
 
@@ -202,7 +206,6 @@ module Upmin
       return @color_index
     end
 
-
     def Model.active_record?
       if defined?(ActiveRecord)
         return model_class.superclass == ::ActiveRecord::Base
@@ -220,7 +223,7 @@ module Upmin
     end
 
     def Model.items_per_page
-      return Upmin.configuration.items_per_page
+      return Upmin.configuration.items_per_page[underscore_name.to_sym] || Upmin.configuration.items_per_page[:default]
     end
 
 
