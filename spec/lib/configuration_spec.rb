@@ -57,4 +57,33 @@ describe Upmin::Configuration do
 
   end
 
+  describe "#items_per_page" do
+
+    context "default items_per_page" do
+      it { expect(@config.items_per_page[:default]).to(eq(30)) }
+    end
+
+    context "custom default items_per_page" do
+      before(:each) { @config.items_per_page = {default: 10} }
+      it { expect(@config.items_per_page[:default]).to(eq(10)) }
+    end
+
+    context "custom model items_per_page" do
+      before(:each) { @config.items_per_page = {user: 10, order: 15} }
+
+      it { expect(@config.items_per_page[:user]).to(eq(10)) }
+      it { expect(@config.items_per_page[:order]).to(eq(15)) }
+      it { expect(@config.items_per_page[:default]).to(eq(30)) }
+    end
+
+    context "custom model & default items_per_page" do
+      before(:each) { @config.items_per_page = {user: 10, order: 15, default: 20} }
+
+      it { expect(@config.items_per_page[:user]).to(eq(10)) }
+      it { expect(@config.items_per_page[:order]).to(eq(15)) }
+      it { expect(@config.items_per_page[:default]).to(eq(20)) }
+    end
+
+  end
+
 end
