@@ -57,4 +57,17 @@ describe Upmin::Configuration do
 
   end
 
+  describe "#items_per_page" do
+
+    context "default items_per_page" do
+      it { expect(@config.items_per_page).to(eq(30)) }
+    end
+
+    context "custom items_per_page" do
+      before(:each) { @config.items_per_page = 10 }
+      it { expect(@config.items_per_page).to(eq(10)) }
+    end
+
+  end
+
 end

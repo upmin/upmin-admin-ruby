@@ -215,6 +215,9 @@ module Upmin
       end
     end
 
+    def Model.items_per_page
+      return Upmin.configuration.items_per_page
+    end
 
 
     ###########################################################
