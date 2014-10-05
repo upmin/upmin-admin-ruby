@@ -127,10 +127,6 @@ module Upmin
       return all
     end
 
-    def Model.model_class
-      @model_class ||= inferred_model_class
-    end
-
     def Model.model_class?
       return model_class
     rescue Upmin::UninferrableSourceError
