@@ -117,7 +117,7 @@ module Upmin
       end
 
       def set_query
-        @query = Upmin::Query.new(@klass, params[:q], page: @page, per_page: Model.items_per_page)
+        @query = Upmin::Query.new(@klass, params[:q], page: @page, per_page: @klass.items_per_page)
       end
 
       def set_model

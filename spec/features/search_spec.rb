@@ -41,6 +41,13 @@ feature("Search Views") do
     end
   end
 
+
+  scenario("Items per page") do
+    visit("/upmin/m/Shipment")
+
+    expect(page).to(have_selector("a.search-result-link", count: 20))
+  end
+
   scenario("Search via integer") do
     visit("/upmin/m/Order")
 
