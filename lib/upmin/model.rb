@@ -201,7 +201,7 @@ module Upmin
 
     def Model.active_record?
       if defined?(ActiveRecord)
-        return model_class.superclass == ::ActiveRecord::Base
+        return (model_class < ::ActiveRecord::Base) == true
       else
         return false
       end
