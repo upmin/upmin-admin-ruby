@@ -15,7 +15,7 @@ feature("Search Views") do
 
     # Make sure some basic pagination exits
     within(".pagination:first-of-type") do
-      within(".current") do
+      within(".active") do
         expect(page).to(have_content("1"))
       end
 
@@ -24,7 +24,7 @@ feature("Search Views") do
     end
 
     within(".pagination:nth-of-type(2)") do
-      within(".current") do
+      within(".active") do
         expect(page).to(have_content("2"))
       end
 
@@ -35,7 +35,7 @@ feature("Search Views") do
     end
 
     within(".pagination:last-of-type") do
-      within(".current") do
+      within(".active") do
         expect(page).to(have_content("3"))
       end
     end
