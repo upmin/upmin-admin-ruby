@@ -11,7 +11,6 @@ gem 'jbuilder', '~> 1.2'
 
 # Specific gems we are testing:
 gem 'will_paginate'
-gem 'will_paginate-bootstrap'
 
 # Used for testing
 gem 'test_models', git: "git://github.com/upmin/test_models.git"
