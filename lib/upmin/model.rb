@@ -120,9 +120,6 @@ module Upmin
             def self.model_class
               return #{model_name}
             end
-            def self.inferred_model_class
-              return #{model_name}
-            end
           end
         class_string
         eval(class_str)
