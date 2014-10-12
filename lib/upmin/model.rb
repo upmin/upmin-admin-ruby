@@ -162,7 +162,7 @@ module Upmin
     end
 
     def Model.model_class_name
-      n = model_class.name
+      return model_class.name
     end
 
     def Model.model_name
