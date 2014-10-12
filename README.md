@@ -1,7 +1,9 @@
 # Upmin Admin
 
-Upmin Admin is a framework for creating powerful admin backends with minimal effort.
 [![Gem Version](https://badge.fury.io/rb/upmin-admin.svg)](http://badge.fury.io/rb/upmin-admin)
+
+Upmin Admin is a framework for creating powerful Ruby on Rails admin backends with minimal effort.
+Upmin currently supports Rails 3.2, 4.0, 4.1 & 4.2.
 
 
 ## Demo Videos

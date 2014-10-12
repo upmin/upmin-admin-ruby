@@ -22,7 +22,7 @@ end
 
 
 # Specific to 4.2.0.beta1 & upmin-admin
-gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
+gem 'ransack', github: 'activerecord-hackery/ransack'
 
 # Used for testing
 gem 'test_models', git: "git://github.com/upmin/test_models.git"
