@@ -6,6 +6,8 @@ class AdminShipment < Upmin::Model
   action :update_shipment
   action :pretend_to_work
 
+  items_per_page 20
+
   def status
     return "TestStatus"
 

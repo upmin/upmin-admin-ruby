@@ -96,8 +96,6 @@ module Upmin
     end
 
 
-
-
     ###########################################################
     ###  Class methods
     ###########################################################
@@ -198,7 +196,6 @@ module Upmin
       return @color_index
     end
 
-
     def Model.active_record?
       if defined?(ActiveRecord)
         return (model_class < ::ActiveRecord::Base) == true
@@ -214,7 +211,6 @@ module Upmin
         return false
       end
     end
-
 
 
     ###########################################################
@@ -269,6 +265,9 @@ module Upmin
       return @actions
     end
 
+    def Model.items_per_page(items = Upmin.configuration.items_per_page)
+      return @items_per_page ||= items
+    end
 
 
     ###########################################################

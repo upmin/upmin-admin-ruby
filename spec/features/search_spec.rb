@@ -42,7 +42,7 @@ feature("Search Views") do
   end
 
   scenario("Search via integer") do
-    visit("/upmin/m/Order")
+    visit("/upmin/m/User")
 
     expect(page).to(have_selector("a.search-result-link", count: 30))
 
@@ -75,6 +75,30 @@ feature("Search Views") do
 
     expect(page).to(have_selector("a.search-result-link", minimum: 1))
     expect(page).to(have_content(expected_user.name))
+  end
+
+  scenario("config.items_per_page") do
+    Upmin.configuration.items_per_page = 25
+
+    visit("/upmin/m/Order")
+
+    # Global config of 25 should override default of 30
+    expect(page).to(have_selector("a.search-result-link", count: 25))
+
+    # Reset this.
+    Upmin.configuration = Upmin::Configuration.new
+  end
+
+  scenario("Model items_per_page with config.items_per_page") do
+    Upmin.configuration.items_per_page = 25
+
+    visit("/upmin/m/Shipment")
+
+    # `items_per_page 20` in the model should override global config of 25
+    expect(page).to(have_selector("a.search-result-link", count: 20))
+
+    # Reset this.
+    Upmin.configuration = Upmin::Configuration.new
   end
 
 end
