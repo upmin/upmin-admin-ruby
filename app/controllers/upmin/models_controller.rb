@@ -2,8 +2,8 @@ require_dependency "upmin/application_controller"
 
 module Upmin
   class ModelsController < ApplicationController
-    before_filter :set_klass, only: [:new, :create, :show, :update, :search, :action]
-    before_filter :set_model, only: [:show, :update, :action]
+    before_filter :set_klass, only: [:new, :create, :show, :update, :destroy, :search, :action]
+    before_filter :set_model, only: [:show, :update, :destroy, :action]
 
     before_filter :set_page, only: [:search]
     before_filter :set_query, only: [:search]
@@ -88,6 +88,25 @@ module Upmin
       # @q = @klass.ransack(params[:q])
       # @results = Upmin::Paginator.paginate(@q.result(distinct: true), @page, 30)
     end
+
+  # DELETE /:model_name/:id
+  def destroy
+    raw_model = @model.model
+    #destroy does not work when using datamapper and have associations but destroy! works fine
+    #destroy! does not exist in ActiveRecord
+    if defined?(raw_model.destroy!)
+      @result = raw_model.destroy! #data mapper
+    else
+      @result = raw_model.destroy #active record
+    end
+    if @result
+      flash.now[:notice] = "#{@klass.humanized_name(:singular)} was successfully destroyed."
+      redirect_to @klass.search_path
+    else
+      flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT deleted."
+      render(:show)
+    end
+  end
 
     def action
       @response = @action.perform(@arguments)

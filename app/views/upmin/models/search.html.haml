@@ -1,4 +1,21 @@
 .container
+  - if notice
+    .alert.alert-dismissable.alert-info
+      %button.close{"data-dismiss" => "alert", type: "button"}
+        %span{"aria-hidden" => "true"} &times;
+      = notice
+  - if alert
+    .alert.alert-dismissable.alert-danger
+      %button.close{"data-dismiss" => "alert", type: "button"}
+        %span{"aria-hidden" => "true"} &times;
+      = alert
+      - if @model.errors.any?
+        %ul
+          - @model.errors.each do |field, error|
+            %li
+              %b
+                = field
+              = error
   .row
     .col-md-8
       = up_paginate(@query.paginated_results)
