@@ -180,9 +180,12 @@ module Upmin::Railties
     def RenderHelpers.search_box_partials(klass, options = {})
       partials = []
       # <options[:as]>
+      # <model_name>_search_box, eg: order_search_box
       # ransack_search_box
+      model_name = klass.underscore_name
 
       partials << build_search_box_path(options[:as]) if options[:as]
+      partials << build_search_box_path("#{model_name}_search_box")
       partials << build_search_box_path(:ransack_search_box)
       return partials
     end

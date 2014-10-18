@@ -1,4 +1,6 @@
 # require 'haml-rails'
+# require kaminari here to affect load order so that custom kaminari views load from upmin
+require 'kaminari'
 
 module Upmin
   class Engine < ::Rails::Engine

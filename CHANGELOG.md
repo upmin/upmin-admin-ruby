@@ -1,3 +1,8 @@
+# 0.1.01
+
+- Added support for namespaced models (Delayed::Job, etc)
+- [All Commits](https://github.com/upmin/upmin-admin-ruby/compare/v0.1.0...v0.1.01)
+
 # 0.1.0
 
 - Moved model logic to Admin<Model> files

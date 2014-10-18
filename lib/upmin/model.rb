@@ -96,8 +96,6 @@ module Upmin
     end
 
 
-
-
     ###########################################################
     ###  Class methods
     ###########################################################
@@ -112,10 +110,23 @@ module Upmin
 
     def Model.find_or_create_class(model_name)
       ::Rails.application.eager_load!
-      return "Admin#{model_name}".constantize
+
+      create_name = model_name.gsub(":", "")
+      return "Admin#{create_name}".constantize
     rescue NameError
-      eval("class ::Admin#{model_name} < Upmin::Model; end")
-      return "Admin#{model_name}".constantize
+      if model_name.match(/::/)
+        class_str = <<-class_string
+          class ::Admin#{create_name} < Upmin::Model
+            def self.model_class
+              return #{model_name}
+            end
+          end
+        class_string
+        eval(class_str)
+      else
+        eval("class ::Admin#{create_name} < Upmin::Model; end")
+      end
+      return "Admin#{create_name}".constantize
     end
 
     # Returns all upmin models.
@@ -125,10 +136,6 @@ module Upmin
         all << find_or_create_class(m.to_s.camelize)
       end
       return all
-    end
-
-    def Model.model_class
-      @model_class ||= inferred_model_class
     end
 
     def Model.model_class?
@@ -142,16 +149,20 @@ module Upmin
     end
 
     def Model.inferred_model_class
-      name = model_class_name
+      name = inferred_model_class_name
       return name.constantize
     rescue NameError => error
       raise if name && !error.missing_name?(name)
       raise Upmin::UninferrableSourceError.new(self)
     end
 
-    def Model.model_class_name
+    def Model.inferred_model_class_name
       raise NameError if name.nil? || name.demodulize !~ /Admin.+$/
       return name.demodulize[5..-1]
+    end
+
+    def Model.model_class_name
+      return model_class.name
     end
 
     def Model.model_name
@@ -159,7 +170,7 @@ module Upmin
     end
 
     def Model.humanized_name(type = :plural)
-      names = model_class_name.split(/(?=[A-Z])/)
+      names = model_class_name.split(/(?=[A-Z])/).map{|n| n.gsub(":", "")}
       if type == :plural
         names[names.length-1] = names.last.pluralize
       end
@@ -202,10 +213,9 @@ module Upmin
       return @color_index
     end
 
-
     def Model.active_record?
       if defined?(ActiveRecord)
-        return model_class.superclass == ::ActiveRecord::Base
+        return (model_class < ::ActiveRecord::Base) == true
       else
         return false
       end
@@ -218,7 +228,6 @@ module Upmin
         return false
       end
     end
-
 
 
     ###########################################################
@@ -273,6 +282,9 @@ module Upmin
       return @actions
     end
 
+    def Model.items_per_page(items = Upmin.configuration.items_per_page)
+      return @items_per_page ||= items
+    end
 
 
     ###########################################################

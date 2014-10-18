@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 
-# Specific gem we are testing:
+# Specific gems we are testing:
 gem 'will_paginate'
 
 # Used for testing

@@ -46,11 +46,11 @@ RSpec.configure do |config|
   end
 
   # Uncomment this if you want to the page to be saved and opened after any test failure.
-  config.after do |example|
-    if example.metadata[:type] == :feature && example.exception.present?
-      save_and_open_page
-    end
-  end
+  # config.after do |example|
+  #   if example.metadata[:type] == :feature && example.exception.present?
+  #     save_and_open_page
+  #   end
+  # end
 
   config.include(FactoryGirl::Syntax::Methods)
   config.include(ActionView::Helpers::NumberHelper, type: :view)
