@@ -27,6 +27,9 @@ RSpec.configure do |config|
   end
 
   config.before(:suite) do
+    class UserWithRoleEnum < ActiveRecord::Base; enum role: [:default, :admin] end
+    ActiveRecord::Migration.create_table(:user_with_role_enums) {|t| t.integer :role, default: 0 }
+
     if defined?(DataMapper)
       # NOTE: eager_loading needs to be on in the app for testing.
       DataMapper.finalize
@@ -37,6 +40,7 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
+    ActiveRecord::Migration.drop_table :user_with_role_enums
   end
 
   config.before(:each) do
