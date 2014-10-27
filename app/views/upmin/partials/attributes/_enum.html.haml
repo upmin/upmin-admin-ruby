@@ -3,7 +3,7 @@
     = attribute.label_name
 
   - if attribute.editable? && f = form_builder
-    - f.object.class.defined_enums[attribute.name.to_s].keys.each do |option|
+    - attribute.enum_options.each do |option|
       .radio
         %label
           = f.radio_button attribute.name, option

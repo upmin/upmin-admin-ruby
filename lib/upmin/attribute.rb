@@ -62,6 +62,9 @@ module Upmin
       return "#{form_id}_is_nil"
     end
 
+    def enum_options
+      model.class.model_class.defined_enums[name.to_s].keys
+    end
 
     private
 
