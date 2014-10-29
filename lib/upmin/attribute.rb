@@ -10,7 +10,7 @@ module Upmin
 
     def value
       # TODO(jon): Add some way to handle exceptions.
-      return model.send(name)
+      return model.model.send(name)
     end
 
     def type
