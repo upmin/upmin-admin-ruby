@@ -44,17 +44,6 @@ mount Upmin::Engine => '/ice-ice-baby'
 And you would access your admin page at `localhost:3000/ice-ice-baby` or `yoursite.com/ice-ice-baby`.
 
 
-### Rails 4.2
-
-Add the following to your gemfile:
-
-```ruby
-gem 'ransack', github: 'activerecord-hackery/ransack', branch: 'rails-4.2'
-```
-
-`upmin-admin` currently depends on ransack, and you need to use the 4.2 branch of ransack due to changes in ActiveRecord.
-
-
 ## Documentation
 
 For further documentation, please visit our [Wiki](https://github.com/upmin/upmin-admin-ruby/wiki). The docs there are far from complete, but we are actively updating them. If you have any trouble or can't find the documentation to do something please [create an issue](https://github.com/upmin/upmin-admin-ruby/issues) and contribute to the docs where you can.
