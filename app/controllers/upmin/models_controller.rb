@@ -129,8 +129,8 @@ module Upmin
       end
 
       def set_action
-        action_name = params[:method].to_sym
-        @action = @model.actions.select{ |action| action.name == action_name }.first
+        action_name = params[:method]
+        @action = @model.actions.select{ |action| action.name.to_s == action_name }.first
 
         raise Upmin::InvalidAction.new(params[:method]) unless @action
       end
