@@ -42,6 +42,7 @@ module Upmin::Railties
       partials << build_attribute_path(options[:as]) if options[:as]
       partials << build_attribute_path("#{model_name}_#{attribute.name}")
       partials << build_attribute_path("#{model_name}_#{attr_type}")
+      partials << build_attribute_path(attribute.name)
       partials << build_attribute_path(attr_type)
       partials << build_attribute_path(:unknown)
       return partials
