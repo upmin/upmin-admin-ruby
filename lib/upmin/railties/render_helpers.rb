@@ -75,6 +75,7 @@ module Upmin::Railties
       partials << build_association_path(options[:as]) if options[:as]
       partials << build_association_path("#{model_name}_#{association.name}")
       partials << build_association_path("#{model_name}_#{assoc_type}")
+      partials << build_association_path(association.name)
       partials << build_association_path(assoc_type)
       partials << build_association_path(:associations)
       return partials
