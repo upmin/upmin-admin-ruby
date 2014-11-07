@@ -1,0 +1,11 @@
+.col-sm-6.col-md-4
+  .chart-wrapper
+    .chart-title
+      = chart.humanized_name
+      created per month
+    .chart-stage
+      = column_chart chart.model_class.count_by_month
+    .chart-notes
+      Number of
+      = chart.model_name.plural
+      created per month, all time.

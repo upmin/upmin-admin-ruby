@@ -1,0 +1,24 @@
+.container-fluid
+  .row
+    .col-sm-8
+      .chart-wrapper
+        .chart-title
+          User cohort retention (past six months)
+        .chart-stage
+          #grid-1-1
+          =# Upmin::Model.all.map{|model| {name: model.humanized_name(:plural), data: model.model_name.singular.capitalize.constantize.group_by_month(:created_at).count}}
+          =# bar_chart User.where(created_at: Time.now.beginning_of_month..Time.now.end_of_month).group_by_day(:last_sign_in_at).count
+          = line_chart User.monthly_reg_cohorts
+        .chart-notes
+          Shows the percentage of users returning (sign-ins) [n] weeks after sign-up.
+    .col-sm-4
+      .chart-wrapper
+        .chart-title
+          Sign-ups per month (past six months)
+        .chart-stage
+          = column_chart User.where(created_at: 6.months.ago.beginning_of_month..Time.now.end_of_month).count_by_month
+        .chart-notes
+          Number of new sign-ups each month for the past six months.
+  .row
+
+= render partial: 'chart', collection: @models

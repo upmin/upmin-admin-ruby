@@ -12,9 +12,6 @@ module Upmin
     before_filter :set_action, only: [:action]
     before_filter :set_arguments, only: [:action]
 
-    def dashboard
-    end
-
     # GET /:model_name/:id
     def show
     end
@@ -127,6 +124,10 @@ module Upmin
       def set_klass
         @klass = Upmin::Model.find_class(params[:klass])
       end
+
+    def set_klasses
+      @klasses = Upmin::Model.find_class(params[:klass])
+    end
 
       def set_action
         action_name = params[:method].to_sym

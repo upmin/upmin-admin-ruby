@@ -36,7 +36,10 @@ require "jquery-rails"
 require "ransack"
 require "haml"
 require "sass-rails"
-
+require "chartkick"
+#require 'dateslices'
+#require 'by_star'
+require "groupdate"
 
 require "ostruct"
 
