@@ -1,6 +1,8 @@
 .upmin-model{class: model.color}
   %h3
     = model.title
+    %a{:'data-confirm'=>"Are you sure?", :'data-method'=>"delete", :href=>"#{model.path}", :rel=>"nofollow", :class=>'btn btn-danger btn-xs destroy'}
+      %span.glyphicon.glyphicon-trash.white
 
   %br
   %br
@@ -41,4 +43,3 @@
     .actions
       - model.actions.each do |action|
         = up_render(action)
-

@@ -24,6 +24,9 @@
         > a {
           color: $hex;
         }
+        > a.destroy {
+          color: #fff;
+        }
       }
     }
   }
