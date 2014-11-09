@@ -23,7 +23,7 @@ feature("Delete an existing model") do
 
     visit("/upmin/m/User/i/#{user.id}")
 
-    first('a.destroy').click
+    first('a.delete').click
 
     #expect(page.driver.alert_messages.last).to eq 'Are you sure?'
 
