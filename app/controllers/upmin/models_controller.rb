@@ -55,7 +55,6 @@ module Upmin
       end
     end
 
-
     # PUT /:model_name/:id
     def update
 
@@ -100,7 +99,7 @@ module Upmin
       @result = raw_model.destroy #active record
     end
     if @result
-      flash.now[:notice] = "#{@klass.humanized_name(:singular)} was successfully destroyed."
+      flash.now[:notice] = "#{@klass.humanized_name(:singular)} deleted successfully."
       redirect_to @klass.search_path
     else
       flash.now[:alert] = "#{@klass.humanized_name(:singular)} was NOT deleted."
