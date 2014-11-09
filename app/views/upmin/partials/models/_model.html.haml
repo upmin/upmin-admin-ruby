@@ -1,6 +1,7 @@
 .upmin-model{class: model.color}
   %h3
     = model.title
+
     = link_to(model.path, method: :delete, class: "btn btn-sm btn-danger delete pull-right", title: "Delete #{model.model_name.singular}.", data: {confirm: "Are you sure you want to delete this #{model.model_name.singular}?"}) do
       %span.glyphicon.glyphicon-trash.white
 
