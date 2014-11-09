@@ -1,15 +1,14 @@
 .upmin-model{class: model.color}
   %h3
     = model.title
-    %a{:'data-confirm'=>"Are you sure?", :'data-method'=>"delete", :href=>"#{model.path}", :rel=>"nofollow", :class=>'btn btn-danger btn-xs destroy'}
+    = link_to(model.path, method: :delete, class: "btn btn-sm btn-danger delete pull-right", title: "Delete #{model.model_name.singular}.", data: {confirm: "Are you sure you want to delete this #{model.model_name.singular}?"}) do
       %span.glyphicon.glyphicon-trash.white
 
   %br
-  %br
   %h3{style: "color: #333;"}
     Attributes
-  %hr
 
+  %hr
   .attributes
     -# Yes this is meant to be model.model - this is the raw rails model instance.
     = form_for(model, url: model.path, html: { method: :put }) do |f|
@@ -19,7 +18,6 @@
         = up_render(attribute, locals: { form_builder: f })
 
       = f.submit("Save", class: "btn btn-primary")
-
 
   - if model.associations.any?
     %br
@@ -31,7 +29,6 @@
     .associations
       - model.associations.each do |association|
         = up_render(association)
-
 
   - if model.actions.any?
     %br
