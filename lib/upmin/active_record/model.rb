@@ -27,8 +27,22 @@ module Upmin::ActiveRecord
 
       def attribute_type(attribute)
         adapter = model_class.columns_hash[attribute.to_s]
-        return adapter.type if adapter
+        if adapter
+          if attribute.in? enum_attributes
+            return :enum
+          else
+            return adapter.type
+          end
+        end
         return :unknown
+      end
+
+      def enum_attributes
+        if model_class.respond_to? :defined_enums
+          model_class.defined_enums.keys.map(&:to_sym)
+        else
+          []
+        end
       end
 
       def associations

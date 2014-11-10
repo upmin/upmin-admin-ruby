@@ -1,0 +1,14 @@
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+
+  - if attribute.editable? && f = form_builder
+    - attribute.enum_options.each do |option|
+      .radio
+        %label
+          = f.radio_button attribute.name, option
+          = option.humanize
+
+  - else
+    %p.well
+      = attribute.value
