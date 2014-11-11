@@ -52,26 +52,16 @@ body {
   padding-top: 8px;
 }
 
-.pagination:first-of-type {
-  margin: 5px 0px 5px;
-}
-
 .page-entries-info {
-  margin: 15px 0px 0px;
+  margin: 5px 0px 15px;
 }
 
-.pagination {
-  float: right;
+.pagination:first-of-type {
+  margin: 5px 0px 0px;
 }
 
-@media (max-width: 767px) {
-  .page-entries-info {
-    float: right;
-    margin: 0px;
-  }
-  .pagination {
-    clear: right;
-  }
+.pagination:last-of-type {
+  margin: 10px 0px 20px;
 }
 
 .wizard span {padding: 12px 12px 10px 12px; margin-right:5px; background:#efefef; position:relative; display:inline-block; }

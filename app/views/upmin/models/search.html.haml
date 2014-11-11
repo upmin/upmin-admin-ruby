@@ -1,18 +1,12 @@
 .container
   .row
     .col-md-8
-      .row
-        .col-sm-6
-          .page-entries-info
-            = page_entries_info(@query.paginated_results)
-        .col-sm-6
-          = up_paginate(@query.paginated_results)
-        -# TODO(jon): Add pagination w/ search results
+      .page-entries-info
+        = page_entries_info(@query.paginated_results)
+      = up_paginate(@query.paginated_results)
       = up_render(@query)
-      .row
-        .col-md-12
-          = up_paginate(@query.paginated_results)
-      %br
+      = up_paginate(@query.paginated_results)
+
     .col-md-4
       -# TODO(jon): Implement up_search_box
       = up_render(@klass)

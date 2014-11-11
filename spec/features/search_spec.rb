@@ -28,35 +28,29 @@ feature("Search Views") do
     visit("/upmin/m/User")
 
     # Make sure some basic pagination exists
-    within(".col-sm-6:nth-of-type(2)") do
-      within(".pagination") do
-        within(".active, .current") do
-          expect(page).to(have_content("1"))
-        end
-
-        expect(page).to(have_content("Next"))
-        click_link("Next")
+    within(".pagination:first-of-type") do
+      within(".active, .current") do
+        expect(page).to(have_content("1"))
       end
+
+      expect(page).to(have_content("Next"))
+      click_link("Next")
     end
 
-    within(".col-sm-6:nth-of-type(2)") do
-      within(".pagination") do
-        within(".active, .current") do
-          expect(page).to(have_content("2"))
-        end
-
-        expect(page).to(have_content("Next"))
-        expect(page).to(have_content("Prev"))
-
-        click_link("3")
+    within(".pagination:nth-of-type(2)") do
+      within(".active, .current") do
+        expect(page).to(have_content("2"))
       end
+
+      expect(page).to(have_content("Next"))
+      expect(page).to(have_content("Prev"))
+
+      click_link("3")
     end
 
-    within(".col-md-12") do
-      within(".pagination") do
-        within(".active, .current") do
-          expect(page).to(have_content("3"))
-        end
+    within(".pagination:last-of-type") do
+      within(".active, .current") do
+        expect(page).to(have_content("3"))
       end
     end
   end
