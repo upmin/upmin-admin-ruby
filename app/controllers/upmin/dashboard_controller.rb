@@ -4,7 +4,7 @@ module Upmin
   class DashboardController < ApplicationController
 
     def index
-      @models = Upmin::Model.all  - [AdminUser]
+      @models = Upmin::Model.all
     end
 
   end
