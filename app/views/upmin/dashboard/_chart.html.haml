@@ -3,6 +3,6 @@
     .chart-title
       #{model.humanized_name} created per #{group_by model.model_class}
     .chart-stage
-      = column_chart group_by_time(model.model_class)
+      = column_chart group_by_best_fit(model.model_class)
     .chart-notes
-      Number of #{model.model_name.plural} created per #{group_by model.model_class}, for all records.
+      Number of #{model.model_name.plural} created per #{group_by model.model_class}, for all #{model.model_class.count} records.
