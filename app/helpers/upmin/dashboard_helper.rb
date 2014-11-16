@@ -2,14 +2,15 @@ module Upmin
   module DashboardHelper
 
     # call the by_<time> method according to the time range of the model
-    def group_by_best_fit(model, limit = 30)
+    def by_best_fit(model, limit = 30)
       @model = model
       return send "by_#{group_by model, limit}"
     end
 
     # Selects the time period with no more than <limit> entries
     def group_by(model, limit = 30)
-      seconds = date_range_to_seconds(date_range(model))
+      @model = model
+      seconds = date_range_in_seconds
 
       # if seconds < limit
       #   return 'second'
@@ -31,20 +32,20 @@ module Upmin
     #
     # Date range manipulation
     #
-    def date_range_to_seconds(range)
-      return range.last - range.first
+    def date_range_in_seconds
+      return last_date - first_date
     end
 
-    def date_range(model)
-      return first_date_of(model)..last_date_of(model)
+    def date_range
+      return first_date..last_date
     end
 
-    def first_date_of(model)
-      return model.order('date(created_at) ASC').first.try(:created_at) || Time.now
+    def first_date
+      return @model.order('date(created_at) ASC').first.try(:created_at) || Time.now
     end
 
-    def last_date_of(model)
-      return model.order('date(created_at) ASC').last.try(:created_at) || Time.now
+    def last_date
+      return @model.order('date(created_at) ASC').last.try(:created_at) || Time.now
     end
 
     #
@@ -52,14 +53,16 @@ module Upmin
     #
     def by_day
       dates = @model.where.not('created_at' => nil).group('date(created_at)').order('date(created_at) ASC').count
+
       # Convert sqlite String date keys to Date keys
       dates.map! { |k, v| [Date.parse(k), v] } if dates.keys.first.is_a? String
+
       return dates
     end
 
     def by_week
       result = Hash.new(0)
-      by_day.each_with_object(result) { |i, a|  a[i[0].beginning_of_week.strftime] += i[1] }
+      by_day.each_with_object(result) { |i, a| a[i[0].beginning_of_week.strftime] += i[1] }
       return result
     end
 
