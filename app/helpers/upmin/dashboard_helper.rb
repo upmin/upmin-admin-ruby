@@ -1,32 +1,36 @@
 module Upmin
   module DashboardHelper
 
-    # call the appropriate by_??? method according to the time range of the model
-    def group_by_best_fit(model)
+    # call the by_<time> method according to the time range of the model
+    def group_by_best_fit(model, limit = 30)
       @model = model
-      return send "by_#{group_by model}"
+      return send "by_#{group_by model, limit}"
     end
 
-    def group_by(model)
+    # Selects the time period with no more than <limit> entries
+    def group_by(model, limit = 30)
       seconds = date_range_to_seconds(date_range(model))
 
-      #if seconds < 30          # 30 seconds
-      #  return 'second'
-      #elsif seconds < 1800     # 30 minutes
-      #  return 'minute'
-      #elsif seconds < 86400    # 24 hours
-      #  return 'hour'
-      if seconds < 2592000  # 30 days
+      # if seconds < limit
+      #   return 'second'
+      # elsif seconds/1.minute < limit
+      #   return 'minute'
+      # elsif seconds/1.hour < limit
+      #   return 'hour'
+      if seconds/1.day < limit
         return 'day'
-      elsif seconds < 15724800 # 26 weeks (~6 months)
+      elsif seconds/1.week < limit
         return 'week'
-      elsif seconds < 93312000 # ~ 36 months
+      elsif seconds/1.month < limit
         return 'month'
       else
         return 'year'
       end
     end
 
+    #
+    # Date range manipulation
+    #
     def date_range_to_seconds(range)
       return range.last - range.first
     end
@@ -36,60 +40,57 @@ module Upmin
     end
 
     def first_date_of(model)
-      return model.order("created_at ASC").first.try(:created_at) || Time.now
+      return model.order('date(created_at) ASC').first.try(:created_at) || Time.now
     end
 
     def last_date_of(model)
-      return model.order("created_at ASC").last.try(:created_at) || Time.now
+      return model.order('date(created_at) ASC').last.try(:created_at) || Time.now
     end
 
-
+    #
+    # Group by
+    #
     def by_day
-      @model.group("date(created_at)").count
+      dates = @model.where.not('created_at' => nil).group('date(created_at)').order('date(created_at) ASC').count
+      # Convert sqlite String date keys to Date keys
+      dates.map! { |k, v| [Date.parse(k), v] } if dates.keys.first.is_a? String
+      return dates
     end
 
     def by_week
       result = Hash.new(0)
-
-      # map each "YYYY-MM-DD" key to beginning of week, then sum for same date.
-      by_day.each_with_object(result) { |i, a|  a[Date.parse(i[0].to_s).beginning_of_week.strftime] += i[1] }
+      by_day.each_with_object(result) { |i, a|  a[i[0].beginning_of_week.strftime] += i[1] }
       return result
     end
 
     def by_month
-      return group_by_filter('^\\d{4}-\\d{2}') # YYYY-MM
+      return group_by_strftime('%b %Y')
     end
 
     def by_year
-      return group_by_filter('^\\d{4}') # YYYY
+      return group_by_strftime('%Y')
     end
 
-    def group_by_filter(date_filter)
-      result = Hash.new(0)
-
-      # dates.map! {|date, count| [date.slice(/#{date_filter}/), count]}; dates.each { |date, count| by_date[date] += count }
-      by_day.each_with_object(result) { |i, a|  a[i[0].to_s.slice(/#{date_filter}/)] += i[1] }
-      return result
-    end
-
+    #
+    # Aggregate by
+    #
     def by_day_of_week
       template = Hash[Date::ABBR_DAYNAMES.map {|x| [x, 0]}]
-      return group_by_strftime(template, '%a')
+      return group_by_strftime('%a', template)
     end
 
     def by_week_of_year
-      template = Hash(0)
-      return group_by_strftime(template, '%W')
+      return group_by_strftime('%W')
     end
 
     def by_month_of_year
       template = Hash[Date::ABBR_MONTHNAMES.map {|x| [x, 0]}]
       template.shift
-      return group_by_strftime(template, '%b')
+      return group_by_strftime( '%b', template)
     end
 
-    def group_by_strftime(result, filter)
-      by_day.each_with_object(result) { |i, a|  a[Date.parse(i[0].to_s).strftime(filter)] += i[1] }
+    def group_by_strftime(filter, result = Hash.new(0))
+      by_day.each_with_object(result) { |i, a|  a[i[0].strftime(filter)] += i[1] }
       return result
     end
 
