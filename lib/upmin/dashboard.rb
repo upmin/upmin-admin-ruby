@@ -27,18 +27,24 @@ module Upmin
     end
 
     def first_date
-      return @model.order('date(created_at) ASC').first.try(:created_at) || Time.now
+      return Rails.cache.fetch("first_#{@model}", expires_in: 1.hour) do
+        @model.order('date(created_at) ASC').first.try(:created_at) || Time.now
+      end
     end
 
     def last_date
-      return @model.order('date(created_at) ASC').last.try(:created_at) || Time.now
+      return Rails.cache.fetch("last_#{@model}", expires_in: 1.hour) do
+        @model.order('date(created_at) ASC').last.try(:created_at) || Time.now
+      end
     end
 
     #
     # Group by
     #
     def by_day
-      dates = @model.where.not('created_at' => nil).group('date(created_at)').order('date(created_at) ASC').count
+      dates = Rails.cache.fetch("by_day_#{@model}", expires_in: 1.hour) do
+        @model.where.not('created_at' => nil).group('date(created_at)').order('date(created_at) ASC').count
+      end
 
       # Convert sqlite String date keys to Date keys
       dates.map! { |k, v| [Date.parse(k), v] } if dates.keys.first.is_a? String
