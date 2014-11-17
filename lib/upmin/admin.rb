@@ -12,6 +12,7 @@ require "upmin/association"
 require "upmin/action"
 require "upmin/parameter"
 require "upmin/query"
+require "upmin/dashboard"
 
 # ActiveRecord Specifics.
 if defined?(ActiveRecord)
@@ -37,9 +38,6 @@ require "ransack"
 require "haml"
 require "sass-rails"
 require "chartkick"
-#require 'dateslices'
-#require 'by_star'
-require "groupdate"
 
 require "ostruct"
 
