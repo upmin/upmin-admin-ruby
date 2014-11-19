@@ -2,8 +2,8 @@
 .col-sm-6.col-md-4
   .chart-wrapper
     .chart-title
-      #{model.humanized_name} created per #{grouped_by model.model_class, limit}
+      #{model.humanized_name} created per #{model.grouping limit}
     .chart-stage
-      = column_chart by_best_fit(model.model_class, limit)
+      = column_chart model.group_by_best_fit limit
     .chart-notes
-      Number of #{model.model_name.plural} created per #{grouped_by model.model_class, limit}, for all #{model.model_class.count} records.
+      Number of #{model.model_name.plural} created per #{model.grouping limit}, for all #{model.count} records.

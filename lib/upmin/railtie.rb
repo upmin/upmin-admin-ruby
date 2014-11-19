@@ -7,6 +7,7 @@ module Upmin
       ActiveSupport.on_load(:active_record) do
         if defined?(ActiveRecord)
           ::ActiveRecord::Base.send(:include, Upmin::Railties::ActiveRecord)
+          ::ActiveRecord::Base.send(:extend, Upmin::Railties::Dashboard)
         end
 
         if defined?(DataMapper)
