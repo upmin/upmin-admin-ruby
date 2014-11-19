@@ -76,6 +76,7 @@ module Upmin
           def_models += ::ActiveRecord::Base.descendants
             .map(&:to_s)
             .select{ |m| m != "ActiveRecord::SchemaMigration" }
+            .select{ |m| m.exclude? "HABTM" }
             .sort
             .map(&:underscore)
             .map(&:to_sym)
