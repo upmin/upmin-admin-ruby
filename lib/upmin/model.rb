@@ -170,10 +170,12 @@ module Upmin
     end
 
     def Model.humanized_name(type = :plural)
-      names = model_class_name.split(/(?=[A-Z])/).map{|n| n.gsub(":", "")}
+      names = @display_name ? [@display_name] : model_class_name.split(/(?=[A-Z])/).map{|n| n.gsub(":", "")}
+
       if type == :plural
         names[names.length-1] = names.last.pluralize
       end
+
       return names.join(" ")
     end
 
@@ -284,6 +286,10 @@ module Upmin
 
     def Model.items_per_page(items = Upmin.configuration.items_per_page)
       return @items_per_page ||= items
+    end
+
+    def Model.display_name (name)
+      return @display_name ||= name
     end
 
 

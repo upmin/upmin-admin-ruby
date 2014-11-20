@@ -41,7 +41,7 @@ feature("Update an existing model") do
     click_button("Save")
 
     within(".alert.alert-danger") do
-      expect(page).to(have_content("User was NOT updated."))
+      expect(page).to(have_content("Customer was NOT updated."))
       expect(page).to(have_selector("li", text: /email/i))
     end
 
