@@ -282,10 +282,28 @@ module Upmin
       return @actions
     end
 
+    # Set the number of items per page to display in search results.
     def Model.items_per_page(items = Upmin.configuration.items_per_page)
       return @items_per_page ||= items
     end
 
+    # Set the default sort column & order for search results.
+    def Model.sort_order(order = orm_default_order)
+      return @sort_order ||= order
+    end
+
+    # Returns a default sort order for the Model ORM (primary-key column, ascending)
+    def Model.orm_default_order
+      if active_record?
+        return model_class.primary_key
+      elsif data_mapper?
+        # DataMapper has `Model.key`, => [#<DataMapper::Property::Serial @model=ModelName @name=:id>]
+        # I'm assuming @name to be the primary key...
+        return model_class.key.first.name.asc
+      else # Unknown ORM
+        return
+      end
+    end
 
     ###########################################################
     ### Methods that need to be to be overridden. If the
