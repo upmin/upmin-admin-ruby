@@ -29,11 +29,19 @@ Installing `upmin-admin` is incredibly easy. Simple add the gem to your `Gemfile
 gem 'upmin-admin'
 ```
 
-And then mount the engine in your `routes.rb` file:
+Then run the generator:
+
+```ruby
+rails g upmin:install
+'''
+
+This mounts the engine in your `routes.rb` file:
 
 ```ruby
 mount Upmin::Engine => '/admin'
 ```
+
+And adds a configuration file at `config/initializers/upmin.rb`
 
 If you already have routes pointing to `/admin` you can use any path you want, for example you could use the following instead:
 
@@ -41,8 +49,10 @@ If you already have routes pointing to `/admin` you can use any path you want, f
 mount Upmin::Engine => '/ice-ice-baby'
 ```
 
-And you would access your admin page at `localhost:3000/ice-ice-baby` or `yoursite.com/ice-ice-baby`.
+And you would access your admin page at `localhost:3000/ice-ice-baby` or `example.com/ice-ice-baby`.
 
+
+If you prefer not to use the generator, simply add the route, and optionally the config file as documented in the wiki.
 
 ## Documentation
 
