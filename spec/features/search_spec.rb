@@ -46,23 +46,11 @@ feature("Search Views") do
 
     expect(page).to(have_selector("a.search-result-link", count: 30))
 
-    fill_in("q_id_gteq", with: 1)
+    fill_in("q_id_gteq", with: 2)
     fill_in("q_id_lteq", with: 5)
     click_button("Search")
 
-    expect(page).to(have_selector("a.search-result-link", count: 5))
-  end
-
-  scenario("Search via string") do
-    expected_user = User.first
-
-    visit("/upmin/m/User")
-
-    fill_in("q_name_cont", with: expected_user.name)
-    click_button("Search")
-
-    expect(page).to(have_selector("a.search-result-link", minimum: 1))
-    expect(page).to(have_content(expected_user.name))
+    expect(page).to(have_selector("a.search-result-link", count: 4))
   end
 
   scenario("Search via string") do
