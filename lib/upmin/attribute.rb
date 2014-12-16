@@ -51,7 +51,7 @@ module Upmin
     end
 
     def label_name
-      return name.to_s.gsub(/_/, " ").capitalize
+      return name.to_s.tr("_", " ").capitalize
     end
 
     def form_id

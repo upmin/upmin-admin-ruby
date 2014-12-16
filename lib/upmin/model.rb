@@ -111,7 +111,7 @@ module Upmin
     def Model.find_or_create_class(model_name)
       ::Rails.application.eager_load!
 
-      create_name = model_name.gsub(":", "")
+      create_name = model_name.tr(":", "")
       return "Admin#{create_name}".constantize
     rescue NameError
       if model_name.match(/::/)
@@ -170,7 +170,7 @@ module Upmin
     end
 
     def Model.humanized_name(type = :plural)
-      names = model_class_name.split(/(?=[A-Z])/).map{|n| n.gsub(":", "")}
+      names = model_class_name.split(/(?=[A-Z])/).map{|n| n.tr(":", "")}
       if type == :plural
         names[names.length-1] = names.last.pluralize
       end
