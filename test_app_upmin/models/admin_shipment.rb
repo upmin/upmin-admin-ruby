@@ -6,7 +6,14 @@ class AdminShipment < Upmin::Model
   action :update_shipment
   action :pretend_to_work
 
+  # Configuration
   items_per_page 20
+  if defined?(DataMapper)
+    sort_order :id.desc
+  else
+    sort_order 'id DESC'
+  end
+
 
   def status
     return "TestStatus"

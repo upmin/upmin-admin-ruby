@@ -89,4 +89,13 @@ feature("Search Views") do
     Upmin.configuration = Upmin::Configuration.new
   end
 
+  scenario("Shipments with `sort_order 'id desc'` ") do
+    expected_shipment = Shipment.last
+
+    visit("/upmin/m/Shipment")
+    within(".search-result-link:first-of-type") do
+      expect(page).to(have_content("Id #{expected_shipment.id}"))
+    end
+  end
+
 end

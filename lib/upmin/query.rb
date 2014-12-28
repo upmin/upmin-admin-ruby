@@ -44,7 +44,6 @@ module Upmin
       return @upmin_results
     end
 
-
     private
 
   end

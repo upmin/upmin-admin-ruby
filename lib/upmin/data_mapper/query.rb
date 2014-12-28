@@ -21,6 +21,7 @@ module Upmin::DataMapper
             end
           end
         end
+        @prepared_search[:order] = [ klass.sort_order ]
         return @prepared_search
       end
 
