@@ -45,8 +45,8 @@ module Upmin::ActiveRecord
         end
       end
 
-      def associations
-        return @associations if defined?(@associations)
+      def default_associations
+        return @default_associations if defined?(@default_associations)
 
         all = []
         ignored = []
@@ -59,7 +59,7 @@ module Upmin::ActiveRecord
           end
         end
 
-        return @associations = (all - ignored).uniq
+        return @default_associations = (all - ignored).uniq
       end
 
     end
