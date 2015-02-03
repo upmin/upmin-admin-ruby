@@ -50,6 +50,12 @@ module Upmin
       return @attributes
     end
 
+    def crud_actions
+      return @crud_actions if defined?(@crud_actions)
+      @crud_actions = self.class.crud_actions
+      return @crud_actions
+    end
+
     def associations
       return @associations if defined?(@associations)
       @associations = []
@@ -258,6 +264,18 @@ module Upmin
       return (@attributes + @extra_attrs).uniq
     end
 
+    # Sets the CRUD actions to the provided attributes if any are provided.
+    # If no actions are provided then the actions are set to the default
+    # actions of the model class.
+    def Model.crud_actions(*crud_actions)
+      if crud_actions.any?
+        @crud_actions = crud_actions.map{|a| a.to_sym}
+      end
+      @crud_actions ||= default_crud_actions
+
+      return @crud_actions
+    end
+
     # Add a single action to upmin actions. If this is called
     # before upmin_actions the actions will not include any defaults
     # actions.
@@ -302,6 +320,11 @@ module Upmin
     def Model.default_attributes
       new
       return default_attributes
+    end
+
+    def Model.default_crud_actions
+      new
+      return default_crud_actions
     end
 
     def Model.attribute_type(attribute)
