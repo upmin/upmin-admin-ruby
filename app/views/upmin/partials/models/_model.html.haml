@@ -2,8 +2,9 @@
   %h3
     = model.title
 
-    = link_to(model.path, method: :delete, class: "btn btn-sm btn-danger delete pull-right", title: "Delete #{model.title}.", data: {confirm: "Are you sure?"}) do
-      %span.glyphicon.glyphicon-trash.white
+    - if model.crud_actions.include? :destroy
+      = link_to(model.path, method: :delete, class: "btn btn-sm btn-danger delete pull-right", title: "Delete #{model.title}.", data: {confirm: "Are you sure?"}) do
+        %span.glyphicon.glyphicon-trash.white
 
   %br
   %h3{style: "color: #333;"}
@@ -18,7 +19,8 @@
       - model.attributes.each do |attribute|
         = up_render(attribute, locals: { form_builder: f })
 
-      = f.submit("Save", class: "btn btn-primary")
+      - if model.crud_actions.include? :create
+        = f.submit("Save", class: "btn btn-primary")
 
   - if model.associations.any?
     %br
