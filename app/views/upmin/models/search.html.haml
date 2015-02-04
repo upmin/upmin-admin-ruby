@@ -28,8 +28,9 @@
     .col-md-4
       -# TODO(jon): Implement up_search_box
       = up_render(@klass)
-      .new-button-wrapper
-        %a.btn.btn-block.btn-success{href: upmin_new_model_path(klass: @klass.model_class_name)}
-          Create a new
-          = @klass.humanized_name(:singular)
-        %br
+      - if @klass.crud_actions.include? :new
+        .new-button-wrapper
+          %a.btn.btn-block.btn-success{href: upmin_new_model_path(klass: @klass.model_class_name)}
+            Create a new
+            = @klass.humanized_name(:singular)
+          %br
