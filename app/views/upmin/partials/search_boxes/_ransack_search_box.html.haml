@@ -32,5 +32,10 @@
         To
         = date_field(:q, "#{attr_name}_lteq", class: "form-control")
 
+    - if type == :enum
+      .form-group
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        = select(:q, "#{attr_name}_eq", klass.model_class.defined_enums[attr_name.to_s], { include_blank: true }, { class: "form-control" })
+
   = submit_tag("Search", class: "btn btn-primary btn-block")
   = link_to("Clear All", klass.search_path, class: "btn btn-default btn-block")
