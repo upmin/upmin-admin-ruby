@@ -195,6 +195,10 @@ module Upmin
       return Upmin::Engine.routes.url_helpers.upmin_search_path(klass: model_class_name)
     end
 
+    def Model.default_uneditable_attributes
+      return [:id, :created_at, :created_on, :updated_at, :updated_on]
+    end
+
     def Model.color
       return @color if defined?(@color)
       @color = Model.next_color
@@ -320,11 +324,6 @@ module Upmin
     def Model.default_attributes
       new
       return default_attributes
-    end
-
-    def Model.default_uneditable_attributes
-      new
-      return default_uneditable_attributes
     end
 
     def Model.attribute_type(attribute)
