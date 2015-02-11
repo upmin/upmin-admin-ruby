@@ -50,6 +50,12 @@ module Upmin
       return @attributes
     end
 
+    def uneditable_attributes
+      return @uneditable_attributes if defined?(@uneditable_attributes)
+      @uneditable_attributes = self.class.uneditable_attributes
+      return @uneditable_attributes
+    end
+
     def associations
       return @associations if defined?(@associations)
       @associations = []
@@ -189,6 +195,10 @@ module Upmin
       return Upmin::Engine.routes.url_helpers.upmin_search_path(klass: model_class_name)
     end
 
+    def Model.default_uneditable_attributes
+      return [:id, :created_at, :created_on, :updated_at, :updated_on]
+    end
+
     def Model.color
       return @color if defined?(@color)
       @color = Model.next_color
@@ -256,6 +266,18 @@ module Upmin
       @attributes ||= default_attributes
 
       return (@attributes + @extra_attrs).uniq
+    end
+
+    # Sets the uneditable attributes to the provided attributes merged with the
+    # default uneditable attributes.
+    def Model.uneditable_attributes(*uneditable_attributes)
+      @uneditable_attributes = [] unless defined?(@uneditable_attributes)
+
+      if uneditable_attributes.any?
+        @uneditable_attributes = uneditable_attributes.map{|a| a.to_sym}
+      end
+
+      return (default_uneditable_attributes + @uneditable_attributes).uniq
     end
 
     # Add a single action to upmin actions. If this is called

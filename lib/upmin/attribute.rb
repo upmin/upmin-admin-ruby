@@ -29,19 +29,9 @@ module Upmin
     end
 
     def editable?
-      case name.to_sym
-      when :id
-        return false
-      when :created_at
-        return false
-      when :created_on
-        return false
-      when :updated_at
-        return false
-      when :updated_on
+      if model.uneditable_attributes.include? name
         return false
       else
-        # TODO(jon): Add a way to declare which attributes are editable and which are not later.
         return model.respond_to?("#{name}=")
       end
     end
