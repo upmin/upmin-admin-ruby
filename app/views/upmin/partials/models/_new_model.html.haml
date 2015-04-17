@@ -15,7 +15,7 @@
     = form_for(model, url: model.create_path, html: { method: :post }) do |f|
 
       -# Render each attribute
-      - model.attributes.each do |attribute|
+      - model.form_attributes.each do |attribute|
         = up_render(attribute, locals: { form_builder: f })
 
       = f.submit("Create", class: "btn btn-primary")

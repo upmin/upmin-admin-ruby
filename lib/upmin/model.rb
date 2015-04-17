@@ -50,6 +50,15 @@ module Upmin
       return @attributes
     end
 
+    def form_attributes
+      return @form_attributes if defined?(@form_attributes)
+      @form_attributes = []
+      self.class.form_attributes.each do |attr_name|
+        @form_attributes << Upmin::Attribute.new(self, attr_name)
+      end
+      return @form_attributes
+    end
+
     def associations
       return @associations if defined?(@associations)
       @associations = []
@@ -243,19 +252,36 @@ module Upmin
       @extra_attrs << attribute.to_sym if attribute
     end
 
+    def Model.form_attribute(attribute = nil)
+      @extra_form_attrs = [] unless defined?(@extra_form_attrs)
+      @extra_form_attrs << attribute.to_sym if attribute
+    end
+
     # Sets the attributes to the provided attributes # if any are any provided.
     # If no attributes are provided then the
     # attributes are set to the default attributes of
     # the model class.
-    def Model.attributes(*attributes)
+    def Model.attributes(*attrs)
       @extra_attrs = [] unless defined?(@extra_attrs)
 
-      if attributes.any?
-        @attributes = attributes.map{|a| a.to_sym}
+      if attrs.any?
+        @attributes = attrs.map{|a| a.to_sym}
       end
       @attributes ||= default_attributes
 
       return (@attributes + @extra_attrs).uniq
+    end
+
+    # Edit/Create form specific attributes
+    def Model.form_attributes(*attrs)
+      @extra_form_attrs = [] unless defined?(@extra_form_attrs)
+
+      if attrs.any?
+        @form_attributes = attrs.map{|a| a.to_sym}
+      end
+      @form_attributes ||= default_attributes
+
+      return (@form_attributes + @extra_form_attrs).uniq
     end
 
     # Add a single action to upmin actions. If this is called
@@ -276,7 +302,7 @@ module Upmin
     def Model.actions(*actions)
       if actions.any?
         # set the actions
-        @actions = actions.map{|a| a.to_sym}
+        @actions = actions.map(&:to_sym)
       end
       @actions ||= []
       return @actions
