@@ -7,9 +7,9 @@
       return null;
     } else {
       var m = moment();
-      m.utc().year(matches[1]);
-      m.utc().month(matches[2]);
-      m.utc().date(matches[3]);
+      m.utc().year(parseInt(matches[1]));
+      m.utc().month(parseInt(matches[2])-1);
+      m.utc().date(parseInt(matches[3]));
       return m;
     }
   }
