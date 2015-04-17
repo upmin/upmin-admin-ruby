@@ -34,28 +34,29 @@ namespace :spec do
   %w(active_record_32 active_record_40 active_record_41 active_record_42 will_paginate data_mapper).each do |gemfile|
     desc "Run Tests against #{gemfile}"
     task "#{gemfile}" do
-      Dir.chdir("test_apps/#{gemfile}")
-      puts "Testing in #{`pwd`}"
-      sh "bundle install --quiet"
-      sh "bundle update --quiet"
+      Dir.chdir("test_apps/#{gemfile}") do
+        puts "Testing in #{`pwd`}"
+        sh "bundle install --quiet"
+        sh "bundle update --quiet"
 
-      # Drop migrations and recreate
-      sh "rm -rf db/migrate/*"
+        # Drop migrations and recreate
+        sh "rm -rf db/migrate/*"
 
-      if gemfile != "data_mapper"
-        sh "bundle exec rake railties:install:migrations > /dev/null"
+        if gemfile != "data_mapper"
+          sh "bundle exec rake railties:install:migrations > /dev/null"
+        end
+
+        if gemfile == "active_record_32"
+          sh "bundle exec rake db:drop db:create db:migrate --quiet > /dev/null"
+        end
+
+        sh "RAILS_ENV=test bundle exec rake db:drop db:create db:migrate --quiet > /dev/null"
+
+        update_files
+
+        # Run tests
+        sh "bundle exec rake"
       end
-
-      if gemfile == "active_record_32"
-        sh "bundle exec rake db:drop db:create db:migrate --quiet > /dev/null"
-      end
-
-      sh "RAILS_ENV=test bundle exec rake db:drop db:create db:migrate --quiet > /dev/null"
-
-      update_files
-
-      # Run tests
-      sh "bundle exec rake"
     end
   end
 
