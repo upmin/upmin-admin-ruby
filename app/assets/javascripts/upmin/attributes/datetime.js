@@ -68,13 +68,8 @@
     return curMoment;
   }
 
-
-
-
-
-
-  // Initializing the attribute view.
-  var init = function(formId) {
+  // Initializing the DateTime attribute view.
+  var initDateTime = function(formId) {
     var dtSection = $("." + formId + ".datetime-attribute");
     var hiddenInput = dtSection.find("input#" + formId + "[type=hidden]");
     var dateInput = dtSection.find("#" + formId + "-date");
@@ -123,6 +118,35 @@
     });
   }
 
+    // Initializing the Date attribute view.
+    // TODO: Dry this up against DateTime
+    var initDate = function(formId) {
+        var dtSection = $("." + formId + ".date-attribute");
+        var hiddenInput = dtSection.find("input#" + formId + "[type=hidden]");
+        var dateInput = dtSection.find("#" + formId + "-date");
+
+        var dtMoment = moment(hiddenInput.val());
+        if (hiddenInput.val() == "") {
+            dtMoment = null;
+        }
+
+        var handleDateSelect = function() {
+            var newDateMoment = parseDate(dateInput.val());
+            setInputDate(newDateMoment, hiddenInput);
+            return newDateMoment;
+        }
+
+        // Create Date Picker
+        var datePicker = new Pikaday({ field: $("#" + formId + "-date")[0], onSelect: handleDateSelect });
+
+        dtSection.closest("form").submit(function(event) {
+            event.preventDefault();
+
+            handleDateSelect();
+
+            event.target.submit();
+        });
+    }
 
   if (window.Upmin == null) {
     window.Upmin = {};
@@ -130,5 +154,7 @@
   if (window.Upmin.Attributes == null) {
     window.Upmin.Attributes = {};
   }
-  window.Upmin.Attributes.DateTime = init;
+
+  window.Upmin.Attributes.DateTime = initDateTime;
+  window.Upmin.Attributes.Date = initDate;
 })();
