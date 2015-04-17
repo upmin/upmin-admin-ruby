@@ -10,13 +10,13 @@ feature("Navbar") do
     visit ("/upmin")
 
     within(".navbar ul.nav") do
-      expect(page).to(have_selector("li", text: "Users"))
+      expect(page).to(have_selector("li", text: "Customers"))
       expect(page).to(have_selector("li", text: "Products"))
       expect(page).to(have_selector("li", text: "Orders"))
       expect(page).to(have_selector("li", text: "Product Orders"))
       expect(page).to(have_selector("li", text: "Shipments"))
 
-      click_link("Users")
+      click_link("Customers")
     end
 
     expect(page).to(have_selector(".upmin-model", minimum: 10))
@@ -30,13 +30,13 @@ feature("Navbar") do
     visit ("/upmin")
 
     within(".navbar ul.nav") do
-      expect(page).to(have_selector("li", text: "Users"))
+      expect(page).to(have_selector("li", text: "Customers"))
       expect(page).to(have_selector("li", text: "Products"))
       expect(page).not_to(have_selector("li", text: "Orders"))
       expect(page).not_to(have_selector("li", text: "Product Orders"))
       expect(page).not_to(have_selector("li", text: "Shipments"))
 
-      click_link("Users")
+      click_link("Customers")
     end
 
     expect(page).to(have_selector(".upmin-model", minimum: 10))

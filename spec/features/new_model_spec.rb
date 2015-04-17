@@ -34,7 +34,7 @@ feature("Create a new model") do
     expect { click_button("Create") }.not_to(change(User, :count))
 
     within(".alert.alert-danger") do
-      expect(page).to(have_content("User was NOT created."))
+      expect(page).to(have_content("Customer was NOT created."))
     end
 
     within(".field_with_errors") do
