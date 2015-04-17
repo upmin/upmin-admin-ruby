@@ -29,7 +29,7 @@ module Upmin
       @model = @klass.new
       raw_model = @model.model
 
-      args = params[@klass.underscore_name]
+      args = params[@klass.underscore_name] || []
 
       args.each do |key, value|
         # TODO(jon): Figure out a way to do transforms.
