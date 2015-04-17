@@ -1,0 +1,26 @@
+- date = attribute.value.nil? ? nil : attribute.value
+
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name
+
+  - if attribute.editable? && f = form_builder
+    .row.date-attribute{class: attribute.form_id}
+      = f.hidden_field(attribute.name, value: date)
+
+      .col-md-12
+        .input-group.pikadate
+          %input.form-control{type: :text, value: date, id: "#{attribute.form_id}-date"}
+          %span.input-group-addon
+            %span.glyphicon.glyphicon-calendar
+
+    - content_for(:javascript) do
+      :javascript
+        $(document).ready(function() {
+          window.Upmin.Attributes.Date("#{attribute.form_id}");
+        });
+
+  - else
+    %p.well
+      -# TODO(jon): Make this show an uneditable date.
+      = date

@@ -22,7 +22,7 @@
           .input-group-addon to
           = number_field(:q, "#{attr_name}_lteq", class: "form-control")
 
-    - if type == :datetime && Rails::VERSION::MAJOR == 4
+    - if [:datetime, :date].include?(type) && Rails::VERSION::MAJOR == 4
       -# TODO(jon): Add date fields to search boxes for Rails 3
       .form-group
         = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
