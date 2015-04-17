@@ -6,15 +6,9 @@ Upmin Admin is a framework for creating powerful Ruby on Rails admin backends wi
 Upmin currently supports Rails 3.2, 4.0, 4.1 & 4.2.
 
 
-## Demo Videos
-
-**NOTE** - The videos are currently outdated, and are only relevant for versions below `0.1.0`. Please refer to the docs for recent releases until we get them updated.
-
-To see videos showing how to install and giving a pretty good overview of the main features of upmin-admin go to [https://www.upmin.com/admin-rails](https://www.upmin.com/admin-rails).
-
 ## Demo Applications
 
-There is also a demo application you can test out here: [store_demo](https://github.com/upmin/store_demo). The repository is maintained and updated by [Upmin](https://www.upmin.com), but you are welcome to contribute to it.
+There is a demo application you can test out here: [store_demo](https://github.com/upmin/store_demo).
 
 If you do choose to use the [store_demo](https://github.com/upmin/store_demo), please follow the directions in the [README](https://github.com/upmin/store_demo/blob/master/README.md) to ensure you have seed data to work with.
 
