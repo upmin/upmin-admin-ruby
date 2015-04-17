@@ -1,0 +1,14 @@
+-if defined?(DataMapper)
+  .container
+    .row
+      .jumbotron
+        %h2
+          Sorry, the default dashboard doesn't support DataMapper
+        %p
+          Please create a custom dashboard view in:
+        %code
+          app/views/upmin/dashboard/index.html.[haml|erb|etc]
+-else
+  .container-fluid
+    .row
+      = render partial: 'chart', collection: @models, as: 'model', locals: { limit: 30 }

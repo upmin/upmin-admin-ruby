@@ -9,9 +9,12 @@
     = javascript_include_tag("upmin/application")
     = csrf_meta_tags
 
-    %link{href: "//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css", rel: "stylesheet", type: "text/css"}
-    %link{href: "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet"}
+    %link{href: "//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css", rel: "stylesheet"}
+    -#%link{href: "//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet"}
     %script{src: "//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"}
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js"}
+    -# TODO (matt): Only include this on the dashboard page:
+    = javascript_include_tag "//www.google.com/jsapi", "chartkick"
 
     - if content_for?(:head)
       = yield(:head)

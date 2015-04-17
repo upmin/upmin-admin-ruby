@@ -1,0 +1,9 @@
+-limit ||= 30
+.col-sm-6.col-md-4
+  .panel.panel-default
+    .panel-heading
+      #{model.humanized_name} created per #{model.model_class.grouping limit}
+    .panel-body
+      = column_chart model.model_class.group_by_best_fit limit
+    .panel-footer
+      Number of #{model.model_name.plural} created per #{model.model_class.grouping limit}, for all #{model.count} records.
