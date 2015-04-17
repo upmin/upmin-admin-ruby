@@ -2,13 +2,8 @@
   %label{for: attribute.form_id}
     = attribute.label_name
 
-  - if attribute.editable? && f = form_builder
-    .enum
-      - attribute.enum_options.each do |option|
-        %label.radio-inline
-          = f.radio_button attribute.name, option
-          = option.humanize
-
-  - else
-    %p.well
-      = attribute.value
+  .enum
+    - attribute.enum_options.each do |option|
+      %label.radio-inline
+        = form_builder.radio_button attribute.name, option, disabled: !attribute.editable?
+        = option.humanize
