@@ -60,3 +60,13 @@ module Upmin::DataMapper
 
   end
 end
+
+module DataMapper
+  module ClassMethods
+    #Returns an ActiveModel::Name object needed by Kaminari to render page_entries_info.
+    def model_name
+      return@_model_name ||= ActiveModel::Name.new(self)
+    end
+  end
+  Model.append_extensions(ClassMethods)
+end

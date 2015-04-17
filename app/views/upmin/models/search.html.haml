@@ -18,13 +18,12 @@
               = error
   .row
     .col-md-8
+      .page-entries-info
+        = page_entries_info(@query.paginated_results)
       = up_paginate(@query.paginated_results)
-      -# TODO(jon): Add pagination w/ search results
       = up_render(@query)
-      %br
       = up_paginate(@query.paginated_results)
-      %br
-      %br
+
     .col-md-4
       -# TODO(jon): Implement up_search_box
       = up_render(@klass)

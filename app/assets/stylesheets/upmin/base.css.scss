@@ -52,10 +52,17 @@ body {
   padding-top: 8px;
 }
 
-.pagination:first-of-type {
-  margin-bottom: 0px;
+.page-entries-info {
+  margin: 5px 0px 15px;
 }
 
+.pagination:first-of-type {
+  margin: 5px 0px 0px;
+}
+
+.pagination:last-of-type {
+  margin: 10px 0px 20px;
+}
 
 .wizard span {padding: 12px 12px 10px 12px; margin-right:5px; background:#efefef; position:relative; display:inline-block; }
 .wizard span:before {width:0px; height:0px; border-top: 20px inset transparent; border-bottom: 20px inset transparent; border-left: 20px solid #fff; position: absolute; content: ""; top: 0; left: 0;}
