@@ -1,0 +1,10 @@
+-# based on "unknown" attribute type partial; does not allow editing (would
+-# have to parse the string back into cents, which is fraught with danger)
+.form-group{class: attribute.errors? ? "has-error" : ""}
+  %label{for: attribute.form_id}
+    = attribute.label_name.gsub('cents', '')
+  %p.well
+    - if attribute.value.respond_to?(:/)
+      = number_to_currency(attribute.value / 100.to_f)
+    - else
+      = attribute.value
