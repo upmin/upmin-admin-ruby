@@ -18,7 +18,7 @@ module Upmin
     end
 
     def label_name
-      name.to_s.capitalize.gsub("_", " ")
+      name.to_s.capitalize.tr("_", " ")
     end
 
     def type

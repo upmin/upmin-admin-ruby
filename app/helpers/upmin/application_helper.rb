@@ -3,10 +3,10 @@ module Upmin
     def body_classes
       ret = []
 
-      controller = "c-#{params[:controller].gsub(/_/, "-").gsub("upmin/", "")}"
+      controller = "c-#{params[:controller].tr("_", "-").tr("upmin/", "")}"
       ret << controller
 
-      action = "a-#{params[:action].gsub(/_/, "-")}"
+      action = "a-#{params[:action].tr("_", "-")}"
       ret << action
 
       if params[:klass]
@@ -19,7 +19,7 @@ module Upmin
 
     def body_data
       ret = {}
-      ret[:controller] = params[:controller].camelize.gsub("Upmin::", "")
+      ret[:controller] = params[:controller].camelize.tr("Upmin::", "")
       ret[:action] = params[:action].camelize
       return ret
     end

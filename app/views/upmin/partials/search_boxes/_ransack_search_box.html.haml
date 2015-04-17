@@ -10,12 +10,12 @@
     -# TODO(jon): Break these into partials possibly?
     - if type == :string
       .form-group
-        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.tr("_", " "))
         = text_field(:q, "#{attr_name}_cont", class: "form-control")
 
     - if type == :integer
       .form-group
-        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.tr("_", " "))
         .input-group
           .input-group-addon From
           = number_field(:q, "#{attr_name}_gteq", class: "form-control")
@@ -25,7 +25,7 @@
     - if type == :datetime && Rails::VERSION::MAJOR == 4
       -# TODO(jon): Add date fields to search boxes for Rails 3
       .form-group
-        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.gsub("_", " "))
+        = label(:q, "#{attr_name}_cont", attr_name.to_s.capitalize.tr("_", " "))
         %br
         From
         = date_field(:q, "#{attr_name}_gteq", class: "form-control")
