@@ -27,7 +27,7 @@ Then run the generator:
 
 ```ruby
 rails g upmin:install
-'''
+```
 
 This mounts the engine in your `routes.rb` file:
 
@@ -44,7 +44,6 @@ mount Upmin::Engine => '/ice-ice-baby'
 ```
 
 And you would access your admin page at `localhost:3000/ice-ice-baby` or `example.com/ice-ice-baby`.
-
 
 If you prefer not to use the generator, simply add the route, and optionally the config file as documented in the wiki.
 
