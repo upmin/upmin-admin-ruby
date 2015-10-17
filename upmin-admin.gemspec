@@ -28,9 +28,6 @@ Gem::Specification.new do |s|
   s.add_dependency("kaminari")
   s.add_dependency("ransack")
   s.add_dependency('chartkick')
-  s.add_dependency('groupdate')
-  #s.add_runtime_dependency('dateslice')
-  #s.add_dependency('by_star')
 
   s.add_development_dependency("sqlite3")
   s.add_development_dependency("capybara")
