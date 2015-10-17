@@ -29,6 +29,7 @@ require "upmin/railties/active_record"
 require "upmin/railties/paginator"
 require "upmin/railties/render"
 require "upmin/railties/render_helpers"
+require "upmin/railties/dashboard"
 require "upmin/railtie"
 
 # gems and stuff we use
@@ -36,7 +37,7 @@ require "jquery-rails"
 require "ransack"
 require "haml"
 require "sass-rails"
-
+require "chartkick"
 
 require "ostruct"
 

@@ -1,9 +1,6 @@
 Upmin::Engine.routes.draw do
-  root to: "models#dashboard"
-
-  # TODO(jon): Add support for dashboards (or some other main page).
-  # TODO(jon): Move dashboards to an appropriate controller
-  get "/", as: :upmin_dashboard, controller: :models, action: :dashboard
+  root to: "dashboard#index"
+  get "/", as: :upmin_dashboard, controller: :dashboard, action: :index
 
   scope "m" do
     scope "/:klass" do
