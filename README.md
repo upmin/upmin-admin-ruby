@@ -1,7 +1,8 @@
-# Upmin Admin
+# No Longer Actively Maintained
 
 Upmin Admin is no longer under active development. We recommend that you check out [Administrate](https://github.com/thoughtbot/administrate) if you are in need of an admin framework. It is created by the people at [thoughtbot](https://thoughtbot.com/).
 
+# Upmin Admin
 [![Gem Version](https://badge.fury.io/rb/upmin-admin.svg)](http://badge.fury.io/rb/upmin-admin)
 
 Upmin Admin is a framework for creating powerful Ruby on Rails admin backends with minimal effort.
