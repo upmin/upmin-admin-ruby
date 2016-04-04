@@ -3,7 +3,7 @@ require "spec_helper"
 
 feature("Taggable Search Views") do
   background do
-    # Setup BG Stuff
+    ActsAsTaggableOn::Tag.create(name: 'test')
   end
 
   scenario("Acts As Taggable On Tags") do
