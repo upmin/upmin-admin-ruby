@@ -12,6 +12,10 @@ module Upmin::Railties
         options = RenderHelpers.attribute_options(data, options)
         partials = RenderHelpers.attribute_partials(data, options)
 
+      elsif data.is_a?(Upmin::AttributeValue)
+        options = RenderHelpers.attribute_value_options(data, options)
+        partials = RenderHelpers.attribute_value_partials(data, options)
+
       elsif data.is_a?(Upmin::Association)
         options = RenderHelpers.association_options(data, options)
         partials = RenderHelpers.association_partials(data, options)

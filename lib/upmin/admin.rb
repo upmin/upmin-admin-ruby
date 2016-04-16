@@ -8,6 +8,7 @@ require "upmin/paginator"
 
 require "upmin/model"
 require "upmin/attribute"
+require "upmin/attribute_value"
 require "upmin/association"
 require "upmin/action"
 require "upmin/parameter"

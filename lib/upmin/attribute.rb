@@ -13,6 +13,12 @@ module Upmin
       return model.model.send(name)
     end
 
+    def display_value
+      return @display_value if defined?(@display_value)
+      @display_value = Upmin::AttributeValue.new(self)
+      return @display_value
+    end
+
     def type
       # TODO(jon): Add a way to override with widgets?
       return @type if defined?(@type)

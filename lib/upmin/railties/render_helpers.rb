@@ -61,6 +61,41 @@ module Upmin::Railties
 
 
 
+    def RenderHelpers.attribute_value_partials(attribute_value, options = {})
+      attribute = attribute_value.attribute
+      partials = []
+      # <options[:as]>
+      # <model_name>_<attr_name>, eg: user_name
+      # <model_name>_<attr_type>, eg: user_string
+      # <attr_type>, eg: string
+      # unknown
+
+      model_name = attribute.model.underscore_name
+      attr_type = attribute.type
+
+      partials << build_attribute_value_path(options[:as]) if options[:as]
+      partials << build_attribute_value_path("#{model_name}_#{attribute.name}")
+      partials << build_attribute_value_path("#{model_name}_#{attr_type}")
+      partials << build_attribute_value_path(attribute.name)
+      partials << build_attribute_value_path(attr_type)
+      partials << build_attribute_value_path(:unknown)
+      return partials
+    end
+
+    def RenderHelpers.attribute_value_options(attribute_value, options = {})
+      attribute = attribute_value.attribute
+      options[:locals] ||= {}
+      options[:locals][:model] ||= attribute.model
+      options[:locals][:attribute] = attribute
+      return options
+    end
+
+    def RenderHelpers.build_attribute_value_path(partial)
+      return build_path("attribute_values", partial)
+    end
+
+
+
     # NOTE: assoc_type is sketchy at best. It tries to determine it, but in some cases it has to be guessed at, so if you have polymorphic associations it will choose the data type of the first association it finds - eg if user.things returns [Order, Product, Review] it will use the type of "order"
     def RenderHelpers.association_partials(association, options = {})
       partials = []
