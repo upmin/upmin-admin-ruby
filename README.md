@@ -1,6 +1,6 @@
 # No Longer Actively Maintained
 
-Upmin Admin is no longer under active development. We recommend that you check out [Administrate](https://github.com/thoughtbot/administrate) if you are in need of an admin framework. It is created by the people at [thoughtbot](https://thoughtbot.com/).
+Upmin Admin is no longer under active development. We recommend that you check out [Administrate](https://github.com/thoughtbot/administrate) (by [thoughtbot](https://thoughtbot.com/)) or [Avo](https://github.com/avo-hq/avo) if you are in need of an admin framework.
 
 # Upmin Admin
 [![Gem Version](https://badge.fury.io/rb/upmin-admin.svg)](http://badge.fury.io/rb/upmin-admin)
